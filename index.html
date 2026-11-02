@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>كتالوج سو براند</title>
+<meta name="description" content="كتالوج أطقم المفارش من سو براند: صور وتفاصيل ومقاسات وأسعار، وبنصنع على الطلب.">
+<meta name="theme-color" content="#4a1224">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_EG">
+<meta property="og:title" content="كتالوج سو براند">
+<meta property="og:description" content="سو براند.. أناقة تكمّل بيتك. أطقم مفارش وجهين بالصور والمقاسات والأسعار.">
+<meta property="og:url" content="https://soohometextiles-pixel.github.io/soo-catalog/">
+<meta property="og:image" content="https://soohometextiles-pixel.github.io/soo-catalog/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap">
+<style>
+/* Layout: wine brand header, sticky wine bar that gains the logo on scroll, ivory body, 1/2/3-column cards, wine footer. */
+:root{
+  --bg:#f7f0e6; --surface:#fffcf7; --ink:#2b1a1e; --muted:#6c5a5d; --line:#e6d8c6;
+  --wine:#4a1224; --wine-2:#6a1d37; --gold:#8a5a16; --gold-bright:#d9ae62; --on-wine:#f6ead9;
+  --price:#6a1d37; --head:#4a1224; --wa:#16803f; --wa-hover:#126a34;
+  --shadow:0 1px 0 rgba(74,18,36,.04),0 14px 32px -20px rgba(74,18,36,.4);
+  --display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#140b0e; --surface:#20121a; --ink:#f3e8dc; --muted:#b9a59c; --line:#3a2530;
+    --gold:#d9ae62; --price:#e8bd72; --head:#d9ae62; --shadow:0 14px 32px -20px rgba(0,0,0,.85);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#140b0e; --surface:#20121a; --ink:#f3e8dc; --muted:#b9a59c; --line:#3a2530;
+  --gold:#d9ae62; --price:#e8bd72; --head:#d9ae62; --shadow:0 14px 32px -20px rgba(0,0,0,.85);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
+body.lock{overflow:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--wine)}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font-family:inherit}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ico{width:1.25em;height:1.25em;flex:0 0 auto}
+
+/* hero */
+.hero{background:radial-gradient(120% 90% at 50% 0%,#6a1d37 0%,var(--wine) 58%);color:var(--on-wine);padding-block:30px 30px;position:relative}
+.hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.hero .logo{width:min(168px,44vw);height:auto}
+.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(23px,5.6vw,36px);line-height:1.35;margin:10px 0 0;color:var(--gold-bright);text-wrap:balance}
+.hero p{margin:0;font-size:clamp(15px,3.8vw,19px);opacity:.92}
+.hero .en{font-size:12px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;direction:ltr;margin-top:6px}
+.hero .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;cursor:pointer;text-decoration:none;font-weight:600;font-size:16px;line-height:1.2;padding:13px 22px;border-radius:12px;transition:background .18s,transform .18s,border-color .18s}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-wa:hover,.btn-wa:focus-visible{background:var(--wa-hover)}
+.btn-ghost{background:transparent;color:var(--on-wine);border:1px solid rgba(217,174,98,.65)}
+.btn-ghost:hover,.btn-ghost:focus-visible{background:rgba(217,174,98,.14);border-color:var(--gold-bright)}
+.btn:active{transform:translateY(1px)}
+:focus-visible{outline:3px solid var(--gold-bright);outline-offset:2px}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent)}
+
+/* facts */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border-bottom:1px solid var(--line)}
+.facts div{padding:15px 8px;text-align:center;font-size:13.5px;font-weight:500;line-height:1.5;border-inline-start:1px solid var(--line);color:var(--muted)}
+.facts div:first-child{border-inline-start:0}
+.facts b{display:block;font-family:var(--display);font-size:16px;color:var(--price);font-weight:600}
+@media(max-width:380px){.facts div{font-size:12.5px}}
+
+/* sticky brand bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--wine);color:var(--on-wine);border-bottom:1px solid rgba(217,174,98,.35);transition:box-shadow .2s}
+.bar.on{box-shadow:0 10px 24px -14px rgba(0,0,0,.6)}
+.bar .wrap{display:flex;align-items:center;gap:0;height:56px}
+.mini{display:flex;align-items:center;gap:9px;text-decoration:none;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transition:max-width .3s,opacity .25s,margin .3s;flex:0 0 auto}
+.bar.on .mini{max-width:170px;opacity:1;margin-inline-end:14px}
+.mini img{height:38px;width:auto}
+.mini span{font-family:var(--display);font-weight:600;font-size:17px;color:var(--gold-bright);letter-spacing:.02em}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding-block:8px}
+.chips::-webkit-scrollbar{display:none}
+.chips a{flex:0 0 auto;text-decoration:none;font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.07em;padding:5px 15px;border:1px solid rgba(217,174,98,.45);border-radius:999px;color:var(--on-wine);transition:background .18s,color .18s,border-color .18s}
+.chips a:hover{border-color:var(--gold-bright)}
+.chips a.cur{background:var(--gold-bright);color:var(--wine);border-color:var(--gold-bright)}
+.bar-wa{flex:0 0 auto;margin-inline-start:10px;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--wa);color:#fff;border:0;cursor:pointer}
+.bar-wa:hover{background:var(--wa-hover)}
+
+/* section heads */
+.sec-head{padding-block:38px 16px}
+.sec-head h2{font-family:var(--display);font-weight:600;font-size:clamp(23px,5vw,30px);margin:0;color:var(--head);text-wrap:balance}
+.sec-head p{margin:2px 0 0;color:var(--muted);font-size:15px}
+
+/* cards */
+.grid{display:grid;grid-template-columns:1fr;gap:26px;padding-bottom:8px}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr;gap:28px}}
+@media(min-width:1020px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);scroll-margin-top:72px;min-width:0;display:flex;flex-direction:column}
+.gallery{position:relative;aspect-ratio:4/5;background:#2a1a1e}
+.track{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.track::-webkit-scrollbar{display:none}
+.track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:center;scroll-snap-stop:always;cursor:zoom-in}
+.code{position:absolute;top:12px;inset-inline-start:12px;font-family:var(--display);font-weight:700;letter-spacing:.1em;font-size:15px;background:var(--wine);color:var(--gold-bright);padding:3px 12px;border-radius:6px;pointer-events:none}
+.two{position:absolute;top:12px;inset-inline-end:12px;font-size:12.5px;font-weight:600;background:rgba(246,234,217,.94);color:var(--wine);padding:3px 11px;border-radius:999px;pointer-events:none}
+.wa-fab{position:absolute;bottom:14px;inset-inline-end:12px;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.9);background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 16px -4px rgba(0,0,0,.55);transition:transform .18s,background .18s}
+.wa-fab:hover{background:var(--wa-hover);transform:scale(1.06)}
+.wa-fab .ico{width:24px;height:24px}
+.dots{display:flex;justify-content:center;gap:7px;min-height:22px;padding-top:10px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
+.dots i.on{background:var(--gold);transform:scale(1.25)}
+.cbody{padding:6px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cbody h3{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.5;margin:6px 0 0;text-wrap:balance}
+.desc{margin:0;color:var(--muted);font-size:15px}
+.sub{margin:6px 0 0;font-weight:600;font-size:14px;color:var(--gold)}
+.parts{margin:0;border-top:1px solid var(--line)}
+.parts div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.parts dt{color:var(--muted)}
+.parts dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.price{margin-top:auto;padding-top:12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.now{display:flex;align-items:baseline;gap:7px}
+.now .lbl{font-size:13px;color:var(--muted)}
+.now strong{font-family:var(--display);font-size:34px;line-height:1;color:var(--price);font-weight:700;font-variant-numeric:tabular-nums}
+.now .cur{font-weight:600;color:var(--price)}
+.was{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.was s{text-decoration-thickness:1.5px}
+.tag{background:var(--wine);color:var(--gold-bright);font-size:12px;font-weight:600;padding:2px 10px;border-radius:999px}
+.card .btn-wa{width:100%;margin-top:12px}
+
+/* panels */
+.info{display:grid;grid-template-columns:1fr;gap:22px;padding-block:6px}
+@media(min-width:760px){.info{grid-template-columns:1fr 1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px;min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0 0 10px;color:var(--head)}
+.panel h2.sp{margin-top:24px}
+.panel p{margin:8px 0 0;color:var(--muted);font-size:15px}
+.ship{list-style:none;margin:0;padding:0}
+.ship li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:15.5px}
+.ship li:last-child{border-bottom:0}
+.ship b{font-variant-numeric:tabular-nums;color:var(--price)}
+.order{margin:8px 0 0;padding-inline-start:22px;font-size:15.5px}
+.order li{padding-block:3px}
+.note{font-size:14px!important}
+.paygrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;max-width:760px}
+@media(max-width:560px){.paygrid{gap:9px}}
+.pt{display:flex;flex-direction:column;align-items:center;gap:9px;padding:0 0 12px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);cursor:pointer;overflow:hidden;transition:border-color .18s,transform .18s,box-shadow .18s}
+.pt:hover,.pt:focus-visible{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow)}
+.pt .lg{position:relative;width:100%;aspect-ratio:3/2;background:#fff;overflow:hidden}
+.pt .lg img{position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain}
+.pt .lg.fill img{inset:0;width:100%;height:100%;object-fit:cover}
+.pt b{font-weight:600;font-size:15px}
+.pt small{color:var(--muted);font-size:12.5px;margin-top:-6px}
+
+/* faq */
+details{border-bottom:1px solid var(--line)}
+details:last-child{border-bottom:0}
+summary{cursor:pointer;list-style:none;padding:14px 2px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--display);font-size:22px;color:var(--gold);line-height:1;flex:0 0 auto}
+details[open] summary::after{content:"−"}
+details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
+
+/* footer */
+.foot{margin-top:40px;background:var(--wine);color:var(--on-wine);position:relative}
+.foot::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent)}
+.foot .top{display:grid;grid-template-columns:1fr;gap:30px;padding-block:36px 28px}
+@media(min-width:820px){.foot .top{grid-template-columns:1.1fr 1fr 1fr;gap:40px}}
+.foot h2{font-family:var(--display);font-weight:600;font-size:20px;margin:0 0 14px;color:var(--gold-bright)}
+.brandcol img{width:120px;height:auto}
+.brandcol p{margin:10px 0 0;opacity:.85;font-size:15px}
+.brandcol .en{font-size:12px;letter-spacing:.22em;text-transform:uppercase;opacity:.65;direction:ltr;margin-top:8px}
+.list{display:flex;flex-direction:column;gap:10px}
+.soc{display:flex;align-items:center;gap:12px;text-decoration:none;border:1px solid rgba(217,174,98,.4);border-radius:14px;padding:10px 14px;background:rgba(255,255,255,.04);transition:background .18s,border-color .18s}
+.soc:hover,.soc:focus-visible{background:rgba(217,174,98,.14);border-color:var(--gold-bright)}
+.soc img{width:40px;height:40px;border-radius:10px;flex:0 0 auto}
+.soc .t{display:flex;flex-direction:column;line-height:1.35;min-width:0}
+.soc b{font-weight:600;font-size:16px}
+.soc small{opacity:.78;font-size:13px;overflow-wrap:anywhere;direction:ltr;text-align:right}
+.soc.wa .wi{width:40px;height:40px;border-radius:10px;background:var(--wa);color:#fff;display:grid;place-items:center;flex:0 0 auto}
+.copy{border-top:1px solid rgba(217,174,98,.28);padding-block:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;opacity:.9}
+.copy .wrap{display:flex;flex-direction:column;gap:2px}
+
+/* floating whatsapp */
+.fab{position:fixed;z-index:35;bottom:calc(16px + env(safe-area-inset-bottom,0px));inset-inline-start:max(16px,env(safe-area-inset-left,0px));width:58px;height:58px;border-radius:50%;border:0;background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px -6px rgba(0,0,0,.55);transition:transform .18s,background .18s}
+.fab:hover{background:var(--wa-hover);transform:scale(1.07)}
+.fab .ico{width:28px;height:28px}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(10,4,6,.95);display:grid;place-items:center;padding:max(60px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(112px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;touch-action:pan-y}
+.lb .rb{position:absolute;border:0;background:rgba(246,234,217,.16);color:#fff;width:46px;height:46px;border-radius:50%;font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.lb .rb:hover{background:rgba(246,234,217,.32)}
+.lb .x{top:max(12px,env(safe-area-inset-top,0px));inset-inline-end:max(12px,env(safe-area-inset-right,0px))}
+.lb .nx{top:50%;transform:translateY(-50%);inset-inline-end:max(10px,env(safe-area-inset-right,0px))}
+.lb .pv{top:50%;transform:translateY(-50%);inset-inline-start:max(10px,env(safe-area-inset-left,0px))}
+.lb .ft{position:absolute;inset:auto 0 max(16px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:10px;padding-inline:16px}
+.lb .ct{color:#f3e8dc;font-size:14px;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+.lb .ttl{position:absolute;top:max(22px,env(safe-area-inset-top,0px));inset-inline-start:max(16px,env(safe-area-inset-left,0px));color:#f3e8dc;font-family:var(--display);font-size:17px;letter-spacing:.08em}
+
+/* sheet */
+.sbg{position:fixed;inset:0;z-index:60;background:rgba(10,4,6,.62);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.sbg[hidden]{display:none}
+@media(min-width:620px){.sbg{align-items:center}}
+.sheet{position:relative;width:100%;max-width:460px;max-height:90vh;overflow:auto;background:var(--surface);color:var(--ink);border-radius:20px 20px 0 0;padding:26px 22px calc(24px + env(safe-area-inset-bottom,0px));animation:up .24s cubic-bezier(.2,.8,.2,1)}
+@media(min-width:620px){.sheet{border-radius:20px;padding-bottom:26px}}
+.sheet .sx{position:absolute;top:12px;inset-inline-end:12px;width:38px;height:38px;border-radius:50%;border:0;background:var(--bg);color:var(--ink);font-size:22px;cursor:pointer;line-height:1}
+.sheet h3{font-family:var(--display);font-weight:600;font-size:22px;margin:0 40px 6px 0;color:var(--head)}
+.sheet p{margin:6px 0;color:var(--muted);font-size:15px}
+.sh-logo{width:112px;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:#fff;display:grid;place-items:center;border:1px solid var(--line);margin-bottom:12px;padding:8px}
+.sh-logo.fill{padding:0}
+.sh-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.sh-logo.fill img{width:100%;height:100%;object-fit:cover}
+.numrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 4px;padding:12px 14px;border:1.5px dashed var(--gold);border-radius:14px;background:var(--bg)}
+.numrow .num{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--price)}
+.numrow button{border:0;background:var(--wine);color:var(--gold-bright);font-weight:600;font-size:14px;padding:9px 14px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.numrow button.ok{background:var(--wa);color:#fff}
+.steps{margin-top:14px;padding:14px 16px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.steps p{margin:0;color:var(--ink)}
+.steps ul{margin:6px 0;padding-inline-start:20px;font-size:15px}
+.steps li{padding-block:2px}
+.sheet .btn-wa{width:100%;margin-top:14px}
+.wanum{display:flex;align-items:center;gap:12px;text-decoration:none;margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--wa);color:#fff;font-weight:600;transition:background .18s}
+.wanum:hover,.wanum:focus-visible{background:var(--wa-hover)}
+.wanum .ico{width:26px;height:26px}
+.wanum span{flex:1}
+.wanum bdi{font-size:18px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.sheet details{border:0;margin-top:12px}
+.sheet summary{padding:6px 0;font-size:14px;color:var(--muted);font-weight:500}
+.sheet pre{white-space:pre-wrap;font-family:var(--body);font-size:14px;line-height:1.7;margin:6px 0 0;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--ink);max-height:180px;overflow:auto}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body id="top">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5a9.5 9.5 0 0 0-8.1 14.4L2.7 21.3l4.5-1.2A9.5 9.5 0 1 0 12 2.5Zm0 1.9a7.6 7.6 0 1 1-3.9 14.1l-.3-.2-2.2.6.6-2.1-.2-.3A7.6 7.6 0 0 1 12 4.4Zm-2.8 3.4c-.2 0-.5.1-.7.4-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 2.2.9 2.6.7 3.1.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.6.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.4-1.8-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4Z"/></symbol>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="logo" src="img/logo.png" width="498" height="640" alt="سو براند">
+    <h1>سو براند.. أناقة تكمّل بيتك</h1>
+    <p>سو براند… طقمك على مزاجك</p>
+    <div class="en">More Than Just a Product</div>
+    <div class="cta">
+      <button class="btn btn-wa" type="button" data-wa="general"><svg class="ico"><use href="#i-wa"/></svg>اطلب عبر واتساب</button>
+      <a class="btn btn-ghost" href="#catalog">شوف الأطقم</a>
+    </div>
+  </div>
+</header>
+
+<div class="facts">
+  <div><b>وجهين</b>وش وضهر في كل طقم</div>
+  <div><b>على الطلب</b>بنصنع طقمك مخصوص</div>
+  <div><b>3 لـ 5 أيام</b>والتسليم لحد باب البيت</div>
+</div>
+
+<nav class="bar" id="bar" aria-label="أطقم الكتالوج">
+  <div class="wrap">
+    <a class="mini" href="#top" aria-label="سو براند، أعلى الصفحة"><img src="img/logo.png" width="30" height="38" alt=""><span>SOO</span></a>
+    <div class="chips" id="chips"><a href="#s01">S01</a><a href="#s02">S02</a><a href="#s03">S03</a><a href="#f01">F01</a><a href="#f02">F02</a><a href="#f03">F03</a></div>
+    <button class="bar-wa" type="button" data-wa="general" aria-label="اطلب عبر واتساب"><svg class="ico" style="width:22px;height:22px"><use href="#i-wa"/></svg></button>
+  </div>
+</nav>
+
+<main class="wrap" id="catalog">
+  <div class="sec-head">
+    <h2>أطقم سو براند</h2>
+    <p>ستة أطقم، كل طقم 4 قطع. اضغط على أي صورة لتكبيرها، وعلى زرار واتساب لطلب الطقم.</p>
+  </div>
+  <div class="grid">
+
+<article class="card" id="s01" data-code="S01" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S01
+الطقم: مفرش حفر ليزر وجهين - نص بطانية (برجندي)
+المكونات (4 قطع لسرير 170 سم):
+- مفرش: 260 × 240 سم
+- وش مخدة: 170 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1600 جنيه" aria-labelledby="t-S01">
+  <div class="gallery">
+    <div class="track" aria-label="صور الطقم S01"><img src="img/p16.jpg" width="960" height="1200" alt="S01 - صورة 1 من 2" loading="eager" decoding="async" data-full="img/p16.jpg"><img src="img/p17.jpg" width="960" height="1200" alt="S01 - صورة 2 من 2" loading="lazy" decoding="async" data-full="img/p17.jpg"></div>
+    <span class="code">S01</span>
+    <span class="two">وجهين</span>
+    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم S01 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+  </div>
+  <div class="dots" aria-hidden="true"><i class=on></i><i></i></div>
+  <div class="cbody">
+    <h3 id="t-S01">مفرش حفر ليزر وجهين - نص بطانية (برجندي)</h3>
+    <p class="desc">أناقة بتكمّل بيتك. مفرش سرير حفر ليزر وجهين بدرجة العنابي الفخمة، وبدانتيل فضي مطرز حوالين المفرش والخداديات. نص بطانية، يعني دفا وشياكة في نفس الوقت.</p>
+    <p class="sub">الطقم 4 قطع لسرير 170 سم</p>
+    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">260 × 240</bdi> سم</dd></div><div><dt>وش مخدة</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
+    <div class="price">
+      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,600</bdi></strong><span class="cur">جنيه</span></div>
+      
+    </div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</article>
+
+<article class="card" id="s02" data-code="S02" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S02
+الطقم: مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)
+المكونات (4 قطع):
+- مفرش: 285 × 235 سم
+- وش مخدة كبير: 175 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1400 جنيه" aria-labelledby="t-S02">
+  <div class="gallery">
+    <div class="track" aria-label="صور الطقم S02"><img src="img/p11.jpg" width="960" height="1200" alt="S02 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p11.jpg"><img src="img/p12.jpg" width="960" height="1200" alt="S02 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p12.jpg"><img src="img/p13.jpg" width="960" height="1200" alt="S02 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p13.jpg"></div>
+    <span class="code">S02</span>
+    <span class="two">وجهين</span>
+    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم S02 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+  </div>
+  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
+  <div class="cbody">
+    <h3 id="t-S02">مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)</h3>
+    <p class="desc">نعومة البابل الكثيف مع شريط دانتيل مطرز بورد صغير، بدرجة وردي هادية تجنن في أوضة العروسة. نص بطانية.</p>
+    <p class="sub">الطقم 4 قطع</p>
+    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">285 × 235</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">175 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
+    <div class="price">
+      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,400</bdi></strong><span class="cur">جنيه</span></div>
+      
+    </div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</article>
+
+<article class="card" id="s03" data-code="S03" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S03
+الطقم: مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)
+المكونات (4 قطع):
+- مفرش: 260 × 240 سم
+- وش مخدة: 165 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1400 جنيه" aria-labelledby="t-S03">
+  <div class="gallery">
+    <div class="track" aria-label="صور الطقم S03"><img src="img/p14.jpg" width="960" height="1200" alt="S03 - صورة 1 من 2" loading="lazy" decoding="async" data-full="img/p14.jpg"><img src="img/p15.jpg" width="960" height="1200" alt="S03 - صورة 2 من 2" loading="lazy" decoding="async" data-full="img/p15.jpg"></div>
+    <span class="code">S03</span>
+    <span class="two">وجهين</span>
+    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم S03 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+  </div>
+  <div class="dots" aria-hidden="true"><i class=on></i><i></i></div>
+  <div class="cbody">
+    <h3 id="t-S03">مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)</h3>
+    <p class="desc">فرو كثيف وجهين بنقشة قلوب، وكورنيش أبيض فخم حوالين المفرش والخداديات. لمسة رومانسية لأوضة النوم.</p>
+    <p class="sub">الطقم 4 قطع</p>
+    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">260 × 240</bdi> سم</dd></div><div><dt>وش مخدة</dt><dd><bdi dir="ltr">165 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
+    <div class="price">
+      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,400</bdi></strong><span class="cur">جنيه</span></div>
+      
+    </div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</article>
+
+<article class="card" id="f01" data-code="F01" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: F01
+الطقم: طقم فلات فرو كثيف وجهين (كافيه)
+المكونات (4 قطع):
+- مفرش: 270 × 240 سم
+- 2 وش خدادية: 75 × 55 سم
+- وش مخدة كبير: 170 × 45 سم
+السعر: 850 جنيه بدل 900 (عرض مؤقت)" aria-labelledby="t-F01">
+  <div class="gallery">
+    <div class="track" aria-label="صور الطقم F01"><img src="img/p9.jpg" width="960" height="1200" alt="F01 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p9.jpg"><img src="img/p10.jpg" width="960" height="1200" alt="F01 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p10.jpg"><img src="img/p8.jpg" width="960" height="1200" alt="F01 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p8.jpg"></div>
+    <span class="code">F01</span>
+    <span class="two">وجهين</span>
+    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم F01 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+  </div>
+  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
+  <div class="cbody">
+    <h3 id="t-F01">طقم فلات فرو كثيف وجهين (كافيه)</h3>
+    <p class="desc">بسيط وشيك وبدون زيادات: فرو كثيف وجهين بنقشة قلوب بلون كافيه. تحديث سريع لأوضتك.</p>
+    <p class="sub">الطقم 4 قطع</p>
+    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
+    <div class="price">
+      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">850</bdi></strong><span class="cur">جنيه</span></div>
+      <div class="was"><s><bdi dir="ltr">900</bdi> جنيه</s><span class="tag">عرض مؤقت</span></div>
+    </div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</article>
+
+<article class="card" id="f02" data-code="F02" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: F02
+الطقم: طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)
+المكونات (4 قطع):
+- مفرش: 270 × 240 سم
+- 2 وش خدادية: 75 × 55 سم
+- وش مخدة كبير: 170 × 45 سم
+السعر: 850 جنيه بدل 900 (عرض مؤقت)" aria-labelledby="t-F02">
+  <div class="gallery">
+    <div class="track" aria-label="صور الطقم F02"><img src="img/p1.jpg" width="960" height="1200" alt="F02 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p1.jpg"><img src="img/p3.jpg" width="960" height="1200" alt="F02 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p3.jpg"><img src="img/p4.jpg" width="960" height="1200" alt="F02 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p4.jpg"></div>
+    <span class="code">F02</span>
+    <span class="two">وجهين</span>
+    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم F02 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+  </div>
+  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
+  <div class="cbody">
+    <h3 id="t-F02">طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)</h3>
+    <p class="desc">نقشة إسلامي كلاسيك على فرو كثيف وجهين بلون عنابي غني.</p>
+    <p class="sub">الطقم 4 قطع</p>
+    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
+    <div class="price">
+      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">850</bdi></strong><span class="cur">جنيه</span></div>
+      <div class="was"><s><bdi dir="ltr">900</bdi> جنيه</s><span class="tag">عرض مؤقت</span></div>
+    </div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</article>
+
+<article class="card" id="f03" data-code="F03" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: F03
+الطقم: طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري)
+المكونات (4 قطع):
+- مفرش: 270 × 240 سم
+- 2 وش خدادية: 75 × 55 سم
+- وش مخدة كبير: 170 × 45 سم
+السعر: 900 جنيه بدل 1100 (عرض مؤقت)" aria-labelledby="t-F03">
+  <div class="gallery">
+    <div class="track" aria-label="صور الطقم F03"><img src="img/p6.jpg" width="960" height="1200" alt="F03 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p6.jpg"><img src="img/p5.jpg" width="960" height="1200" alt="F03 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p5.jpg"><img src="img/p7.jpg" width="960" height="1200" alt="F03 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p7.jpg"></div>
+    <span class="code">F03</span>
+    <span class="two">وجهين</span>
+    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم F03 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+  </div>
+  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
+  <div class="cbody">
+    <h3 id="t-F03">طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري)</h3>
+    <p class="desc">خامة إسباني وجهين بلون أخضر صنوبري، وجبيرة مكرميه على الخداديات بتدي شكل مميز.</p>
+    <p class="sub">الطقم 4 قطع</p>
+    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
+    <div class="price">
+      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">900</bdi></strong><span class="cur">جنيه</span></div>
+      <div class="was"><s><bdi dir="ltr">1,100</bdi> جنيه</s><span class="tag">عرض مؤقت</span></div>
+    </div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</article>
+  </div>
+
+  <div class="sec-head"><h2>الشحن والدفع والطلب</h2></div>
+  <div class="info">
+    <section class="panel" aria-labelledby="h-ship">
+      <h2 id="h-ship">الشحن والتوصيل</h2>
+      <ul class="ship"><li><span>القاهرة</span><b><bdi dir="ltr">130</bdi> جنيه</b></li><li><span>الجيزة</span><b><bdi dir="ltr">100</bdi> جنيه</b></li><li><span>المنيا</span><b><bdi dir="ltr">100</bdi> جنيه</b></li><li><span>بني سويف</span><b><bdi dir="ltr">100</bdi> جنيه</b></li><li><span>أسيوط</span><b><bdi dir="ltr">130</bdi> جنيه</b></li><li><span>باقي المحافظات</span><b><bdi dir="ltr">150</bdi> جنيه</b></li></ul>
+      <p class="note">رسوم الشحن ممكن تتغير على حسب شركة الشحن، وبيتم التبليغ قبل تأكيد الأوردر.</p>
+      <p>التوصيل متاح لأي مكان، من 3 لـ 5 أيام بحد أقصى بإذن الله.</p>
+      <h2 class="sp">المعاينة</h2>
+      <p style="margin-top:0">المعاينة متاحة قدام مندوب الشحن. في حالة عدم الاستلام أو الاسترجاع لأي سبب بيتم دفع تكلفة الشحن.</p>
+    </section>
+    <section class="panel" aria-labelledby="h-order">
+      <h2 id="h-order">إزاي تطلب؟</h2>
+      <p style="margin-top:0">يسعدنا اختياركم لسو براند. اضغط على زرار واتساب في الطقم اللي عجبك، وابعتلنا البيانات دي:</p>
+      <ol class="order"><li>الاسم</li><li>رقم الهاتف الأساسي (موبايل أو واتساب)</li><li>رقم هاتف إضافي (اختياري)</li><li>العنوان بالتفصيل: المحافظة - المدينة/المنطقة - الشارع - علامة مميزة</li><li>الطقم المطلوب</li><li>ملاحظات إضافية</li></ol>
+      <button class="btn btn-wa" type="button" data-wa="general" style="margin-top:16px"><svg class="ico"><use href="#i-wa"/></svg>ابدأ طلبك على واتساب</button>
+    </section>
+    <section class="panel wide" aria-labelledby="h-pay">
+      <h2 id="h-pay">طرق الدفع</h2>
+      <p style="margin-top:0">الدفع بالتحويل على فودافون كاش أو وي باي أو إنستا باي. اضغط على أي وسيلة لعرض رقم التحويل وخطوات التأكيد.</p>
+      <div class="paygrid"><button class="pt" type="button" data-pay="1" data-name="فودافون كاش" data-num="01027976472" data-img="img/vodafone.jpg" data-fill="1" data-bg="#f02922"><span class="lg fill" style="background:#f02922"><img src="img/vodafone.jpg" alt="" loading="lazy"></span><b>فودافون كاش</b><small>اضغط لعرض الرقم</small></button><button class="pt" type="button" data-pay="1" data-name="وي باي" data-num="01550345506" data-img="img/wepay.png" data-fill="0"><span class="lg"><img src="img/wepay.png" alt="" loading="lazy"></span><b>وي باي</b><small>اضغط لعرض الرقم</small></button><button class="pt" type="button" data-pay="1" data-name="إنستا باي" data-num="01027976472" data-img="img/instapay.png" data-fill="0"><span class="lg"><img src="img/instapay.png" alt="" loading="lazy"></span><b>إنستا باي</b><small>اضغط لعرض الرقم</small></button></div>
+    </section>
+    <section class="panel wide" aria-labelledby="h-faq">
+      <h2 id="h-faq">أسئلة شائعة</h2>
+      <details><summary>هو وجهين؟</summary><p>أيوه، كل أطقمنا وجهين: وش وضهر.</p></details><details><summary>الطقم بيتكون من إيه؟</summary><p>كل طقم 4 قطع: مفرش + وش مخدة + عدد 2 وش خدادية، ومقاسات كل طقم مكتوبة في كارت الطقم.</p></details><details><summary>في ألوان تانية أو مقاسات مختلفة؟</summary><p>المتاح حاليًا هو الأطقم المعروضة هنا، وإحنا بنصنع على حسب الطلب. قولّنا المقاسات اللي محتاجها ونوع القماش من الأقمشة المعروضة، ونشوف التكلفة ونبلغك.</p></details><details><summary>التوصيل أخدّه إمتى؟</summary><p>من 3 لـ 5 أيام بحد أقصى بإذن الله، والتوصيل لحد باب البيت.</p></details><details><summary>هل السعر ده نهائي؟</summary><p>أسعار «بدلًا من» عروض مؤقتة، والأفضل تثبّت طلبك دلوقتي علشان تستفيد بالسعر.</p></details>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="top">
+      <div class="brandcol">
+        <img src="img/logo.png" width="498" height="640" alt="سو براند" loading="lazy">
+        <p>سو براند.. أناقة تكمّل بيتك</p>
+        <div class="en">More Than Just a Product</div>
+      </div>
+      <div>
+        <h2>تواصل معانا</h2>
+        <div class="list"><a class="soc wa" href="https://wa.me/201550345506?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B7%D9%84%D8%A8%20%D8%B7%D9%82%D9%85%20%D9%85%D9%86%20%D8%B3%D9%88%20%D8%A8%D8%B1%D8%A7%D9%86%D8%AF." target="_blank" rel="noopener"><span class="wi"><svg class="ico"><use href="#i-wa"/></svg></span><span class="t"><b>واتساب</b><small>0155 034 5506</small></span></a><a class="soc wa" href="https://wa.me/201004315214?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B7%D9%84%D8%A8%20%D8%B7%D9%82%D9%85%20%D9%85%D9%86%20%D8%B3%D9%88%20%D8%A8%D8%B1%D8%A7%D9%86%D8%AF." target="_blank" rel="noopener"><span class="wi"><svg class="ico"><use href="#i-wa"/></svg></span><span class="t"><b>واتساب</b><small>0100 431 5214</small></span></a></div>
+      </div>
+      <div>
+        <h2>تابعنا</h2>
+        <div class="list"><a class="soc" href="https://www.tiktok.com/@soo.hometextiles" target="_blank" rel="noopener"><img src="img/tiktok.png" alt="" width="40" height="40" loading="lazy"><span class="t"><b>تيك توك</b><small>@soo.hometextiles</small></span></a><a class="soc" href="https://www.instagram.com/soohometextiles/" target="_blank" rel="noopener"><img src="img/instagram.png" alt="" width="40" height="40" loading="lazy"><span class="t"><b>إنستجرام</b><small>soohometextiles</small></span></a><a class="soc" href="https://www.facebook.com/soohometextiles" target="_blank" rel="noopener"><img src="img/facebook.png" alt="" width="40" height="40" loading="lazy"><span class="t"><b>فيسبوك</b><small>soohometextiles</small></span></a></div>
+      </div>
+    </div>
+  </div>
+  <div class="copy"><div class="wrap"><span>© 2026 سو براند. جميع الحقوق محفوظة.</span></div></div>
+</footer>
+
+<button class="fab" type="button" data-wa="general" aria-label="اطلب عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="عرض الصورة">
+  <span class="ttl" id="lbt"></span>
+  <img id="lbimg" alt="">
+  <button class="rb x" id="lbx" type="button" aria-label="إغلاق">×</button>
+  <button class="rb nx" id="lbn" type="button" aria-label="الصورة التالية">‹</button>
+  <button class="rb pv" id="lbp" type="button" aria-label="الصورة السابقة">›</button>
+  <div class="ft">
+    <div class="ct" id="lbc"></div>
+    <button class="btn btn-wa" id="lbw" type="button"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  </div>
+</div>
+
+<div class="sbg" id="sbg" hidden>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sht">
+    <button class="sx" id="sx" type="button" aria-label="إغلاق">×</button>
+    <div id="sb"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var NUMS=['01550345506','01004315214'];
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+  function intl(n){return '20'+n.replace(/^0/,'')}
+  function spaced(n){return n.slice(0,4)+' '+n.slice(4,7)+' '+n.slice(7)}
+  function abs(u){try{return new URL(u,location.href).href}catch(e){return u}}
+  var WAICON='<svg class="ico"><use href="#i-wa"/></svg>';
+
+  /* ---------- sticky bar ---------- */
+  var bar=$('#bar'), hero=$('.hero');
+  function onScroll(){ bar.classList.toggle('on', hero.getBoundingClientRect().bottom<0); }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  var chips=$$('#chips a'), cards=$$('.card');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var id=e.target.id;
+        chips.forEach(function(c){
+          var on=c.getAttribute('href')==='#'+id; c.classList.toggle('cur',on);
+          if(on){ var box=$('#chips'); var l=c.offsetLeft-(box.clientWidth-c.offsetWidth)/2; box.scrollTo({left:l,behavior:'smooth'}); }
+        });
+      });
+    },{rootMargin:'-30% 0px -60% 0px'});
+    cards.forEach(function(c){io.observe(c)});
+  }
+
+  /* ---------- gallery dots ---------- */
+  $$('.gallery').forEach(function(g){
+    var tr=$('.track',g), dots=$$('.dots i',g.parentNode); g.dataset.i=0;
+    tr.addEventListener('scroll',function(){
+      var w=tr.clientWidth||1, i=Math.round(Math.abs(tr.scrollLeft)/w); g.dataset.i=i;
+      dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
+    },{passive:true});
+  });
+
+  /* ---------- sheet ---------- */
+  var sbg=$('#sbg'), sb=$('#sb'), lastFocus=null;
+  function openSheet(html,after){
+    lastFocus=document.activeElement; sb.innerHTML=html; sbg.hidden=false; document.body.classList.add('lock');
+    if(after) after(); $('#sx').focus();
+  }
+  function closeSheet(){ sbg.hidden=true; sb.innerHTML=''; if($('#lb').hidden) document.body.classList.remove('lock'); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+  $('#sx').onclick=closeSheet;
+  sbg.addEventListener('click',function(e){ if(e.target===sbg) closeSheet(); });
+
+  function openWA(msg){
+    var links=NUMS.map(function(n,i){
+      return '<a class="wanum" target="_blank" rel="noopener" href="https://wa.me/'+intl(n)+'?text='+encodeURIComponent(msg)+'">'+WAICON+'<span>رقم '+(i+1)+'</span><bdi dir="ltr">'+spaced(n)+'</bdi></a>';
+    }).join('');
+    openSheet('<h3 id="sht">اطلب عبر واتساب</h3><p>اختار الرقم اللي تحب تتواصل معاه، وهتفتحلك المحادثة ومعاها رسالة جاهزة.</p>'+links+
+      '<details><summary>شوف الرسالة اللي هتتبعت</summary><pre id="pre"></pre></details>',
+      function(){ $('#pre').textContent=msg; });
+  }
+
+  function cardMsg(card,imgRel){
+    return card.dataset.msg+'\n\nصورة الطقم: '+abs(imgRel);
+  }
+  function visibleImg(card){
+    var g=$('.gallery',card), imgs=$$('img',g), i=+g.dataset.i||0; return (imgs[i]||imgs[0]).dataset.full;
+  }
+  var GEN='السلام عليكم، عايز أطلب طقم من سو براند.';
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-wa]'); if(!b) return;
+    e.preventDefault();
+    if(b.dataset.wa==='general') return openWA(GEN);
+    var card=b.closest('.card'); openWA(cardMsg(card,visibleImg(card)));
+  });
+
+  /* ---------- payment ---------- */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-pay]'); if(!b) return;
+    var d=b.dataset, fill=d.fill==='1';
+    openSheet(
+      '<div class="sh-logo'+(fill?' fill':'')+'"'+(d.bg?' style="background:'+d.bg+'"':'')+'><img src="'+d.img+'" alt="'+d.name+'"></div>'+
+      '<h3 id="sht">حوّل على '+d.name+'</h3>'+
+      '<p>ده الرقم اللي هتحوّل عليه:</p>'+
+      '<div class="numrow"><bdi class="num" dir="ltr">'+d.num+'</bdi><button type="button" id="cp">نسخ الرقم</button></div>'+
+      '<div class="steps"><p><b>بعد التحويل ابعتلنا على واتساب:</b></p><ul><li>سكرين شوت للتحويل</li><li>الرقم اللي اتحول منه (أو الاسم)</li></ul><p>علشان نتحقق من التحويل ونأكد الدفع.</p></div>'+
+      '<button class="btn btn-wa" type="button" id="pw">'+WAICON+'ابعت بيانات التحويل على واتساب</button>',
+      function(){
+        $('#cp').onclick=function(){
+          var btn=this, done=function(){btn.textContent='تم النسخ'; btn.classList.add('ok'); setTimeout(function(){btn.textContent='نسخ الرقم';btn.classList.remove('ok')},1800)};
+          if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(d.num).then(done,fallback); } else fallback();
+          function fallback(){ var r=document.createRange(); r.selectNodeContents($('.numrow .num')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); try{document.execCommand('copy'); done();}catch(x){} }
+        };
+        $('#pw').onclick=function(){ closeSheetKeepLock(); openWA('السلام عليكم، أنا حوّلت على '+d.name+'.\nهبعتلكم سكرين شوت التحويل والرقم اللي اتحول منه:'); };
+      });
+  });
+  function closeSheetKeepLock(){ sbg.hidden=true; sb.innerHTML=''; }
+
+  /* ---------- lightbox ---------- */
+  var lb=$('#lb'), im=$('#lbimg'), ct=$('#lbc'), set=[], cur=0, lcard=null, lastLb=null;
+  function show(){ im.src=set[cur]; ct.textContent=(cur+1)+' / '+set.length; $('#lbn').hidden=$('#lbp').hidden=set.length<2; }
+  function openLb(g,i){
+    lcard=g.closest('.card'); set=$$('img',g).map(function(x){return x.dataset.full}); cur=i; lastLb=document.activeElement;
+    $('#lbt').textContent=lcard.dataset.code; show(); lb.hidden=false; document.body.classList.add('lock'); $('#lbx').focus();
+  }
+  function closeLb(){ lb.hidden=true; im.removeAttribute('src'); document.body.classList.remove('lock'); if(lastLb&&lastLb.focus) lastLb.focus(); }
+  function step(d){ cur=(cur+d+set.length)%set.length; show(); }
+  $$('.gallery').forEach(function(g){
+    g.addEventListener('click',function(e){ if(e.target.tagName!=='IMG') return; openLb(g,$$('img',g).indexOf(e.target)); });
+  });
+  $('#lbx').onclick=closeLb; $('#lbn').onclick=function(){step(1)}; $('#lbp').onclick=function(){step(-1)};
+  $('#lbw').onclick=function(){ openWA(cardMsg(lcard,set[cur])); };
+  lb.addEventListener('click',function(e){ if(e.target===lb) closeLb(); });
+  document.addEventListener('keydown',function(e){
+    if(!sbg.hidden){ if(e.key==='Escape') closeSheet(); return; }
+    if(lb.hidden) return;
+    if(e.key==='Escape') closeLb(); if(e.key==='ArrowLeft') step(1); if(e.key==='ArrowRight') step(-1);
+  });
+  var sx=null;
+  im.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+  im.addEventListener('touchend',function(e){ if(sx===null) return; var dx=e.changedTouches[0].clientX-sx; sx=null; if(Math.abs(dx)>50) step(dx<0?1:-1); });
+})();
+</script>
+</body>
+</html>
