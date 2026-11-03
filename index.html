@@ -109,6 +109,12 @@ button{font-family:inherit}
 .wa-fab{position:absolute;bottom:14px;inset-inline-end:12px;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.9);background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 16px -4px rgba(0,0,0,.55);transition:transform .18s,background .18s}
 .wa-fab:hover{background:var(--wa-hover);transform:scale(1.06)}
 .wa-fab .ico{width:24px;height:24px}
+.colors{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 12px;flex-wrap:wrap}
+.clbl{font-size:15px;color:var(--muted)}.clbl b{color:var(--ink,inherit);font-weight:700}
+.sws{display:flex;gap:10px}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid #fff;background:var(--c);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0;transition:transform .15s,box-shadow .15s}
+.sw:hover{transform:scale(1.08)}
+.sw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--gold)}
 .dots{display:flex;justify-content:center;gap:7px;min-height:22px;padding-top:10px}
 .dots i{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
 .dots i.on{background:var(--gold);transform:scale(1.25)}
@@ -279,7 +285,8 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 
 <article class="card" id="s01" data-code="S01" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: S01
-الطقم: مفرش حفر ليزر وجهين - نص بطانية (برجندي)
+اللون: %COLOR%
+الطقم: مفرش حفر ليزر وجهين - نص بطانية
 المكونات (4 قطع لسرير 170 سم):
 - مفرش: 260 × 240 سم
 - وش مخدة: 170 × 45 سم
@@ -293,8 +300,9 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   </div>
   <div class="dots" aria-hidden="true"><i class=on></i><i></i></div>
   <div class="cbody">
-    <h3 id="t-S01">مفرش حفر ليزر وجهين - نص بطانية (برجندي)</h3>
-    <p class="desc">أناقة بتكمّل بيتك. مفرش سرير حفر ليزر وجهين بدرجة العنابي الفخمة، وبدانتيل فضي مطرز حوالين المفرش والخداديات. نص بطانية، يعني دفا وشياكة في نفس الوقت.</p>
+    <h3 id="t-S01">مفرش حفر ليزر وجهين - نص بطانية</h3>
+    <p class="desc">أناقة بتكمّل بيتك. مفرش سرير حفر ليزر وجهين متاح في 4 ألوان فخمة: برجندي، كاشمير، زيتي، وجراي رصاصي غامق، وبدانتيل فضي مطرز حوالين المفرش والخداديات. نص بطانية، يعني دفا وشياكة في نفس الوقت.</p>
+    <div class="colors" role="group" aria-label="اختار اللون"><span class="clbl">اللون: <b class="cname">برجندي</b></span><div class="sws"><button type="button" class="sw" aria-pressed="true" aria-label="برجندي" title="برجندي" data-name="برجندي" data-imgs="p16,p17" style="--c:#7a1530"></button><button type="button" class="sw" aria-pressed="false" aria-label="كاشمير" title="كاشمير" data-name="كاشمير" data-imgs="c_kashmir" style="--c:#be6d7c"></button><button type="button" class="sw" aria-pressed="false" aria-label="زيتي" title="زيتي" data-name="زيتي" data-imgs="c_olive" style="--c:#5a6b1c"></button><button type="button" class="sw" aria-pressed="false" aria-label="جراي رصاصي غامق" title="جراي رصاصي غامق" data-name="جراي رصاصي غامق" data-imgs="c_gray" style="--c:#474653"></button></div></div>
     <p class="sub">الطقم 4 قطع لسرير 170 سم</p>
     <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">260 × 240</bdi> سم</dd></div><div><dt>وش مخدة</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
     <div class="price">
@@ -323,6 +331,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   <div class="cbody">
     <h3 id="t-S02">مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)</h3>
     <p class="desc">نعومة البابل الكثيف مع شريط دانتيل مطرز بورد صغير، بدرجة وردي هادية تجنن في أوضة العروسة. نص بطانية.</p>
+    
     <p class="sub">الطقم 4 قطع</p>
     <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">285 × 235</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">175 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
     <div class="price">
@@ -351,6 +360,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   <div class="cbody">
     <h3 id="t-S03">مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)</h3>
     <p class="desc">فرو كثيف وجهين بنقشة قلوب، وكورنيش أبيض فخم حوالين المفرش والخداديات. لمسة رومانسية لأوضة النوم.</p>
+    
     <p class="sub">الطقم 4 قطع</p>
     <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">260 × 240</bdi> سم</dd></div><div><dt>وش مخدة</dt><dd><bdi dir="ltr">165 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
     <div class="price">
@@ -379,6 +389,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   <div class="cbody">
     <h3 id="t-F01">طقم فلات فرو كثيف وجهين (كافيه)</h3>
     <p class="desc">بسيط وشيك وبدون زيادات: فرو كثيف وجهين بنقشة قلوب بلون كافيه. تحديث سريع لأوضتك.</p>
+    
     <p class="sub">الطقم 4 قطع</p>
     <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
     <div class="price">
@@ -407,6 +418,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   <div class="cbody">
     <h3 id="t-F02">طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)</h3>
     <p class="desc">نقشة إسلامي كلاسيك على فرو كثيف وجهين بلون عنابي غني.</p>
+    
     <p class="sub">الطقم 4 قطع</p>
     <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
     <div class="price">
@@ -435,6 +447,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   <div class="cbody">
     <h3 id="t-F03">طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري)</h3>
     <p class="desc">خامة إسباني وجهين بلون أخضر صنوبري، وجبيرة مكرميه على الخداديات بتدي شكل مميز.</p>
+    
     <p class="sub">الطقم 4 قطع</p>
     <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
     <div class="price">
@@ -547,11 +560,26 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 
   /* ---------- gallery dots ---------- */
   $$('.gallery').forEach(function(g){
-    var tr=$('.track',g), dots=$$('.dots i',g.parentNode); g.dataset.i=0;
+    var tr=$('.track',g); g.dataset.i=0;
     tr.addEventListener('scroll',function(){
-      var w=tr.clientWidth||1, i=Math.round(Math.abs(tr.scrollLeft)/w); g.dataset.i=i;
+      var dots=$$('.dots i',g.parentNode), w=tr.clientWidth||1, i=Math.round(Math.abs(tr.scrollLeft)/w); g.dataset.i=i;
       dots.forEach(function(d,k){d.classList.toggle('on',k===i)});
     },{passive:true});
+  });
+
+  /* ---------- color variants ---------- */
+  $$('.colors').forEach(function(box){
+    var card=box.closest('.card'), g=$('.gallery',card), tr=$('.track',g), dotsEl=$('.dots',card), code=card.dataset.code;
+    card.dataset.color=$('.sw',box).dataset.name;
+    $$('.sw',box).forEach(function(b){ (b.dataset.imgs.split(',')).forEach(function(n){ var p=new Image(); p.src='img/'+n+'.jpg'; }); });
+    box.addEventListener('click',function(e){
+      var b=e.target.closest('.sw'); if(!b) return;
+      $$('.sw',box).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      var names=b.dataset.imgs.split(','); card.dataset.color=b.dataset.name; $('.cname',box).textContent=b.dataset.name;
+      tr.innerHTML=names.map(function(n,k){return '<img src="img/'+n+'.jpg" width="960" height="1200" alt="'+code+' - '+b.dataset.name+' - صورة '+(k+1)+' من '+names.length+'" decoding="async" data-full="img/'+n+'.jpg">'}).join('');
+      dotsEl.innerHTML=names.length>1?names.map(function(n,k){return '<i'+(k?'':' class="on"')+'></i>'}).join(''):'';
+      tr.scrollLeft=0; g.dataset.i=0;
+    });
   });
 
   /* ---------- sheet ---------- */
@@ -574,7 +602,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   }
 
   function cardMsg(card,imgRel){
-    return card.dataset.msg+'\n\nصورة الطقم: '+abs(imgRel);
+    return card.dataset.msg.replace('%COLOR%',card.dataset.color||'')+'\n\nصورة الطقم: '+abs(imgRel);
   }
   function visibleImg(card){
     var g=$('.gallery',card), imgs=$$('img',g), i=+g.dataset.i||0; return (imgs[i]||imgs[0]).dataset.full;
