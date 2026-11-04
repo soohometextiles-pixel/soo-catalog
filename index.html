@@ -110,6 +110,18 @@ button{font-family:inherit}
 /* section heads */
 .sec-head{padding-block:38px 16px}
 .sec-head h2{font-family:var(--display);font-weight:600;font-size:clamp(23px,5vw,30px);margin:0;color:var(--head);text-wrap:balance}
+.promo{margin:16px 0 4px;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;color:var(--on-wine);background:radial-gradient(120% 140% at 100% 0%,#6a1d37 0%,var(--wine) 65%);border:1.5px solid var(--gold-bright);box-shadow:0 14px 28px -18px rgba(74,18,36,.9),inset 0 0 0 3px rgba(217,174,98,.12);position:relative;overflow:hidden}
+.promo::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.12) 50%,transparent 65%);transform:translateX(-120%);animation:shine 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes shine{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@media (prefers-reduced-motion:reduce){.promo::after{animation:none}}
+.promo .bd{flex:0 0 auto;width:68px;height:68px;border-radius:50%;display:grid;place-content:center;text-align:center;line-height:1;background:linear-gradient(145deg,#f0cf8c,#c8963f);color:#4a1224;box-shadow:0 6px 14px -6px rgba(0,0,0,.6)}
+.promo .bd b{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.promo .bd small{font-size:12px;font-weight:700;margin-top:3px}
+.promo .tx{min-width:0}
+.promo .tx strong{display:block;text-wrap:balance;font-size:16px;line-height:1.5;color:var(--gold-bright);font-weight:700}
+.promo .tx span{display:block;font-size:14px;color:var(--on-wine);opacity:.92;line-height:1.6}
+.promo .lg{display:flex;gap:6px;margin-top:8px}
+.promo .lg img{width:28px;height:28px;border-radius:50%;object-fit:cover;background:#fff;border:1.5px solid rgba(255,255,255,.85)}
 .sec-head p{margin:2px 0 0;color:var(--muted);font-size:15px}
 
 /* cards */
@@ -297,7 +309,11 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   <div class="sec-head">
     <h2>أطقم سو براند</h2>
     <p> كل طقم 4 قطع. اضغط على أي صورة لتكبيرها، وعلى زرار واتساب لطلب الطقم.</p>
-    <p> ادفع مقدما واحصل علي خصم ( 50 ) جنيه من خلال خدمات كاش أو انستا باي.</p>
+    <div class="promo" role="note">
+      <div class="bd" aria-hidden="true"><b>50</b><small>جنيه</small></div>
+      <div class="tx"><strong>ادفع مقدمًا واحصل على خصم 50 جنيه</strong><span>على الأوردر عند التحويل عن طريق خدمات الكاش أو إنستا باي.</span>
+        <div class="lg" aria-hidden="true"><img src="img/vodafone.jpg" alt=""><img src="img/wepay.png" alt=""><img src="img/instapay.png" alt=""></div></div>
+    </div>
   </div>
   <div class="grid">
 
