@@ -270,13 +270,109 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+
+/* --- sliders, arrows, thumbs, more-link, trust --- */
+.slider{position:relative;aspect-ratio:4/5;background:#2a1a1e;overflow:hidden}
+.strack{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.strack::-webkit-scrollbar{display:none}
+.strack a{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:block}
+.strack img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none}
+.pc .slider .code{position:absolute;top:8px;inset-inline-start:8px;z-index:2}
+.pc .slider .two{position:absolute;top:8px;inset-inline-end:8px;z-index:2}
+.pc .bd2{z-index:2}
+.nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(20,8,12,.55);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;opacity:0;transition:opacity .2s,background .2s,transform .2s;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.nav svg{width:20px;height:20px}
+.nav:hover{background:var(--wine);transform:translateY(-50%) scale(1.08)}
+.nav.pv{inset-inline-start:auto;right:8px}
+.nav.nx{left:8px}
+.nav[disabled]{opacity:0!important;pointer-events:none}
+@media(hover:hover){.slider:hover .nav:not([disabled]),.gallery:hover .nav:not([disabled]),.nav:focus-visible{opacity:1}}
+@media(hover:none){.nav{display:none}}
+.sdots{position:absolute;left:50%;transform:translateX(-50%);bottom:30px;z-index:2;display:flex;gap:5px;padding:4px 8px;border-radius:999px;background:rgba(20,8,12,.42);pointer-events:none}
+.sdots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);transition:background .2s,transform .2s}
+.sdots i.on{background:#fff;transform:scale(1.25)}
+.pc .more{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:6px;font-size:13px;font-weight:600;color:var(--gold);text-decoration:none;padding:5px 2px;border-radius:8px}
+.pc .more svg{width:15px;height:15px;transition:transform .2s}
+.pc .more:hover{color:var(--price)}.pc .more:hover svg{transform:translateX(-3px)}
+.pc .more .l{display:none}
+@media(min-width:720px){.pc .more .l{display:inline}.pc .more .sh{display:none}}
+.under{display:block}
+.thumbs{display:none;gap:8px;overflow-x:auto;padding:4px 2px 14px;scrollbar-width:thin}
+.thumbs button{flex:0 0 auto;width:64px;aspect-ratio:4/5;padding:0;border:2px solid transparent;border-radius:9px;overflow:hidden;cursor:pointer;background:#2a1a1e;opacity:.7;transition:opacity .2s,border-color .2s}
+.thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs button.on{border-color:var(--gold-bright);opacity:1}
+.thumbs button:hover{opacity:1}
+.solo .under{padding:0 12px}
+.solo .thumbs{display:flex;justify-content:center}
+.solo .dots{display:none}
+@media(min-width:800px){.solo .under{grid-area:d}}
+.trust{list-style:none;margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:12px}
+.trust li{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--muted);line-height:1.5}
+.trust svg{flex:0 0 auto;width:32px;height:32px;padding:6px;border-radius:50%;background:rgba(138,90,22,.12);color:var(--gold)}
+.trust li span b{display:block;color:var(--ink);font-size:14.5px}
+@media(min-width:560px){.trust{grid-template-columns:repeat(3,1fr)}.trust li{flex-direction:column;text-align:center;gap:6px}}
+
+/* --- compact catalog cards (store style) --- */
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:720px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
+@media(min-width:1040px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}}
+.card.pc{border-radius:14px;transition:transform .18s,box-shadow .18s}
+.card.pc:hover{transform:translateY(-3px)}
+.pc .thumb{position:relative;display:block;aspect-ratio:4/5;background:#2a1a1e;overflow:hidden}
+.pc .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.pc:hover .thumb img{transform:scale(1.04)}
+.pc .code{top:8px;inset-inline-start:8px;font-size:12.5px;padding:2px 9px}
+.pc .two{top:8px;inset-inline-end:8px;font-size:11px;padding:2px 8px}
+.bd2{position:absolute;inset-inline-start:8px;top:38px;display:flex;flex-direction:column;align-items:flex-start;gap:5px;pointer-events:none}
+.bd2 span{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:999px;background:rgba(246,234,217,.95);color:var(--wine)}
+.bd2 .pct{background:#c0392b;color:#fff}
+.pc .mb{padding:10px 12px 12px;display:flex;flex-direction:column;gap:5px;flex:1}
+.pc h3{margin:0;font-family:var(--body);font-weight:600;font-size:14px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
+.pc h3 a{color:inherit;text-decoration:none}
+.pc .meta{margin:0;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pr{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:2px}
+.pc .pr strong{font-family:var(--display);font-size:21px;line-height:1.2;color:var(--price);font-weight:700;font-variant-numeric:tabular-nums}
+.pc .pr strong small{font-size:12.5px;font-weight:600}
+.pc .pr s{font-size:12.5px;color:var(--muted)}
+.pc .btn-wa{width:100%;margin-top:6px;padding:9px 8px;font-size:14px;border-radius:10px;gap:6px}
+.pc .btn-wa .ico{width:18px;height:18px}
+/* --- v3 additions: marketing tagline, spec rows, product pages, share --- */
+.tagline{margin:-2px 0 0;font-family:var(--display);font-weight:600;font-size:15px;color:var(--gold);line-height:1.5}
+.cbody h3 a{color:inherit;text-decoration:none}.cbody h3 a:hover{color:var(--price)}
+.parts.spec{margin-top:4px;border-top:1px solid var(--line)}
+.parts dd.tx{text-align:end;font-weight:600}
+.parts.spec + .parts{border-top:0;margin-top:-1px}
+.act{display:flex;gap:10px;margin-top:10px}
+.act .btn{flex:1;min-width:0}
+.btn-line{background:transparent;border:1.5px solid var(--line);color:var(--head);font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:12px;cursor:pointer;font-family:inherit;transition:border-color .18s,background .18s}
+.btn-line:hover{border-color:var(--gold);background:rgba(138,90,22,.07)}
+.btn-line .ico{width:18px;height:18px}
+.crumb{padding-block:20px 12px;font-size:14.5px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--price)}
+.crumb b{color:var(--head)}
+.card.solo{box-shadow:var(--shadow);scroll-margin-top:72px}
+.solo .cbody h3{font-size:22px}
+.solo .tagline{font-size:16.5px}
+@media(min-width:800px){
+  .card.solo{display:grid;grid-template-columns:minmax(0,46%) minmax(0,1fr);grid-template-areas:"g b" "d b";align-items:start}
+  .solo .gallery{grid-area:g}.solo .dots{grid-area:d;padding-bottom:12px}.solo .cbody{grid-area:b;padding:22px 26px 26px}
+  .solo .cbody h3{font-size:26px}
+}
+.rel-h{font-family:var(--display);font-weight:600;font-size:22px;color:var(--head);margin:34px 0 14px}
+.rels{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:10px;scrollbar-width:thin}
+.rel{flex:0 0 150px;scroll-snap-align:start;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.rel img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.rel span{padding:8px 10px 0;font-size:13px;line-height:1.5;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rel b{padding:0 10px 10px;color:var(--price);font-family:var(--display);font-size:16px}
+@media(min-width:700px){.rel{flex-basis:190px}}
 </style>
 </head>
 <body id="top">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5a9.5 9.5 0 0 0-8.1 14.4L2.7 21.3l4.5-1.2A9.5 9.5 0 1 0 12 2.5Zm0 1.9a7.6 7.6 0 1 1-3.9 14.1l-.3-.2-2.2.6.6-2.1-.2-.3A7.6 7.6 0 0 1 12 4.4Zm-2.8 3.4c-.2 0-.5.1-.7.4-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 2.2.9 2.6.7 3.1.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.6.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.4-1.8-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4Z"/></symbol>
-</svg>
+<symbol id="i-share" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v14"/></symbol></svg>
 
 <header class="hero">
   <div class="wrap">
@@ -300,7 +396,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 <nav class="bar" id="bar" aria-label="أطقم الكتالوج">
   <div class="wrap">
     <a class="mini" href="#top" aria-label="سو براند، أعلى الصفحة"><img src="img/logo.png" width="30" height="38" alt=""><span>SOO</span></a>
-    <div class="chips" id="chips"><a href="#s01">S01</a><a href="#s02">S02</a><a href="#s03">S03</a><a href="#f01">F01</a><a href="#f02">F02</a><a href="#f03">F03</a></div>
+    <div class="chips" id="chips"><a href="#s01">S01</a><a href="#s02">S02</a><a href="#s03">S03</a><a href="#s04">S04</a><a href="#s05">S05</a><a href="#s06">S06</a><a href="#s07">S07</a><a href="#f01">F01</a><a href="#f02">F02</a><a href="#f03">F03</a></div>
     <button class="bar-wa" type="button" data-wa="general" aria-label="اطلب عبر واتساب"><svg class="ico" style="width:22px;height:22px"><use href="#i-wa"/></svg></button>
   </div>
 </nav>
@@ -308,7 +404,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 <main class="wrap" id="catalog">
   <div class="sec-head">
     <h2>أطقم سو براند</h2>
-    <p> كل طقم 4 قطع. اضغط على أي صورة لتكبيرها، وعلى زرار واتساب لطلب الطقم.</p>
+    <p> كل طقم 4 قطع. اضغط على أي طقم لعرض كل صوره وتفاصيله، وعلى زرار واتساب لطلبه.</p>
     <div class="promo" role="note">
       <div class="bd" aria-hidden="true"><b>50</b><small>جنيه</small></div>
       <div class="tx"><strong>ادفع مقدمًا واحصل على خصم 50 جنيه</strong><span>على الأوردر عند التحويل عن طريق خدمات الكاش أو إنستا باي.</span>
@@ -317,178 +413,253 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   </div>
   <div class="grid">
 
-<article class="card" id="s01" data-code="S01" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+<article class="card pc" id="s01" data-code="S01" data-img="img/p16.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: S01
-اللون: %COLOR%
+اللون: (هحدد اللون)
 الطقم: مفرش حفر ليزر وجهين - نص بطانية
 المكونات (4 قطع لسرير 170 سم):
 - مفرش: 260 × 240 سم
 - وش مخدة: 170 × 45 سم
 - 2 وش خدادية: 75 × 55 سم
-السعر: 1,600 جنيه بدلا من 1,990 جنيه - خصم 390 جنيه" aria-labelledby="t-S01">
-  <div class="gallery">
-    <div class="track" aria-label="صور الطقم S01"><img src="img/p16.jpg" width="960" height="1200" alt="S01 - صورة 1 من 2" loading="eager" decoding="async" data-full="img/p16.jpg"><img src="img/p17.jpg" width="960" height="1200" alt="S01 - صورة 2 من 2" loading="lazy" decoding="async" data-full="img/p17.jpg"></div>
-    <span class="code">S01</span>
-    <span class="two">وجهين</span>
-    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم S01 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+السعر: 1,600 جنيه بدلا من 1,990 جنيه - خصم 390 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s01.html" aria-labelledby="t-S01">
+  <div class="slider">
+    <div class="strack"><a href="s01.html" tabindex="-1" aria-hidden="true"><img src="img/p16.jpg" width="960" height="1200" alt="مفرش حفر ليزر وجهين - نص بطانية - صورة 1" loading="eager" decoding="async" data-full="img/p16.jpg" draggable="false"></a><a href="s01.html" tabindex="-1" aria-hidden="true"><img src="img/p17.jpg" width="960" height="1200" alt="مفرش حفر ليزر وجهين - نص بطانية - صورة 2" loading="lazy" decoding="async" data-full="img/p17.jpg" draggable="false"></a><a href="s01.html" tabindex="-1" aria-hidden="true"><img src="img/c_kashmir.jpg" width="960" height="1200" alt="مفرش حفر ليزر وجهين - نص بطانية - صورة 3" loading="lazy" decoding="async" data-full="img/c_kashmir.jpg" draggable="false"></a><a href="s01.html" tabindex="-1" aria-hidden="true"><img src="img/c_green.jpg" width="960" height="1200" alt="مفرش حفر ليزر وجهين - نص بطانية - صورة 4" loading="lazy" decoding="async" data-full="img/c_green.jpg" draggable="false"></a><a href="s01.html" tabindex="-1" aria-hidden="true"><img src="img/c_gray.jpg" width="960" height="1200" alt="مفرش حفر ليزر وجهين - نص بطانية - صورة 5" loading="lazy" decoding="async" data-full="img/c_gray.jpg" draggable="false"></a></div>
+    <span class="code">S01</span><span class="two">وجهين</span><span class="bd2"><span class="cols">4 ألوان</span><span class="pct">خصم <bdi dir="ltr">20%</bdi></span></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i><i></i><i></i></div>
   </div>
-  <div class="dots" aria-hidden="true"><i class=on></i><i></i></div>
-  <div class="cbody">
-    <h3 id="t-S01">مفرش حفر ليزر وجهين - نص بطانية</h3>
-    <p class="desc">أناقة بتكمّل بيتك. مفرش سرير حفر ليزر وجهين متاح في 4 ألوان فخمة: برجندي، كاشمير، أخضر داكن، وجراي رصاصي غامق، وبدانتيل فضي مطرز حوالين المفرش والخداديات. نص بطانية، يعني دفا وشياكة في نفس الوقت.</p>
-    <div class="colors" role="group" aria-label="اختار اللون"><span class="clbl">اللون: <b class="cname">برجندي</b></span><div class="sws"><button type="button" class="sw" aria-pressed="true" aria-label="برجندي" title="برجندي" data-name="برجندي" data-imgs="p16,p17" style="--c:#7a1530"></button><button type="button" class="sw" aria-pressed="false" aria-label="كاشمير" title="كاشمير" data-name="كاشمير" data-imgs="c_kashmir" style="--c:#b76277"></button><button type="button" class="sw" aria-pressed="false" aria-label="أخضر داكن" title="أخضر داكن" data-name="أخضر داكن" data-imgs="c_green" style="--c:#0a4a37"></button><button type="button" class="sw" aria-pressed="false" aria-label="جراي رصاصي غامق" title="جراي رصاصي غامق" data-name="جراي رصاصي غامق" data-imgs="c_gray" style="--c:#474653"></button></div></div>
-    <p class="sub">الطقم 4 قطع لسرير 170 سم</p>
-    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">260 × 240</bdi> سم</dd></div><div><dt>وش مخدة</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
-    <div class="price">
-      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,600</bdi></strong><span class="cur">جنيه</span></div>
-      <div class="was"><s><bdi dir="ltr">1,990</bdi> جنيه</s><span class="tag">خصم 390 جنيه</span></div>
-    </div>
-    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  <div class="mb">
+    <h3 id="t-S01"><a href="s01.html">مفرش حفر ليزر وجهين - نص بطانية</a></h3>
+    <p class="meta">4 ألوان متاحة</p>
+    <div class="pr"><strong><bdi dir="ltr">1,600</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">1,990</bdi></s></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s01.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </article>
 
-<article class="card" id="s02" data-code="S02" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+<article class="card pc" id="s02" data-code="S02" data-img="img/p11.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: S02
+اللون: وردي فاتح
 الطقم: مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)
 المكونات (4 قطع):
 - مفرش: 285 × 235 سم
 - وش مخدة كبير: 175 × 45 سم
 - 2 وش خدادية: 75 × 55 سم
-السعر: 1,400 جنيه بدلا من 1,690 جنيه - خصم 290 جنيه" aria-labelledby="t-S02">
-  <div class="gallery">
-    <div class="track" aria-label="صور الطقم S02"><img src="img/p11.jpg" width="960" height="1200" alt="S02 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p11.jpg"><img src="img/p12.jpg" width="960" height="1200" alt="S02 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p12.jpg"><img src="img/p13.jpg" width="960" height="1200" alt="S02 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p13.jpg"></div>
-    <span class="code">S02</span>
-    <span class="two">وجهين</span>
-    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم S02 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+السعر: 1,400 جنيه بدلا من 1,690 جنيه - خصم 290 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s02.html" aria-labelledby="t-S02">
+  <div class="slider">
+    <div class="strack"><a href="s02.html" tabindex="-1" aria-hidden="true"><img src="img/p11.jpg" width="960" height="1200" alt="مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح) - صورة 1" loading="eager" decoding="async" data-full="img/p11.jpg" draggable="false"></a><a href="s02.html" tabindex="-1" aria-hidden="true"><img src="img/p12.jpg" width="960" height="1200" alt="مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح) - صورة 2" loading="lazy" decoding="async" data-full="img/p12.jpg" draggable="false"></a><a href="s02.html" tabindex="-1" aria-hidden="true"><img src="img/p13.jpg" width="960" height="1200" alt="مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح) - صورة 3" loading="lazy" decoding="async" data-full="img/p13.jpg" draggable="false"></a></div>
+    <span class="code">S02</span><span class="two">وجهين</span><span class="bd2"><span class="pct">خصم <bdi dir="ltr">17%</bdi></span></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
   </div>
-  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
-  <div class="cbody">
-    <h3 id="t-S02">مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)</h3>
-    <p class="desc">نعومة البابل الكثيف مع شريط دانتيل مطرز بورد صغير، بدرجة وردي هادية تجنن في أوضة العروسة. نص بطانية.</p>
-    
-    <p class="sub">الطقم 4 قطع</p>
-    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">285 × 235</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">175 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
-    <div class="price">
-      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,400</bdi></strong><span class="cur">جنيه</span></div>
-      <div class="was"><s><bdi dir="ltr">1,690</bdi> جنيه</s><span class="tag">خصم 290 جنيه</span></div>
-    </div>
-    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  <div class="mb">
+    <h3 id="t-S02"><a href="s02.html">مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)</a></h3>
+    <p class="meta">وردي فاتح</p>
+    <div class="pr"><strong><bdi dir="ltr">1,400</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">1,690</bdi></s></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s02.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </article>
 
-<article class="card" id="s03" data-code="S03" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+<article class="card pc" id="s03" data-code="S03" data-img="img/p14.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: S03
+اللون: كافيه
 الطقم: مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)
 المكونات (4 قطع):
 - مفرش: 260 × 240 سم
 - وش مخدة: 165 × 45 سم
 - 2 وش خدادية: 75 × 55 سم
-السعر: 1,400 جنيه بدلا من 1,690 جنيه - خصم 290 جنيه" aria-labelledby="t-S03">
-  <div class="gallery">
-    <div class="track" aria-label="صور الطقم S03"><img src="img/p14.jpg" width="960" height="1200" alt="S03 - صورة 1 من 2" loading="lazy" decoding="async" data-full="img/p14.jpg"><img src="img/p15.jpg" width="960" height="1200" alt="S03 - صورة 2 من 2" loading="lazy" decoding="async" data-full="img/p15.jpg"></div>
-    <span class="code">S03</span>
-    <span class="two">وجهين</span>
-    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم S03 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+السعر: 1,400 جنيه بدلا من 1,690 جنيه - خصم 290 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s03.html" aria-labelledby="t-S03">
+  <div class="slider">
+    <div class="strack"><a href="s03.html" tabindex="-1" aria-hidden="true"><img src="img/p14.jpg" width="960" height="1200" alt="مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه) - صورة 1" loading="lazy" decoding="async" data-full="img/p14.jpg" draggable="false"></a><a href="s03.html" tabindex="-1" aria-hidden="true"><img src="img/p15.jpg" width="960" height="1200" alt="مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه) - صورة 2" loading="lazy" decoding="async" data-full="img/p15.jpg" draggable="false"></a></div>
+    <span class="code">S03</span><span class="two">وجهين</span><span class="bd2"><span class="pct">خصم <bdi dir="ltr">17%</bdi></span></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i></div>
   </div>
-  <div class="dots" aria-hidden="true"><i class=on></i><i></i></div>
-  <div class="cbody">
-    <h3 id="t-S03">مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)</h3>
-    <p class="desc">فرو كثيف وجهين بنقشة قلوب، وكورنيش أبيض فخم حوالين المفرش والخداديات. لمسة رومانسية لأوضة النوم.</p>
-    
-    <p class="sub">الطقم 4 قطع</p>
-    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">260 × 240</bdi> سم</dd></div><div><dt>وش مخدة</dt><dd><bdi dir="ltr">165 × 45</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div></dl>
-    <div class="price">
-      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,400</bdi></strong><span class="cur">جنيه</span></div>
-      <div class="was"><s><bdi dir="ltr">1,690</bdi> جنيه</s><span class="tag">خصم 290 جنيه</span></div>
-    </div>
-    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  <div class="mb">
+    <h3 id="t-S03"><a href="s03.html">مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)</a></h3>
+    <p class="meta">كافيه</p>
+    <div class="pr"><strong><bdi dir="ltr">1,400</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">1,690</bdi></s></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s03.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </article>
 
-<article class="card" id="f01" data-code="F01" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+<article class="card pc" id="s04" data-code="S04" data-img="img/p18.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S04
+اللون: مينت جرين
+الطقم: مفرش مينت جرين بكشكشة الساتان
+المكونات (4 قطع):
+- مفرش: 270 × 235 سم
+- وش مخدة كبير: 175 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1,490 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s04.html" aria-labelledby="t-S04">
+  <div class="slider">
+    <div class="strack"><a href="s04.html" tabindex="-1" aria-hidden="true"><img src="img/p18.jpg" width="960" height="1200" alt="مفرش مينت جرين بكشكشة الساتان - صورة 1" loading="lazy" decoding="async" data-full="img/p18.jpg" draggable="false"></a><a href="s04.html" tabindex="-1" aria-hidden="true"><img src="img/p19.jpg" width="960" height="1200" alt="مفرش مينت جرين بكشكشة الساتان - صورة 2" loading="lazy" decoding="async" data-full="img/p19.jpg" draggable="false"></a><a href="s04.html" tabindex="-1" aria-hidden="true"><img src="img/p20.jpg" width="960" height="1200" alt="مفرش مينت جرين بكشكشة الساتان - صورة 3" loading="lazy" decoding="async" data-full="img/p20.jpg" draggable="false"></a><a href="s04.html" tabindex="-1" aria-hidden="true"><img src="img/p21.jpg" width="960" height="1200" alt="مفرش مينت جرين بكشكشة الساتان - صورة 4" loading="lazy" decoding="async" data-full="img/p21.jpg" draggable="false"></a></div>
+    <span class="code">S04</span><span class="bd2"></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="mb">
+    <h3 id="t-S04"><a href="s04.html">مفرش مينت جرين بكشكشة الساتان</a></h3>
+    <p class="meta">مينت جرين</p>
+    <div class="pr"><strong><bdi dir="ltr">1,490</bdi> <small>جنيه</small></strong></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s04.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</article>
+
+<article class="card pc" id="s05" data-code="S05" data-img="img/p22.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S05
+اللون: أوف وايت × رمادي
+الطقم: القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي
+المكونات (4 قطع):
+- مفرش: 270 × 260 سم
+- وش مخدة كبير: 175 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1,590 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s05.html" aria-labelledby="t-S05">
+  <div class="slider">
+    <div class="strack"><a href="s05.html" tabindex="-1" aria-hidden="true"><img src="img/p22.jpg" width="960" height="1200" alt="القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي - صورة 1" loading="lazy" decoding="async" data-full="img/p22.jpg" draggable="false"></a><a href="s05.html" tabindex="-1" aria-hidden="true"><img src="img/p23.jpg" width="960" height="1200" alt="القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي - صورة 2" loading="lazy" decoding="async" data-full="img/p23.jpg" draggable="false"></a><a href="s05.html" tabindex="-1" aria-hidden="true"><img src="img/p24.jpg" width="960" height="1200" alt="القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي - صورة 3" loading="lazy" decoding="async" data-full="img/p24.jpg" draggable="false"></a></div>
+    <span class="code">S05</span><span class="bd2"></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
+  </div>
+  <div class="mb">
+    <h3 id="t-S05"><a href="s05.html">القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي</a></h3>
+    <p class="meta">أوف وايت × رمادي</p>
+    <div class="pr"><strong><bdi dir="ltr">1,590</bdi> <small>جنيه</small></strong></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s05.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</article>
+
+<article class="card pc" id="s06" data-code="S06" data-img="img/p25.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S06
+اللون: مينت جرين
+الطقم: مينت جرين بالجوبير
+المكونات (4 قطع):
+- مفرش: 270 × 235 سم
+- وش مخدة كبير: 175 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1,590 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s06.html" aria-labelledby="t-S06">
+  <div class="slider">
+    <div class="strack"><a href="s06.html" tabindex="-1" aria-hidden="true"><img src="img/p25.jpg" width="960" height="1200" alt="مينت جرين بالجوبير - صورة 1" loading="lazy" decoding="async" data-full="img/p25.jpg" draggable="false"></a><a href="s06.html" tabindex="-1" aria-hidden="true"><img src="img/p26.jpg" width="960" height="1200" alt="مينت جرين بالجوبير - صورة 2" loading="lazy" decoding="async" data-full="img/p26.jpg" draggable="false"></a><a href="s06.html" tabindex="-1" aria-hidden="true"><img src="img/p27.jpg" width="960" height="1200" alt="مينت جرين بالجوبير - صورة 3" loading="lazy" decoding="async" data-full="img/p27.jpg" draggable="false"></a><a href="s06.html" tabindex="-1" aria-hidden="true"><img src="img/p28.jpg" width="960" height="1200" alt="مينت جرين بالجوبير - صورة 4" loading="lazy" decoding="async" data-full="img/p28.jpg" draggable="false"></a></div>
+    <span class="code">S06</span><span class="bd2"></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="mb">
+    <h3 id="t-S06"><a href="s06.html">مينت جرين بالجوبير</a></h3>
+    <p class="meta">مينت جرين</p>
+    <div class="pr"><strong><bdi dir="ltr">1,590</bdi> <small>جنيه</small></strong></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s06.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</article>
+
+<article class="card pc" id="s07" data-code="S07" data-img="img/p29.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+الكود: S07
+اللون: بيج شامبين
+الطقم: مفرش بابل بمكرمية يدوية (بيج شامبين)
+المكونات (4 قطع):
+- مفرش: 250 × 240 سم
+- وش مخدة كبير: 160 × 45 سم
+- 2 وش خدادية: 75 × 55 سم
+السعر: 1,755 جنيه
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/s07.html" aria-labelledby="t-S07">
+  <div class="slider">
+    <div class="strack"><a href="s07.html" tabindex="-1" aria-hidden="true"><img src="img/p29.jpg" width="960" height="1200" alt="مفرش بابل بمكرمية يدوية (بيج شامبين) - صورة 1" loading="lazy" decoding="async" data-full="img/p29.jpg" draggable="false"></a><a href="s07.html" tabindex="-1" aria-hidden="true"><img src="img/p30.jpg" width="960" height="1200" alt="مفرش بابل بمكرمية يدوية (بيج شامبين) - صورة 2" loading="lazy" decoding="async" data-full="img/p30.jpg" draggable="false"></a><a href="s07.html" tabindex="-1" aria-hidden="true"><img src="img/p31.jpg" width="960" height="1200" alt="مفرش بابل بمكرمية يدوية (بيج شامبين) - صورة 3" loading="lazy" decoding="async" data-full="img/p31.jpg" draggable="false"></a><a href="s07.html" tabindex="-1" aria-hidden="true"><img src="img/p32.jpg" width="960" height="1200" alt="مفرش بابل بمكرمية يدوية (بيج شامبين) - صورة 4" loading="lazy" decoding="async" data-full="img/p32.jpg" draggable="false"></a><a href="s07.html" tabindex="-1" aria-hidden="true"><img src="img/p33.jpg" width="960" height="1200" alt="مفرش بابل بمكرمية يدوية (بيج شامبين) - صورة 5" loading="lazy" decoding="async" data-full="img/p33.jpg" draggable="false"></a><a href="s07.html" tabindex="-1" aria-hidden="true"><img src="img/p34.jpg" width="960" height="1200" alt="مفرش بابل بمكرمية يدوية (بيج شامبين) - صورة 6" loading="lazy" decoding="async" data-full="img/p34.jpg" draggable="false"></a></div>
+    <span class="code">S07</span><span class="bd2"></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="mb">
+    <h3 id="t-S07"><a href="s07.html">مفرش بابل بمكرمية يدوية (بيج شامبين)</a></h3>
+    <p class="meta">بيج شامبين</p>
+    <div class="pr"><strong><bdi dir="ltr">1,755</bdi> <small>جنيه</small></strong></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="s07.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</article>
+
+<article class="card pc" id="f01" data-code="F01" data-img="img/p9.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: F01
+اللون: كافيه
 الطقم: طقم فلات فرو كثيف وجهين (كافيه)
 المكونات (4 قطع):
 - مفرش: 270 × 240 سم
 - 2 وش خدادية: 75 × 55 سم
 - وش مخدة كبير: 170 × 45 سم
-السعر: 850 جنيه بدلا من 1,190 جنيه - خصم 340 جنيه لمدة 48 ساعه" aria-labelledby="t-F01">
-  <div class="gallery">
-    <div class="track" aria-label="صور الطقم F01"><img src="img/p9.jpg" width="960" height="1200" alt="F01 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p9.jpg"><img src="img/p10.jpg" width="960" height="1200" alt="F01 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p10.jpg"><img src="img/p8.jpg" width="960" height="1200" alt="F01 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p8.jpg"></div>
-    <span class="code">F01</span>
-    <span class="two">وجهين</span>
-    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم F01 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+السعر: 850 جنيه بدلا من 1,190 جنيه - خصم 340 لمدة 48 ساعة
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/f01.html" aria-labelledby="t-F01">
+  <div class="slider">
+    <div class="strack"><a href="f01.html" tabindex="-1" aria-hidden="true"><img src="img/p9.jpg" width="960" height="1200" alt="طقم فلات فرو كثيف وجهين (كافيه) - صورة 1" loading="lazy" decoding="async" data-full="img/p9.jpg" draggable="false"></a><a href="f01.html" tabindex="-1" aria-hidden="true"><img src="img/p10.jpg" width="960" height="1200" alt="طقم فلات فرو كثيف وجهين (كافيه) - صورة 2" loading="lazy" decoding="async" data-full="img/p10.jpg" draggable="false"></a><a href="f01.html" tabindex="-1" aria-hidden="true"><img src="img/p8.jpg" width="960" height="1200" alt="طقم فلات فرو كثيف وجهين (كافيه) - صورة 3" loading="lazy" decoding="async" data-full="img/p8.jpg" draggable="false"></a></div>
+    <span class="code">F01</span><span class="two">وجهين</span><span class="bd2"><span class="pct">خصم <bdi dir="ltr">29%</bdi></span></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
   </div>
-  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
-  <div class="cbody">
-    <h3 id="t-F01">طقم فلات فرو كثيف وجهين (كافيه)</h3>
-    <p class="desc">بسيط وشيك وبدون زيادات: فرو كثيف وجهين بنقشة قلوب بلون كافيه. تحديث سريع لأوضتك.</p>
-    
-    <p class="sub">الطقم 4 قطع</p>
-    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
-    <div class="price">
-      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">850</bdi></strong><span class="cur">جنيه</span></div>
-      <div class="was"><s><bdi dir="ltr">1,190</bdi> جنيه</s><span class="tag">خصم 340 لمدة 48 ساعة</span></div>
-    </div>
-    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  <div class="mb">
+    <h3 id="t-F01"><a href="f01.html">طقم فلات فرو كثيف وجهين (كافيه)</a></h3>
+    <p class="meta">كافيه</p>
+    <div class="pr"><strong><bdi dir="ltr">850</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">1,190</bdi></s></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="f01.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </article>
 
-<article class="card" id="f02" data-code="F02" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+<article class="card pc" id="f02" data-code="F02" data-img="img/p1.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: F02
+اللون: عنابي
 الطقم: طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)
 المكونات (4 قطع):
 - مفرش: 270 × 240 سم
 - 2 وش خدادية: 75 × 55 سم
 - وش مخدة كبير: 170 × 45 سم
-السعر: 850 جنيه بدلا من 1,190 جنيه - خصم 340 جنيه لمدة 48 ساعه" aria-labelledby="t-F02">
-  <div class="gallery">
-    <div class="track" aria-label="صور الطقم F02"><img src="img/p1.jpg" width="960" height="1200" alt="F02 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p1.jpg"><img src="img/p3.jpg" width="960" height="1200" alt="F02 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p3.jpg"><img src="img/p4.jpg" width="960" height="1200" alt="F02 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p4.jpg"></div>
-    <span class="code">F02</span>
-    <span class="two">وجهين</span>
-    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم F02 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+السعر: 850 جنيه بدلا من 1,190 جنيه - خصم 340 لمدة 48 ساعة
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/f02.html" aria-labelledby="t-F02">
+  <div class="slider">
+    <div class="strack"><a href="f02.html" tabindex="-1" aria-hidden="true"><img src="img/p1.jpg" width="960" height="1200" alt="طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي) - صورة 1" loading="lazy" decoding="async" data-full="img/p1.jpg" draggable="false"></a><a href="f02.html" tabindex="-1" aria-hidden="true"><img src="img/p3.jpg" width="960" height="1200" alt="طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي) - صورة 2" loading="lazy" decoding="async" data-full="img/p3.jpg" draggable="false"></a><a href="f02.html" tabindex="-1" aria-hidden="true"><img src="img/p4.jpg" width="960" height="1200" alt="طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي) - صورة 3" loading="lazy" decoding="async" data-full="img/p4.jpg" draggable="false"></a></div>
+    <span class="code">F02</span><span class="two">وجهين</span><span class="bd2"><span class="pct">خصم <bdi dir="ltr">29%</bdi></span></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
   </div>
-  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
-  <div class="cbody">
-    <h3 id="t-F02">طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)</h3>
-    <p class="desc">نقشة إسلامي كلاسيك على فرو كثيف وجهين بلون عنابي غني.</p>
-    
-    <p class="sub">الطقم 4 قطع</p>
-    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
-    <div class="price">
-      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">850</bdi></strong><span class="cur">جنيه</span></div>
-      <div class="was"><s><bdi dir="ltr">1,190</bdi> جنيه</s><span class="tag">خصم 340 لمدة 48 ساعة</span></div>
-    </div>
-    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  <div class="mb">
+    <h3 id="t-F02"><a href="f02.html">طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)</a></h3>
+    <p class="meta">عنابي</p>
+    <div class="pr"><strong><bdi dir="ltr">850</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">1,190</bdi></s></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="f02.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </article>
 
-<article class="card" id="f03" data-code="F03" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
+<article class="card pc" id="f03" data-code="F03" data-img="img/p6.jpg" data-msg="السلام عليكم، عايز أطلب الطقم ده من سو براند 🌸
 الكود: F03
+اللون: أخضر صنوبري
 الطقم: طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري)
 المكونات (4 قطع):
 - مفرش: 270 × 240 سم
 - 2 وش خدادية: 75 × 55 سم
 - وش مخدة كبير: 170 × 45 سم
-السعر: 900 جنيه بدلا من 1,290 جنيه - خصم 390 جنيه لمدة 48 ساعه" aria-labelledby="t-F03">
-  <div class="gallery">
-    <div class="track" aria-label="صور الطقم F03"><img src="img/p6.jpg" width="960" height="1200" alt="F03 - صورة 1 من 3" loading="lazy" decoding="async" data-full="img/p6.jpg"><img src="img/p5.jpg" width="960" height="1200" alt="F03 - صورة 2 من 3" loading="lazy" decoding="async" data-full="img/p5.jpg"><img src="img/p7.jpg" width="960" height="1200" alt="F03 - صورة 3 من 3" loading="lazy" decoding="async" data-full="img/p7.jpg"></div>
-    <span class="code">F03</span>
-    <span class="two">وجهين</span>
-    <button class="wa-fab" type="button" data-wa="card" aria-label="اطلب الطقم F03 عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
+السعر: 900 جنيه بدلا من 1,290 جنيه - خصم 390 لمدة 48 ساعة
+رابط الطقم: https://soohometextiles-pixel.github.io/soo-catalog/f03.html" aria-labelledby="t-F03">
+  <div class="slider">
+    <div class="strack"><a href="f03.html" tabindex="-1" aria-hidden="true"><img src="img/p6.jpg" width="960" height="1200" alt="طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري) - صورة 1" loading="lazy" decoding="async" data-full="img/p6.jpg" draggable="false"></a><a href="f03.html" tabindex="-1" aria-hidden="true"><img src="img/p5.jpg" width="960" height="1200" alt="طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري) - صورة 2" loading="lazy" decoding="async" data-full="img/p5.jpg" draggable="false"></a><a href="f03.html" tabindex="-1" aria-hidden="true"><img src="img/p7.jpg" width="960" height="1200" alt="طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري) - صورة 3" loading="lazy" decoding="async" data-full="img/p7.jpg" draggable="false"></a></div>
+    <span class="code">F03</span><span class="two">وجهين</span><span class="bd2"><span class="pct">خصم <bdi dir="ltr">30%</bdi></span></span>
+    <button class="nav pv" type="button" aria-label="الصورة السابقة" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav nx" type="button" aria-label="الصورة التالية" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="sdots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
   </div>
-  <div class="dots" aria-hidden="true"><i class=on></i><i></i><i></i></div>
-  <div class="cbody">
-    <h3 id="t-F03">طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري)</h3>
-    <p class="desc">خامة إسباني وجهين بلون أخضر صنوبري، وجبيرة مكرميه على الخداديات بتدي شكل مميز.</p>
-    
-    <p class="sub">الطقم 4 قطع</p>
-    <dl class="parts"><div><dt>مفرش</dt><dd><bdi dir="ltr">270 × 240</bdi> سم</dd></div><div><dt>2 وش خدادية</dt><dd><bdi dir="ltr">75 × 55</bdi> سم</dd></div><div><dt>وش مخدة كبير</dt><dd><bdi dir="ltr">170 × 45</bdi> سم</dd></div></dl>
-    <div class="price">
-      <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">900</bdi></strong><span class="cur">جنيه</span></div>
-      <div class="was"><s><bdi dir="ltr">1,290</bdi> جنيه</s><span class="tag">خصم 390 لمدة 48 ساعة</span></div>
-    </div>
-    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
+  <div class="mb">
+    <h3 id="t-F03"><a href="f03.html">طقم فلات خامة إسباني وجهين بجبيرة مكرميه (أخضر صنوبري)</a></h3>
+    <p class="meta">أخضر صنوبري</p>
+    <div class="pr"><strong><bdi dir="ltr">900</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">1,290</bdi></s></div>
+    <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب واتساب</button>
+    <a class="more" href="f03.html"><span class="l">انقر لمشاهدة المزيد من التفاصيل</span><span class="sh">شوف كل التفاصيل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </article>
   </div>
@@ -539,7 +710,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
       </div>
     </div>
   </div>
-  <div class="copy"><div class="wrap"><span>© 2026 سو براند. جميع الحقوق محفوظة.</span></div></div>
+  <div class="copy"><div class="wrap"><span>جميع الحقوق محفوظة | سو براند</span><span><bdi dir="ltr">© 2026</bdi></span></div></div>
 </footer>
 
 <button class="fab" type="button" data-wa="general" aria-label="اطلب عبر واتساب"><svg class="ico"><use href="#i-wa"/></svg></button>
@@ -575,10 +746,10 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 
   /* ---------- sticky bar ---------- */
   var bar=$('#bar'), hero=$('.hero');
-  function onScroll(){ bar.classList.toggle('on', hero.getBoundingClientRect().bottom<0); }
+  function onScroll(){ bar.classList.toggle('on', hero?hero.getBoundingClientRect().bottom<0:true); }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
   var chips=$$('#chips a'), cards=$$('.card');
-  if('IntersectionObserver' in window){
+  if('IntersectionObserver' in window && $('.grid')){
     var io=new IntersectionObserver(function(es){
       es.forEach(function(e){
         if(!e.isIntersecting) return;
@@ -592,7 +763,50 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
     cards.forEach(function(c){io.observe(c)});
   }
 
+
+  /* ---------- sliders: arrows, dots, thumbs ---------- */
+  function trackOf(box){ return $('.strack',box)||$('.track',box); }
+  function sgn(tr){ return getComputedStyle(tr).direction==='rtl'?-1:1; }
+  function idxOf(tr){ var w=tr.clientWidth||1; return Math.round(Math.abs(tr.scrollLeft)/w); }
+  function goTo(tr,i){ var n=tr.children.length; i=Math.max(0,Math.min(n-1,i)); tr.scrollTo({left:sgn(tr)*i*tr.clientWidth,behavior:'smooth'}); }
+  function syncNav(box){
+    var tr=trackOf(box); if(!tr) return; var i=idxOf(tr), n=tr.children.length; box.dataset.i=i;
+    $$('.dots i, .sdots i',box.closest('.card')||box).forEach(function(d,k){d.classList.toggle('on',k===i)});
+    var pv=$('.nav.pv',box), nx=$('.nav.nx',box); if(pv) pv.disabled=i<=0; if(nx) nx.disabled=i>=n-1;
+    var card=box.closest('.card'); if(card) $$('.thumbs button',card).forEach(function(b,k){b.classList.toggle('on',k===i)});
+  }
+  function buildThumbs(card){
+    var box=$('.gallery',card), th=$('.thumbs',card); if(!box||!th) return;
+    var tr=trackOf(box), imgs=$$('img',tr);
+    th.innerHTML=imgs.length>1?imgs.map(function(im,k){return '<button type="button" role="tab" aria-label="صورة '+(k+1)+'"><img src="'+im.getAttribute('src')+'" alt="" width="64" height="80"></button>'}).join(''):'';
+    $$('button',th).forEach(function(b,k){ b.onclick=function(){ goTo(tr,k); }; });
+    syncNav(box);
+  }
+  $$('.slider, .gallery').forEach(function(box){
+    var tr=trackOf(box); if(!tr) return;
+    tr.addEventListener('scroll',function(){ syncNav(box); },{passive:true});
+    box.addEventListener('click',function(e){
+      var b=e.target.closest('.nav'); if(!b||!box.contains(b)) return;
+      e.preventDefault(); e.stopPropagation(); goTo(tr, idxOf(tr)+(b.classList.contains('nx')?1:-1));
+    },true);
+    syncNav(box);
+  });
+  $$('.card.solo').forEach(buildThumbs);
+
+  /* ---------- share ---------- */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-share]'); if(!b) return;
+    var url=abs(b.dataset.url), title=b.dataset.title+' | سو براند', lbl=$('.sl',b), old=lbl.textContent;
+    function done(){ lbl.textContent='تم نسخ الرابط ✓'; setTimeout(function(){lbl.textContent=old},1800); }
+    function copy(){
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done,fb); } else fb();
+      function fb(){ var t=document.createElement('textarea'); t.value=url; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); done();}catch(x){} t.remove(); }
+    }
+    if(navigator.share){ navigator.share({title:title,url:url}).catch(function(err){ if(err&&err.name!=='AbortError') copy(); }); } else copy();
+  });
+
   /* ---------- gallery dots ---------- */
+  (function(){var c=$('#chips .cur'),b=$('#chips'); if(c&&b) b.scrollLeft=-(0)+(c.offsetLeft-(b.clientWidth-c.offsetWidth)/2);})();
   $$('.gallery').forEach(function(g){
     var tr=$('.track',g); g.dataset.i=0;
     tr.addEventListener('scroll',function(){
@@ -612,7 +826,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
       var names=b.dataset.imgs.split(','); card.dataset.color=b.dataset.name; $('.cname',box).textContent=b.dataset.name;
       tr.innerHTML=names.map(function(n,k){return '<img src="img/'+n+'.jpg" width="960" height="1200" alt="'+code+' - '+b.dataset.name+' - صورة '+(k+1)+' من '+names.length+'" decoding="async" data-full="img/'+n+'.jpg">'}).join('');
       dotsEl.innerHTML=names.length>1?names.map(function(n,k){return '<i'+(k?'':' class="on"')+'></i>'}).join(''):'';
-      tr.scrollLeft=0; g.dataset.i=0;
+      tr.scrollLeft=0; g.dataset.i=0; buildThumbs(card);
     });
   });
 
@@ -639,7 +853,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
     return card.dataset.msg.replace('%COLOR%',card.dataset.color||'')+'\n\nصورة الطقم: '+abs(imgRel);
   }
   function visibleImg(card){
-    var g=$('.gallery',card), imgs=$$('img',g), i=+g.dataset.i||0; return (imgs[i]||imgs[0]).dataset.full;
+    var g=$('.gallery',card)||$('.slider',card); if(!g) return card.dataset.img; var imgs=$$('img',g), i=+g.dataset.i||0; return (imgs[i]||imgs[0]).dataset.full;
   }
   var GEN='السلام عليكم، عايز أطلب طقم من سو براند.';
   document.addEventListener('click',function(e){
