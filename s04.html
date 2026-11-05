@@ -277,6 +277,66 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 
 
+/* --- offers --- */
+[hidden]{display:none!important}
+.card:not(.on-offer) .off-only{display:none!important}
+.card.on-offer .reg-only{display:none!important}
+.pr .grp{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pr strong.offp,.now strong.offp{color:#c0392b}
+:root[data-theme=dark] .offp{color:#ff8a78}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .offp{color:#ff8a78}}
+.pct.hot{background:linear-gradient(135deg,#e0452f,#b3261e)!important;color:#fff!important;box-shadow:0 4px 10px -4px rgba(179,38,30,.8)}
+.card.on-offer{border-color:rgba(224,69,47,.55);box-shadow:0 0 0 1px rgba(224,69,47,.25),var(--shadow)}
+.cd{display:flex;flex-direction:column;gap:6px;padding:8px 9px;border-radius:12px;background:linear-gradient(135deg,#5a1030,#32081a);color:#f6ead9;border:1px solid rgba(217,174,98,.55);margin-top:6px}
+.cdl{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--gold-bright);font-weight:600}
+.cdl svg{width:14px;height:14px;flex:0 0 auto}
+.cdb{display:flex;gap:5px}
+.cdb .u{flex:1;min-width:0;text-align:center;background:rgba(255,255,255,.09);border-radius:7px;padding:3px 0 2px}
+.cdb b{display:block;font-family:var(--display);font-size:16px;line-height:1.25;color:#fff;font-variant-numeric:tabular-nums}
+.cdb i{display:block;font-style:normal;font-size:9.5px;opacity:.8;line-height:1.3}
+.cd.big{padding:14px 16px;gap:10px;margin-top:12px}
+.cd.big .cdl{font-size:14px}.cd.big .cdl svg{width:18px;height:18px}
+.cd.big .cdb{gap:10px}.cd.big .cdb .u{padding:8px 0 6px;border-radius:10px}
+.cd.big .cdb b{font-size:30px}.cd.big .cdb i{font-size:12px}
+.cdb .u.z{display:none}
+.btn-offer{background:linear-gradient(145deg,#f3d595,#c8963f);color:#4a1224;position:relative}
+.btn-offer:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-offer .ico{width:22px;height:22px}
+.nbadge{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#d63a24;color:#fff;font-size:12.5px;font-weight:700;display:inline-grid;place-items:center;line-height:1;box-shadow:0 0 0 0 rgba(214,58,36,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(214,58,36,0)}100%{box-shadow:0 0 0 0 rgba(214,58,36,0)}}
+@media (prefers-reduced-motion:reduce){.nbadge{animation:none}}
+.bar-off{flex:0 0 auto;margin-inline-start:10px;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,#f3d595,#c8963f);color:#4a1224;position:relative;text-decoration:none}
+.bar-off .ico{width:22px;height:22px}
+.bar-off .nbadge{position:absolute;top:-5px;inset-inline-start:-5px;min-width:18px;height:18px;font-size:11px;padding:0 4px;animation:none}
+.bar-off.cur{box-shadow:0 0 0 2px #fff}
+.ofhero{background:radial-gradient(120% 140% at 50% 0%,#7a1a3d 0%,var(--wine) 62%);color:var(--on-wine);text-align:center;padding:34px 0 30px;position:relative;overflow:hidden}
+.ofhero::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 26px,rgba(217,174,98,.06) 26px 27px);pointer-events:none}
+.ofhero .oficon{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:linear-gradient(145deg,#f3d595,#c8963f);color:#4a1224;box-shadow:0 10px 24px -8px rgba(0,0,0,.6)}
+.ofhero .oficon svg{width:34px;height:34px}
+.ofhero h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,6vw,42px);margin:12px 0 4px;color:var(--gold-bright)}
+.ofhero p{margin:0 auto;max-width:560px;font-size:16px;opacity:.95}
+.ofhero .ofc{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:5px 16px;border-radius:999px;border:1px solid rgba(217,174,98,.55);font-size:14px}
+.ofhero .ofc b{color:var(--gold-bright);font-size:16px}
+.ofgrid{margin-top:22px}
+.ofempty{margin-top:22px;text-align:center;padding:34px 20px;border:1.5px dashed var(--line);border-radius:18px;background:var(--surface)}
+.ofempty .ic{width:68px;height:68px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:rgba(138,90,22,.12);color:var(--gold)}
+.ofempty .ic svg{width:34px;height:34px}
+.ofempty h2{font-family:var(--display);font-size:24px;margin:0 0 6px;color:var(--head)}
+.ofempty p{margin:0 auto 14px;max-width:480px;color:var(--muted)}
+.ofempty .socs{display:flex;justify-content:center;gap:12px}
+.ofempty .socs a img{width:44px;height:44px;border-radius:12px;display:block;transition:transform .18s}
+.ofempty .socs a:hover img{transform:translateY(-3px)}
+.perks{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:720px){.perks{grid-template-columns:1fr 1fr}}
+.perk{display:flex;gap:16px;align-items:flex-start;padding:20px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.perk::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:linear-gradient(var(--gold-bright),var(--gold))}
+.perk .ic{flex:0 0 auto;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#6a1d37,#4a1224);color:var(--gold-bright)}
+.perk .ic svg{width:30px;height:30px}
+.perk h3{margin:0;font-family:var(--display);font-size:20px;color:var(--head);line-height:1.4}
+.perk .sub2{margin:2px 0 6px;font-weight:700;color:var(--gold);font-size:15px}
+.perk p{margin:0 0 12px;color:var(--muted);font-size:14.5px}
+.perk .btn{padding:10px 16px;font-size:15px;border-radius:11px}
+
 /* --- sliders, arrows, thumbs, more-link, trust --- */
 .slider{position:relative;aspect-ratio:4/5;background:#2a1a1e;overflow:hidden}
 .strack{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
@@ -378,13 +438,13 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5a9.5 9.5 0 0 0-8.1 14.4L2.7 21.3l4.5-1.2A9.5 9.5 0 1 0 12 2.5Zm0 1.9a7.6 7.6 0 1 1-3.9 14.1l-.3-.2-2.2.6.6-2.1-.2-.3A7.6 7.6 0 0 1 12 4.4Zm-2.8 3.4c-.2 0-.5.1-.7.4-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 2.2.9 2.6.7 3.1.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.6.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.4-1.8-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4Z"/></symbol>
-<symbol id="i-share" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v14"/></symbol></svg>
+<symbol id="i-tag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01M15 15l-4-4M10.5 11.5h.01M14.5 15.5h.01"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v14"/></symbol></svg>
 
 <nav class="bar" id="bar" aria-label="أطقم الكتالوج">
   <div class="wrap">
     <a class="mini" href="./" aria-label="سو براند، الكتالوج"><img src="img/logo.png" width="30" height="38" alt=""><span>SOO</span></a>
     <div class="chips" id="chips"><a href="s01.html">S01</a><a href="s02.html">S02</a><a href="s03.html">S03</a><a href="s04.html" class=cur>S04</a><a href="s05.html">S05</a><a href="s06.html">S06</a><a href="s07.html">S07</a><a href="f01.html">F01</a><a href="f02.html">F02</a><a href="f03.html">F03</a></div>
-    <button class="bar-wa" type="button" data-wa="general" aria-label="اطلب عبر واتساب"><svg class="ico" style="width:22px;height:22px"><use href="#i-wa"/></svg></button>
+    <a class="bar-off" href="offers.html" aria-label="العروض"><svg class="ico"><use href="#i-tag"/></svg><span class="nbadge" data-ocount hidden></span></a><button class="bar-wa" type="button" data-wa="general" aria-label="اطلب عبر واتساب"><svg class="ico" style="width:22px;height:22px"><use href="#i-wa"/></svg></button>
   </div>
 </nav>
 <main class="wrap" id="catalog">
@@ -420,6 +480,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
       <div class="now"><span class="lbl">السعر</span><strong><bdi dir="ltr">1,490</bdi></strong><span class="cur">جنيه</span></div>
       
     </div>
+    
     <button class="btn btn-wa" type="button" data-wa="card"><svg class="ico"><use href="#i-wa"/></svg>اطلب الطقم ده عبر واتساب</button>
     <div class="act"><button class="btn btn-line" type="button" data-share data-url="s04.html" data-title="S04 - مفرش مينت جرين بكشكشة الساتان"><svg class="ico"><use href="#i-share"/></svg><span class="sl">شارك الطقم ده</span></button></div>
     <ul class="trust">
@@ -430,7 +491,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   </div>
 </article>
   <h2 class="rel-h">أطقم تانية ممكن تعجبك</h2>
-  <div class="rels"><a class="rel" href="s01.html"><img src="img/p16.jpg" alt="" loading="lazy" width="480" height="600"><span>S01 · مفرش حفر ليزر وجهين - نص بطانية</span><b><bdi dir="ltr">1,600</bdi> جنيه</b></a><a class="rel" href="s02.html"><img src="img/p11.jpg" alt="" loading="lazy" width="480" height="600"><span>S02 · مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)</span><b><bdi dir="ltr">1,400</bdi> جنيه</b></a><a class="rel" href="s03.html"><img src="img/p14.jpg" alt="" loading="lazy" width="480" height="600"><span>S03 · مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)</span><b><bdi dir="ltr">1,400</bdi> جنيه</b></a><a class="rel" href="s05.html"><img src="img/p22.jpg" alt="" loading="lazy" width="480" height="600"><span>S05 · القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي</span><b><bdi dir="ltr">1,590</bdi> جنيه</b></a><a class="rel" href="s06.html"><img src="img/p25.jpg" alt="" loading="lazy" width="480" height="600"><span>S06 · مينت جرين بالجوبير</span><b><bdi dir="ltr">1,590</bdi> جنيه</b></a><a class="rel" href="s07.html"><img src="img/p29.jpg" alt="" loading="lazy" width="480" height="600"><span>S07 · مفرش بابل بمكرمية يدوية (بيج شامبين)</span><b><bdi dir="ltr">1,755</bdi> جنيه</b></a><a class="rel" href="f01.html"><img src="img/p9.jpg" alt="" loading="lazy" width="480" height="600"><span>F01 · طقم فلات فرو كثيف وجهين (كافيه)</span><b><bdi dir="ltr">850</bdi> جنيه</b></a><a class="rel" href="f02.html"><img src="img/p1.jpg" alt="" loading="lazy" width="480" height="600"><span>F02 · طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)</span><b><bdi dir="ltr">850</bdi> جنيه</b></a></div>
+  <div class="rels"><a class="rel" href="s01.html"><img src="img/p16.jpg" alt="" loading="lazy" width="480" height="600"><span>S01 · مفرش حفر ليزر وجهين - نص بطانية</span><b><bdi dir="ltr">1,990</bdi> جنيه</b></a><a class="rel" href="s02.html"><img src="img/p11.jpg" alt="" loading="lazy" width="480" height="600"><span>S02 · مفرش بابل كثيف جدًا بدانتيل مطرز - نص بطانية (وردي فاتح)</span><b><bdi dir="ltr">1,690</bdi> جنيه</b></a><a class="rel" href="s03.html"><img src="img/p14.jpg" alt="" loading="lazy" width="480" height="600"><span>S03 · مفرش فرو كثيف وجهين بكورنيش أبيض فخم (كافيه)</span><b><bdi dir="ltr">1,690</bdi> جنيه</b></a><a class="rel" href="s05.html"><img src="img/p22.jpg" alt="" loading="lazy" width="480" height="600"><span>S05 · القلوب الدافئة - فرو كثيف أوف وايت وبولار رمادي</span><b><bdi dir="ltr">1,590</bdi> جنيه</b></a><a class="rel" href="s06.html"><img src="img/p25.jpg" alt="" loading="lazy" width="480" height="600"><span>S06 · مينت جرين بالجوبير</span><b><bdi dir="ltr">1,590</bdi> جنيه</b></a><a class="rel" href="s07.html"><img src="img/p29.jpg" alt="" loading="lazy" width="480" height="600"><span>S07 · مفرش بابل بمكرمية يدوية (بيج شامبين)</span><b><bdi dir="ltr">1,755</bdi> جنيه</b></a><a class="rel" href="f01.html"><img src="img/p9.jpg" alt="" loading="lazy" width="480" height="600"><span>F01 · طقم فلات فرو كثيف وجهين (كافيه)</span><b><bdi dir="ltr">1,190</bdi> جنيه</b></a><a class="rel" href="f02.html"><img src="img/p1.jpg" alt="" loading="lazy" width="480" height="600"><span>F02 · طقم فلات خامة إسلامي فرو كثيف وجهين (عنابي)</span><b><bdi dir="ltr">1,190</bdi> جنيه</b></a></div>
   <div class="sec-head"><h2>الشحن والدفع والطلب</h2></div>
   <div class="info">
     <section class="panel" aria-labelledby="h-ship">
@@ -501,6 +562,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   </div>
 </div>
 
+<script>window.SOO_OFFERS={"S01": {"price": 1600, "end": "2026-11-08T01:35:00+02:00"}, "S02": {"price": 1400, "end": "2026-11-08T01:35:00+02:00"}, "S03": {"price": 1400, "end": "2026-11-08T01:35:00+02:00"}, "F01": {"price": 850, "end": "2026-11-08T01:35:00+02:00"}, "F02": {"price": 850, "end": "2026-11-08T01:35:00+02:00"}, "F03": {"price": 900, "end": "2026-11-08T01:35:00+02:00"}};</script>
 <script>
 (function(){
   var NUMS=['01550345506','01004315214'];
@@ -530,6 +592,48 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
     cards.forEach(function(c){io.observe(c)});
   }
 
+
+  /* ---------- offers + countdown ---------- */
+  var OFF=window.SOO_OFFERS||{};
+  function nfmt(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+  function offerOf(code){var o=OFF[code]; return (o&&(!o.end||Date.parse(o.end)>Date.now()))?o:null}
+  function pad(n){return n<10?'0'+n:''+n}
+  function tick(){
+    var now=Date.now();
+    $$('.card[data-reg]').forEach(function(c){
+      var o=offerOf(c.dataset.code), on=!!o;
+      if(on!==c.classList.contains('on-offer')) { applyOffers(); return; }
+      if(!o||!o.end) return;
+      var s=Math.max(0,Math.floor((Date.parse(o.end)-now)/1000)),
+          v={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};
+      $$('.cd',c).forEach(function(cd){
+        for(var k in v){ var b=$('[data-u="'+k+'"]',cd); if(b) b.textContent=pad(v[k]); }
+        var du=$('.u[data-w="d"]',cd); if(du) du.classList.toggle('z',v.d===0);
+      });
+    });
+  }
+  function applyOffers(){
+    var n=0; for(var k in OFF){ if(offerOf(k)) n++; }
+    $$('.card[data-reg]').forEach(function(c){
+      var o=offerOf(c.dataset.code); c.classList.toggle('on-offer',!!o);
+      if(o){ var reg=+c.dataset.reg, pct=Math.round((reg-o.price)*100/reg);
+        $$('[data-offprice]',c).forEach(function(e){e.textContent=nfmt(o.price)});
+        $$('[data-pct]',c).forEach(function(e){e.textContent=pct+'%'});
+        $$('[data-save]',c).forEach(function(e){e.textContent=nfmt(reg-o.price)});
+      }
+    });
+    $$('[data-ocount]').forEach(function(e){ e.textContent=n; e.hidden=!n; });
+    var grid=$('#ofgrid'), empty=$('#ofempty');
+    if(grid){
+      var any=false;
+      $$('.card',grid).forEach(function(c){ var on=!!offerOf(c.dataset.code); c.hidden=!on; if(on) any=true; });
+      grid.hidden=!any; if(empty) empty.hidden=any;
+      $$('[data-ocount-text]').forEach(function(e){e.textContent=n});
+    }
+    var h=$('#ofhero-c'); if(h) h.hidden=!n;
+    tick();
+  }
+  applyOffers(); setInterval(tick,1000);
 
   /* ---------- sliders: arrows, dots, thumbs ---------- */
   function trackOf(box){ return $('.strack',box)||$('.track',box); }
@@ -617,7 +721,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   }
 
   function cardMsg(card,imgRel){
-    return card.dataset.msg.replace('%COLOR%',card.dataset.color||'')+'\n\nصورة الطقم: '+abs(imgRel);
+    var m=(card.classList.contains('on-offer')&&card.dataset.msgOff)?card.dataset.msgOff:card.dataset.msg; return m.replace('%COLOR%',card.dataset.color||'')+'\n\nصورة الطقم: '+abs(imgRel);
   }
   function visibleImg(card){
     var g=$('.gallery',card)||$('.slider',card); if(!g) return card.dataset.img; var imgs=$$('img',g), i=+g.dataset.i||0; return (imgs[i]||imgs[0]).dataset.full;
@@ -627,6 +731,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
     var b=e.target.closest('[data-wa]'); if(!b) return;
     e.preventDefault();
     if(b.dataset.wa==='general') return openWA(GEN);
+    if(b.dataset.wa==='custom') return openWA(b.dataset.msg);
     var card=b.closest('.card'); openWA(cardMsg(card,visibleImg(card)));
   });
 
