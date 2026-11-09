@@ -174,7 +174,7 @@
     $$('.card.pc .mb, .card.solo .cbody').forEach(function (box) {
       var card = box.closest('.card'); if (!card.dataset.code || $('.btn-pay', box)) return;
       var wa = $('.btn-wa', box); if (!wa) return;
-      wa.insertAdjacentHTML('afterend', '<button class="btn btn-pay" type="button" data-prepay data-code="' + card.dataset.code + '"><svg class="ico"><use href="#i-card"/></svg><span>ادفع مقدمًا ووفّر ' + (C.prepay || 50) + ' ج</span></button>');
+      wa.insertAdjacentHTML('afterend', '<button class="btn btn-pay" type="button" data-prepay data-code="' + card.dataset.code + '"><span class="bp-ic"><svg class="ico"><use href="#i-card"/></svg></span><span class="bp-t">ادفع مقدمًا (كاش / إنستا باي)</span><em class="bp-s">وفّر حتى ' + ppMax((SETS[card.dataset.code] || {}).g) + ' ج</em></button>');
     });
   }
 
@@ -182,11 +182,29 @@
      2) سلة الطلب + الدفع المقدم + الهدية
      ------------------------------------------------------------------ */
   var PAY = C.pay || {}, st = { q: {}, method: 'vodafone' }, os = null, lastFocus = null;
+  function kindOf(m) { return m === 'cod' ? null : (m === 'instapay' ? 'insta' : 'cash'); }
+  function rate(g, k) { var p = (C.prepay || {})[g]; return p && k ? (+p[k] || 0) : 0; }
+  function ppMax(g) { return Math.max(rate(g, 'cash'), rate(g, 'insta')); }
+  function ppMaxAll() { var m = 0; Object.keys(C.prepay || {}).forEach(function (g) { m = Math.max(m, ppMax(g)); }); return m; }
+  function groupCounts() { var gc = {}; Object.keys(st.q).forEach(function (c) { if (st.q[c] > 0 && SETS[c]) gc[SETS[c].g] = (gc[SETS[c].g] || 0) + st.q[c]; }); return gc; }
+  function discFor(m, total) {
+    var k = kindOf(m); if (!k) return 0;
+    var gc = groupCounts(), d = 0;
+    Object.keys(gc).forEach(function (g) { d += C.prepayPerSet ? rate(g, k) * gc[g] : rate(g, k); });
+    return Math.min(d, total);
+  }
+  function tileDisc(m) {
+    if (m === 'cod') return 'بدون خصم';
+    var gc = groupCounts();
+    if (!Object.keys(gc).length) { var k = kindOf(m), mx = 0; Object.keys(C.prepay || {}).forEach(function (g) { mx = Math.max(mx, rate(g, k)); }); return 'حتى ' + mx + ' ج'; }
+    return '−' + discFor(m, 1e9) + ' ج';
+  }
+  function bestDisc() { return Math.max(discFor('vodafone', 1e9), discFor('instapay', 1e9)); }
   function giftN() { var n = 0; Object.keys(st.q).forEach(function (c) { if (SETS[c] && SETS[c].g === C.giftGroup) n += st.q[c]; }); return n; }
   function calc() {
     var total = 0, count = 0;
     Object.keys(st.q).forEach(function (c) { if (st.q[c] > 0 && SETS[c]) { total += unit(c) * st.q[c]; count += st.q[c]; } });
-    var pre = st.method !== 'cod' && count > 0, disc = pre ? Math.min(C.prepay || 50, total) : 0;
+    var pre = st.method !== 'cod' && count > 0, disc = pre ? discFor(st.method, total) : 0;
     return { total: total, count: count, pre: pre, disc: disc, due: total - disc };
   }
   function buildMsg() {
@@ -221,7 +239,7 @@
       list += rowHTML(c);
     });
     os.innerHTML = '<div class="os-sheet" role="dialog" aria-modal="true" aria-labelledby="os-h"><button class="os-x" type="button" data-os="close" aria-label="إغلاق">×</button>' +
-      '<div class="os-body" id="os-body"><div class="os-top"><span class="os-ic"><svg class="ico"><use href="#i-card"/></svg></span><div><h3 id="os-h">اطلب طقمك</h3><p>اختار أطقمك واحسب المطلوب بالظبط. وادفع مقدمًا علشان توفّر <b>' + (C.prepay || 50) + ' جنيه</b>.</p></div></div>' +
+      '<div class="os-body" id="os-body"><div class="os-top"><span class="os-ic"><svg class="ico"><use href="#i-card"/></svg></span><div><h3 id="os-h">اطلب طقمك</h3><p>اختار أطقمك واحسب المطلوب بالظبط. وادفع مقدمًا علشان توفّر <b>حتى ' + ppMaxAll() + ' جنيه</b>.</p></div></div>' +
       '<div class="os-sec"><i>1</i>اختار أطقمك</div><div class="os-list">' + list + '</div>' +
       '<div id="os-dyn"></div></div><div class="os-foot" id="os-foot"></div></div>';
     document.body.appendChild(os);
@@ -252,14 +270,14 @@
     var t = calc(), gn = giftN(), gm = C.giftMin || 4, got = gn >= gm, G = C.giftGroup;
     var tiles = Object.keys(PAY).map(function (k) {
       var p = PAY[k];
-      return '<button type="button" class="os-m' + (st.method === k ? ' on' : '') + '" data-os="method" data-m="' + k + '" aria-pressed="' + (st.method === k) + '"><span class="lg' + (p.bg ? ' fill' : '') + '"' + (p.bg ? ' style="background:' + p.bg + '"' : '') + '><img src="' + p.img + '" alt=""></span><b>' + p.n + '</b><em>−' + (C.prepay || 50) + ' ج</em></button>';
+      return '<button type="button" class="os-m' + (st.method === k ? ' on' : '') + '" data-os="method" data-m="' + k + '" aria-pressed="' + (st.method === k) + '"><span class="lg' + (p.bg ? ' fill' : '') + '"' + (p.bg ? ' style="background:' + p.bg + '"' : '') + '><img src="' + p.img + '" alt=""></span><b>' + p.n + '</b><em>' + tileDisc(k) + '</em></button>';
     }).join('') + '<button type="button" class="os-m os-cod' + (st.method === 'cod' ? ' on' : '') + '" data-os="method" data-m="cod" aria-pressed="' + (st.method === 'cod') + '"><span class="lg cod"><svg class="ico"><use href="#i-truck"/></svg></span><b>عند الاستلام</b><em>بدون خصم</em></button>';
     var pips = ''; for (var i = 0; i < gm; i++) pips += '<i class="' + (i < gn ? 'on' : '') + '"></i>';
     var giftTxt = got ? 'مبروك! هديتك من سو براند هتوصلك مع الطقم.' : (gn === 0 ? 'اطلب ' + gm + ' أطقم أو أكتر من مجموعة ' + G + ' وهدية مفاجأة من سو براند تفتح معاك.' : 'باقي ' + (gm - gn) + (gm - gn > 2 ? ' أطقم' : (gm - gn === 2 ? ' طقمين' : ' طقم')) + ' من مجموعة ' + G + ' وهديتك تتفتح.');
     var sum = '';
     if (t.count) {
       sum = '<div class="os-line"><span>إجمالي الأطقم (' + t.count + ')</span><b><bdi dir="ltr">' + f(t.total) + '</bdi> جنيه</b></div>' +
-        (t.pre ? '<div class="os-line disc"><span>خصم الدفع المقدم</span><b>−<bdi dir="ltr">' + f(t.disc) + '</bdi> جنيه</b></div>' : '<div class="os-line hint"><span>ادفع مقدمًا (كاش / وي باي / إنستا باي) وهتوفّر ' + (C.prepay || 50) + ' جنيه</span></div>') +
+        (t.pre ? '<div class="os-line disc"><span>خصم الدفع المقدم</span><b>−<bdi dir="ltr">' + f(t.disc) + '</bdi> جنيه</b></div>' : '<div class="os-line hint"><span>ادفع مقدمًا (كاش / وي باي / إنستا باي) وهتوفّر حتى ' + bestDisc() + ' جنيه</span></div>') +
         '<div class="os-line due"><span>' + (t.pre ? 'المطلوب تحويله' : 'الإجمالي') + '</span><b><bdi dir="ltr">' + f(t.due) + '</bdi> جنيه</b></div>' +
         '<p class="os-note">رسوم الشحن بتتحدد على حسب محافظتك، وبنبلغك بيها قبل تأكيد الأوردر.</p>';
     } else sum = '<p class="os-empty">ابدأ بإضافة طقم من القايمة فوق، وهنحسبلك المطلوب فورًا.</p>';
@@ -276,7 +294,7 @@
     var msg = t.count ? buildMsg() : '', enc = encodeURIComponent(msg), nums = C.wa || [];
     $('#os-foot', os).innerHTML = '<div class="os-due"><small>' + (t.pre ? 'المطلوب تحويله' : 'الإجمالي') + '</small><strong><bdi dir="ltr">' + (t.count ? f(t.due) : '0') + '</bdi> <em>جنيه</em></strong></div>' +
       '<div class="os-go' + (t.count ? '' : ' dis') + '">' + nums.map(function (n, i) {
-        return '<a class="btn btn-wa" ' + (t.count ? 'href="https://wa.me/20' + n.replace(/^0/, '') + '?text=' + enc + '" target="_blank" rel="noopener"' : 'role="link" aria-disabled="true"') + '><svg class="ico"><use href="#i-wa"/></svg><span>' + (i === 0 ? 'ابعت الطلب' : 'رقم تاني') + '</span><bdi dir="ltr">' + n.slice(0, 4) + ' ' + n.slice(4, 7) + ' ' + n.slice(7) + '</bdi></a>';
+        return '<a class="btn btn-wa" ' + (t.count ? 'href="https://wa.me/20' + n.replace(/^0/, '') + '?text=' + enc + '" target="_blank" rel="noopener"' : 'role="link" aria-disabled="true"') + '><svg class="ico"><use href="#i-wa"/></svg><span>' + (i === 0 ? 'ابعت الطلب' : (i === 1 ? 'رقم تاني' : 'رقم تالت')) + '</span><bdi dir="ltr">' + n.slice(0, 4) + ' ' + n.slice(4, 7) + ' ' + n.slice(7) + '</bdi></a>';
       }).join('') + '</div>';
   }
   function openOS(o) {
@@ -340,14 +358,18 @@
      ------------------------------------------------------------------ */
   function initAmb() {
     var inp = $('#ambName'); if (!inp) return;
-    var linkEl = $('#ambLink'), prev = $('#ambMsg'), copy = $('#ambCopy'), share = $('#ambShare'), wa = $('#ambWa');
-    try { if (REF) inp.value = REF; } catch (e) { }
+    var linkEl = $('#ambLink'), prev = $('#ambMsg'), copy = $('#ambCopy'), share = $('#ambShare'), wa = $('#ambWa'), warn = $('#ambWarn'), pm = $('#ambProofMsg'), proof = $('#ambProof');
+    function clean(v) { return v.replace(/[^a-zA-Z0-9 _.-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 30); }
     function build() {
-      var n = inp.value.trim().replace(/[^؀-ۿa-zA-Z0-9 _.-]/g, '').slice(0, 30);
-      var url = C.base + (n ? '?ref=' + encodeURIComponent(n) : '');
+      var raw = inp.value, hasAr = /[؀-ۿ]/.test(raw), n = clean(raw), slug = n.replace(/ /g, '-');
+      if (warn) warn.hidden = !hasAr;
+      inp.value = raw.replace(/[^a-zA-Z0-9 _.-]/g, '');
+      var url = C.base + (slug ? '?ref=' + encodeURIComponent(slug) : '');
       var msg = 'شوفت أطقم المفارش دي من سو براند؟ شغل شيك وجودة حلوة، وفيه عروض وأطقم وجهين بالصور والأسعار 🌸\n' + url;
-      linkEl.textContent = url; prev.textContent = msg;
+      var pmsg = 'السلام عليكم، أنا ' + (n || '(اسمي بالإنجليزي)') + '، وعايز أشتغل مع سو براند كسفير ومسوّق 🌸\n\nرابطي الخاص: ' + url + '\n\nهنشر الرابط على: (اكتب هنا: فيسبوك / إنستجرام / تيك توك / جروبات واتساب)\n\nعايز أعرف العروض والهدايا الخاصة بالسفراء، وهبعتلكم لقطة الشاشة بعد النشر.';
+      linkEl.textContent = url; prev.textContent = msg; if (pm) pm.textContent = pmsg;
       wa.href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+      if (proof) { proof.classList.toggle('dis', !n); proof.href = 'https://wa.me/20' + ((C.wa || [])[0] || '').replace(/^0/, '') + '?text=' + encodeURIComponent(pmsg); }
       return { url: url, msg: msg, n: n };
     }
     inp.addEventListener('input', build); build();
@@ -356,13 +378,51 @@
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(b.msg).then(done, function () { }); else { var t = document.createElement('textarea'); t.value = b.msg; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (x) { } t.remove(); }
     });
     if (navigator.share) { share.hidden = false; share.addEventListener('click', function () { var b = build(); navigator.share({ title: 'سو براند', text: b.msg }).catch(function () { }); }); }
-    var proof = $('#ambProof');
     if (proof) proof.addEventListener('click', function (e) {
-      e.preventDefault(); var b = build(), n = (NUMS()[0] || '').replace(/^0/, '');
-      window.open('https://wa.me/20' + n + '?text=' + encodeURIComponent('السلام عليكم، أنا ' + (b.n || '(اسمي)') + '، شاركت أطقم سو براند وعايز أبعتلكم لقطة الشاشة علشان أستفيد من عروض وهدايا السفراء.'), '_blank', 'noopener');
+      if (!clean(inp.value)) { e.preventDefault(); inp.focus(); inp.classList.add('shake'); setTimeout(function () { inp.classList.remove('shake'); }, 600); if (warn) { warn.hidden = false; } }
     });
   }
   function NUMS() { return C.wa || []; }
+
+
+  /* ------------------------------------------------------------------
+     5) صور متغيّرة: كروت الأقسام (كل ثانية) + جناحين البار العلوي في الكمبيوتر
+     ------------------------------------------------------------------ */
+  function groupImgs(g) { return Object.keys(SETS).filter(function (c) { return SETS[c].g === g; }).map(function (c) { return SETS[c].i; }); }
+  function cycle(box, list, ms, start, first) {
+    if (!box || list.length < 2) return;
+    var ims = list.map(function (src, k) {
+      if (k === 0 && first) { first.classList.add('rot', 'on'); return first; }
+      var im = document.createElement('img'); im.src = src; im.alt = ''; im.decoding = 'async'; im.className = (first ? first.className.replace(/\bon\b/, '') : 'rot') + ' rot'; if (first && first.getAttribute('style')) im.setAttribute('style', first.getAttribute('style'));
+      box.appendChild(im); return im;
+    });
+    var k = start || 0; ims.forEach(function (im, i) { im.classList.toggle('on', i === k); });
+    setInterval(function () { ims[k].classList.remove('on'); k = (k + 1) % ims.length; ims[k].classList.add('on'); }, ms);
+  }
+  function initRotators() {
+    var gmap = { 'royal.html': 'S', 'flat.html': 'F' }, n = 0;
+    $$('a.ct').forEach(function (a) {
+      var g = gmap[a.getAttribute('href')], first = $('.cimg', a); if (!g || !first) return;
+      var list = groupImgs(g); var i0 = list.indexOf(first.getAttribute('src')); if (i0 > 0) { list = list.slice(i0).concat(list.slice(0, i0)); }
+      setTimeout(function () { cycle(a, list, 1000, 0, first); }, 400 + (n++ % 3) * 330);
+    });
+    $$('[data-rot]').forEach(function (el, n) {
+      var list = groupImgs(el.dataset.rot), off = +el.dataset.off || 0; if (list.length < 2) return;
+      list = list.slice(off % list.length).concat(list.slice(0, off % list.length));
+      var im = document.createElement('img'); im.src = list[0]; im.alt = ''; el.appendChild(im); cycle(el, list, 2200 + n * 400, 0, im);
+    });
+    var bar = $('#bar'); if (!bar || $('.bs', bar)) return;
+    function side(cls, g, href, title, sub) {
+      var list = groupImgs(g), a = document.createElement('a'); a.className = 'bs ' + cls; a.href = href;
+      a.innerHTML = '<span class="bs-st"></span><span class="bs-t"><b>' + title + '</b><small>' + sub + '</small></span>';
+      bar.appendChild(a);
+      var st3 = $('.bs-st', a);
+      for (var j = 0; j < 3; j++) { (function (j) { var t = document.createElement('span'); t.className = 'bs-th t' + j; st3.appendChild(t); var off = list.slice(j * 2).concat(list.slice(0, j * 2)); var im = document.createElement('img'); im.src = off[0]; im.alt = ''; t.appendChild(im); cycle(t, off, 2400 + j * 350, 0, im); })(j); }
+    }
+    side('bs-r', 'S', 'royal.html', 'فخامة بتكمّل بيتك', 'مفارش الفخامة.. تطريز ودانتيل وتفاصيل بتتشاف');
+    side('bs-l', 'F', 'flat.html', 'بساطة بتبهر', 'مفارش الفلات.. شيك وخفيف وعلى مزاجك');
+  }
+  window.addEventListener('load', initRotators);
 
   /* ------------------------------------------------------------------ */
   window.SOO = { cfg: C, offers: OFF, friday: FRI, offerMsg: offerMsg, decorate: decorate, openOrder: openOS, fmt: f };
@@ -373,7 +433,8 @@
   friTick(); setInterval(friTick, 1000);
   $$('[data-gm]').forEach(function (e) { e.textContent = C.giftMin || 4; });
   $$('[data-gg]').forEach(function (e) { e.textContent = C.giftGroup || 'S'; });
-  $$('[data-pp]').forEach(function (e) { e.textContent = C.prepay || 50; });
+  $$('[data-pp]').forEach(function (e) { e.textContent = ppMaxAll(); });
+  $$('[data-pd]').forEach(function (e) { var a = e.dataset.pd.split(':'); e.textContent = rate(a[0], a[1]); });
   /* عدد عروض الجمعة على الأيقونات */
   $$('[data-fri-count]').forEach(function (el) { el.textContent = friCount; el.hidden = !friCount; });
 })();
