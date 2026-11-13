@@ -686,7 +686,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   function pad(n){return n<10?'0'+n:''+n}
   function tick(){
     var now=Date.now(), minEnd=null;
-    for(var kk in OFF){ if(offerOf(kk)){ var ee=Date.parse(OFF[kk].end); if(minEnd===null||ee<minEnd) minEnd=ee; } }
+    for(var kk in OFF){ if(offerOf(kk)&&OFF[kk].end){ var ee=Date.parse(OFF[kk].end); if(minEnd===null||ee<minEnd) minEnd=ee; } }
     $$('[data-otile-t]').forEach(function(e){
       if(minEnd===null){ e.textContent=''; return; }
       var t=Math.max(0,Math.floor((minEnd-now)/1000)), d=Math.floor(t/86400);
@@ -707,7 +707,7 @@ details p{margin:0 0 14px;color:var(--muted);font-size:15.5px}
   function applyOffers(){
     var n=0; for(var k in OFF){ if(offerOf(k)) n++; }
     $$('[data-reg]').forEach(function(c){
-      var o=offerOf(c.dataset.code); c.classList.toggle('on-offer',!!o);
+      var o=offerOf(c.dataset.code); c.classList.toggle('on-offer',!!o); c.classList.toggle('noend',!!(o&&!o.end));
       if(o){ var reg=+c.dataset.reg, pct=Math.round((reg-o.price)*100/reg);
         $$('[data-offprice]',c).forEach(function(e){e.textContent=nfmt(o.price)});
         $$('[data-pct]',c).forEach(function(e){e.textContent=pct+'%'});

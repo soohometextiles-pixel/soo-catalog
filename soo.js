@@ -43,7 +43,7 @@
       date: date, live: to === 0, daysTo: to,
       open: Date.parse(date + 'T00:00:00' + off), close: Date.parse(date + 'T23:59:59' + off),
       closeISO: date + 'T23:59:59' + off,
-      offers: (C.friday && C.friday[date]) || {}, ts: u.getTime()
+      offers: (C.friday && C.friday[date]) || {}, bundle: (C.fridayBundles && C.fridayBundles[date]) || null, ts: u.getTime()
     };
   }
 
@@ -69,6 +69,7 @@
     nextBoundary = Math.min(nextBoundary, FRI.open);
   }
   window.SOO_OFFERS = OFF;
+  var BUN = (FRI.live && FRI.bundle) ? FRI.bundle : null;
   /* لما يتفتح عرض مجدول / الجمعة تبدأ أو تخلص: الصفحة بتتحدّث لوحدها */
   if (nextBoundary < Infinity && nextBoundary - NOW < 2147e6 && nextBoundary - NOW > 300) {
     setTimeout(function () { location.reload(); }, nextBoundary - NOW + 400);
@@ -89,7 +90,7 @@
   function offerMsg(card) {
     var code = card.dataset.code, o = OFF[code], s = SETS[code];
     if (!o || !s) return card.dataset.msg;
-    return card.dataset.msg.replace(/السعر: .*/, 'السعر: ' + f(o.price) + ' جنيه بدلا من ' + f(s.p) + ' جنيه (' + (o.friday ? 'عرض الجمعة البيضاء' : 'عرض لفترة محدودة') + ')');
+    return card.dataset.msg.replace(/السعر: .*/, 'السعر: ' + f(o.price) + ' جنيه بدلا من ' + f(s.p) + ' جنيه (' + (o.friday ? 'عرض الجمعة البيضاء' : (o.end ? 'عرض لفترة محدودة' : 'عرض خاص')) + ')');
   }
 
   /* ------------------------------------------------------------------
@@ -166,7 +167,7 @@
         $$('.card', wrap).forEach(function (c) { if (!have[c.dataset.code]) { c.hidden = true; grid.appendChild(c); have[c.dataset.code] = c; } });
       }
       Object.keys(have).sort(function (a, b) {
-        var ea = OFF[a] ? Date.parse(OFF[a].end) : Infinity, eb = OFF[b] ? Date.parse(OFF[b].end) : Infinity;
+        var ea = OFF[a] ? (OFF[a].end ? Date.parse(OFF[a].end) : 9e15) : Infinity, eb = OFF[b] ? (OFF[b].end ? Date.parse(OFF[b].end) : 9e15) : Infinity;
         return ea - eb || (a < b ? -1 : 1);
       }).forEach(function (code) { grid.appendChild(have[code]); });
     }
@@ -174,14 +175,14 @@
     $$('.card.pc .mb, .card.solo .cbody').forEach(function (box) {
       var card = box.closest('.card'); if (!card.dataset.code || $('.btn-pay', box)) return;
       var wa = $('.btn-wa', box); if (!wa) return;
-      wa.insertAdjacentHTML('afterend', '<button class="btn btn-pay" type="button" data-prepay data-code="' + card.dataset.code + '"><span class="bp-ic"><svg class="ico"><use href="#i-card"/></svg></span><span class="bp-t">ادفع مقدمًا (كاش / إنستا باي)</span><em class="bp-s">وفّر حتى ' + ppMax((SETS[card.dataset.code] || {}).g) + ' ج</em></button>');
+      wa.insertAdjacentHTML('afterend', '<button class="btn btn-pay" type="button" data-prepay data-code="' + card.dataset.code + '"><span class="bp-ic"><svg class="ico"><use href="#i-card"/></svg></span><span class="bp-t">ادفع مقدمًا (كاش / إنستا باي)</span>' + (ppMax((SETS[card.dataset.code] || {}).g) ? '<em class="bp-s">وفّر حتى ' + ppMax((SETS[card.dataset.code] || {}).g) + ' ج</em>' : '') + '</button>');
     });
   }
 
   /* ------------------------------------------------------------------
      2) سلة الطلب + الدفع المقدم + الهدية
      ------------------------------------------------------------------ */
-  var PAY = C.pay || {}, st = { q: {}, method: 'vodafone' }, os = null, lastFocus = null;
+  var PAY = C.pay || {}, st = { q: {}, method: 'vodafone', bun: null }, os = null, lastFocus = null;
   function kindOf(m) { return m === 'cod' ? null : (m === 'instapay' ? 'insta' : 'cash'); }
   function rate(g, k) { var p = (C.prepay || {})[g]; return p && k ? (+p[k] || 0) : 0; }
   function ppMax(g) { return Math.max(rate(g, 'cash'), rate(g, 'insta')); }
@@ -197,23 +198,69 @@
     if (m === 'cod') return 'بدون خصم';
     var gc = groupCounts();
     if (!Object.keys(gc).length) { var k = kindOf(m), mx = 0; Object.keys(C.prepay || {}).forEach(function (g) { mx = Math.max(mx, rate(g, k)); }); return 'حتى ' + mx + ' ج'; }
-    return '−' + discFor(m, 1e9) + ' ج';
+    var dd = discFor(m, 1e9); return dd > 0 ? '−' + dd + ' ج' : 'بدون خصم';
   }
   function bestDisc() { return Math.max(discFor('vodafone', 1e9), discFor('instapay', 1e9)); }
   function giftN() { var n = 0; Object.keys(st.q).forEach(function (c) { if (SETS[c] && SETS[c].g === C.giftGroup) n += st.q[c]; }); return n; }
   function calc() {
     var total = 0, count = 0;
     Object.keys(st.q).forEach(function (c) { if (st.q[c] > 0 && SETS[c]) { total += unit(c) * st.q[c]; count += st.q[c]; } });
-    var pre = st.method !== 'cod' && count > 0, disc = pre ? discFor(st.method, total) : 0;
-    return { total: total, count: count, pre: pre, disc: disc, due: total - disc };
+    if (st.bun) { if (!st.bun.pick) return { total: 0, count: 0, bundle: 0, pre: false, disc: 0, due: 0, wait: true }; total = BUN.was; }
+    var bd = st.bun ? BUN.was - BUN.price : bundleDisc(), net = total - bd;
+    var pre = st.method !== 'cod' && count > 0, disc = pre ? discFor(st.method, net) : 0;
+    return { total: total, count: count, bundle: bd, pre: pre, disc: disc, due: net - disc };
+  }
+  /* باقات التوفير: أقل تكلفة لعدد n طقم من نفس المجموعة (سعر الطقم الواحد u أو الباقات) */
+  function bundleCost(g, n, u) {
+    var Bd = (C.bundles || {})[g], best = [0], i;
+    for (i = 1; i <= n; i++) {
+      var m = best[i - 1] + u;
+      if (Bd) Object.keys(Bd).forEach(function (k) { k = +k; if (k <= i) m = Math.min(m, best[i - k] + Bd[k]); });
+      best[i] = m;
+    }
+    return best[n];
+  }
+  function bundleDisc() {
+    var gt = {}, gn = {}, d = 0;
+    Object.keys(st.q).forEach(function (c) { var n = st.q[c]; if (n > 0 && SETS[c]) { var g = SETS[c].g; gt[g] = (gt[g] || 0) + unit(c) * n; gn[g] = (gn[g] || 0) + n; } });
+    Object.keys(gn).forEach(function (g) { if (!(C.bundles || {})[g]) return; d += gt[g] - Math.min(gt[g], bundleCost(g, gn[g], gt[g] / gn[g])); });
+    return Math.round(d);
+  }
+  var GNAME = { S: 'مفارش الفخامة', F: 'مفارش الفلات', B: 'ملايات السرير' };
+  function nudgeHTML() {
+    if (st.bun) return '';
+    var gn = {}, out = '';
+    Object.keys(st.q).forEach(function (c) { if (st.q[c] > 0 && SETS[c]) gn[SETS[c].g] = (gn[SETS[c].g] || 0) + st.q[c]; });
+    Object.keys(gn).forEach(function (g) {
+      var Bd = (C.bundles || {})[g]; if (!Bd) return;
+      var ks = Object.keys(Bd).map(Number).sort(function (a, b) { return a - b; }), nx = ks.filter(function (k) { return k > gn[g]; })[0];
+      if (!nx) return;
+      var gap = nx - gn[g], w = gap === 1 ? 'طقم' : (gap === 2 ? 'طقمين' : gap + ' أطقم');
+      out += '<p class="os-nudge">ضيف ' + w + ' كمان من ' + (GNAME[g] || g) + '، وخد باقة ' + nx + ' أطقم بـ ' + f(Bd[nx]) + ' جنيه.</p>';
+    });
+    return out;
+  }
+  function fillBundles() {
+    $$('[data-bundles]').forEach(function (el) {
+      var g = el.dataset.bundles || 'B', Bd = (C.bundles || {})[g]; if (!Bd) return;
+      var codes = Object.keys(SETS).filter(function (c) { return SETS[c].g === g; }); if (!codes.length) return;
+      var reg = SETS[codes[0]].p, u = unit(codes[0]), ks = Object.keys(Bd).map(Number).sort(function (a, b) { return a - b; });
+      var tiles = '<div class="bnd-t"><b>طقم واحد</b><strong><bdi dir="ltr">' + f(u) + '</bdi></strong><small>جنيه' + (u < reg ? ' بدل ' + f(reg) : '') + '</small></div>';
+      ks.forEach(function (k, i) {
+        tiles += '<button type="button" class="bnd-t' + (i === ks.length - 1 ? ' best' : '') + '" data-bundle data-g="' + g + '"><b>' + k + ' أطقم</b><strong><bdi dir="ltr">' + f(Bd[k]) + '</bdi></strong><small>جنيه · الطقم بـ ' + f(Math.round(Bd[k] / k)) + '</small></button>';
+      });
+      el.innerHTML = '<h2>باقات التوفير</h2><p>كل ما تزوّد الأطقم، سعر الطقم بينزل. اختار الباقة واحسب طلبك.</p><div class="bnd-g">' + tiles + '</div>';
+    });
   }
   function buildMsg() {
-    var t = calc(), L = ['السلام عليكم، عايز أطلب من سو براند 🌸', '', 'الأطقم:'];
+    var t = calc(), L = ['السلام عليكم، عايز أطلب من سو براند 🌸', '', (st.bun ? 'باقة الجمعة البيضاء (3 أطقم):' : 'الأطقم:')];
     Object.keys(SETS).forEach(function (c) {
       var n = st.q[c]; if (!(n > 0)) return;
+      if (st.bun) { L.push('- ' + c + ' — ' + SETS[c].t); return; }
       L.push('- ' + c + ' × ' + n + ' — ' + SETS[c].t + ' — ' + f(unit(c)) + ' جنيه للطقم' + (OFF[c] ? ' (سعر العرض بدل ' + f(SETS[c].p) + ')' : ''));
     });
     L.push('', 'إجمالي الأطقم: ' + f(t.total) + ' جنيه');
+    if (t.bundle) L.push('خصم الباقة: -' + f(t.bundle) + ' جنيه');
     if (t.pre) {
       var p = PAY[st.method];
       L.push('خصم الدفع المقدم: -' + f(t.disc) + ' جنيه', 'المطلوب تحويله: ' + f(t.due) + ' جنيه', 'طريقة الدفع: ' + p.n + ' (' + p.num + ') — هبعتلكم سكرين شوت التحويل');
@@ -233,14 +280,14 @@
   function ensureOS() {
     if (os) return os;
     os = document.createElement('div'); os.className = 'os-bg'; os.hidden = true; os.id = 'os';
-    var groups = { S: 'مفارش الفخامة', F: 'مفارش الفلات' }, list = '', last = '';
+    var groups = { S: 'مفارش الفخامة', F: 'مفارش الفلات', B: 'ملايات السرير' }, list = '', last = '';
     Object.keys(SETS).forEach(function (c) {
       var g = SETS[c].g; if (g !== last) { list += '<div class="os-grp">' + (groups[g] || g) + '</div>'; last = g; }
       list += rowHTML(c);
     });
     os.innerHTML = '<div class="os-sheet" role="dialog" aria-modal="true" aria-labelledby="os-h"><button class="os-x" type="button" data-os="close" aria-label="إغلاق">×</button>' +
       '<div class="os-body" id="os-body"><div class="os-top"><span class="os-ic"><svg class="ico"><use href="#i-card"/></svg></span><div><h3 id="os-h">اطلب طقمك</h3><p>اختار أطقمك واحسب المطلوب بالظبط. وادفع مقدمًا علشان توفّر <b>حتى ' + ppMaxAll() + ' جنيه</b>.</p></div></div>' +
-      '<div class="os-sec"><i>1</i>اختار أطقمك</div><div class="os-list">' + list + '</div>' +
+      '<div id="os-bunp" hidden></div><div class="os-sec" id="os-s1"><i>1</i>اختار أطقمك</div><div class="os-list" id="os-ls">' + list + '</div>' +
       '<div id="os-dyn"></div></div><div class="os-foot" id="os-foot"></div></div>';
     document.body.appendChild(os);
     os.addEventListener('click', function (e) {
@@ -253,6 +300,8 @@
       else if (a === 'dec') { st.q[c] = Math.max(0, (st.q[c] || 0) - 1); render(); }
       else if (a === 'method') { st.method = b.dataset.m; render(); }
       else if (a === 'copy') copyNum(b);
+      else if (a === 'pick') pickSheet(c);
+      else if (a === 'exitbun') { st.bun = null; st.q = {}; render(); }
     });
     return os;
   }
@@ -263,6 +312,8 @@
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(num).then(done, fb); else fb();
   }
   function render() {
+    var bp = $('#os-bunp', os), s1 = $('#os-s1', os), ls = $('#os-ls', os);
+    if (bp) { bp.hidden = !st.bun; if (s1) s1.hidden = !!st.bun; if (ls) ls.hidden = !!st.bun; if (st.bun) bp.innerHTML = bunPanel(); }
     Object.keys(SETS).forEach(function (c) {
       var n = st.q[c] || 0, out = $('[data-qty="' + c + '"]', os), row = $('[data-row="' + c + '"]', os);
       if (out) out.textContent = n; if (row) row.classList.toggle('on', n > 0);
@@ -277,18 +328,20 @@
     var sum = '';
     if (t.count) {
       sum = '<div class="os-line"><span>إجمالي الأطقم (' + t.count + ')</span><b><bdi dir="ltr">' + f(t.total) + '</bdi> جنيه</b></div>' +
-        (t.pre ? '<div class="os-line disc"><span>خصم الدفع المقدم</span><b>−<bdi dir="ltr">' + f(t.disc) + '</bdi> جنيه</b></div>' : '<div class="os-line hint"><span>ادفع مقدمًا (كاش / وي باي / إنستا باي) وهتوفّر حتى ' + bestDisc() + ' جنيه</span></div>') +
+        (t.bundle ? '<div class="os-line disc"><span>خصم الباقة</span><b>−<bdi dir="ltr">' + f(t.bundle) + '</bdi> جنيه</b></div>' : '') +
+        (t.pre && t.disc > 0 ? '<div class="os-line disc"><span>خصم الدفع المقدم</span><b>−<bdi dir="ltr">' + f(t.disc) + '</bdi> جنيه</b></div>' : (bestDisc() > 0 ? '<div class="os-line hint"><span>ادفع مقدمًا (كاش / وي باي / إنستا باي) وهتوفّر حتى ' + bestDisc() + ' جنيه</span></div>' : '')) +
         '<div class="os-line due"><span>' + (t.pre ? 'المطلوب تحويله' : 'الإجمالي') + '</span><b><bdi dir="ltr">' + f(t.due) + '</bdi> جنيه</b></div>' +
         '<p class="os-note">رسوم الشحن بتتحدد على حسب محافظتك، وبنبلغك بيها قبل تأكيد الأوردر.</p>';
-    } else sum = '<p class="os-empty">ابدأ بإضافة طقم من القايمة فوق، وهنحسبلك المطلوب فورًا.</p>';
+    } else sum = '<p class="os-empty">' + (st.bun ? 'اختار الملاية اللي عجبتك من القايمة فوق، وهنحسبلك الباقة فورًا.' : 'ابدأ بإضافة طقم من القايمة فوق، وهنحسبلك المطلوب فورًا.') + '</p>';
+    sum += nudgeHTML();
     var xfer = '';
     if (t.pre) {
       var p = PAY[st.method];
-      xfer = '<div class="os-sec"><i>3</i>حوّل على ' + p.n + '</div><div class="os-num"><div><small>الرقم اللي هتحوّل عليه</small><bdi class="num" dir="ltr">' + p.num + '</bdi></div><button type="button" data-os="copy">نسخ الرقم</button></div>' +
+      xfer = '<div class="os-sec"><i>' + (st.bun ? 4 : 3) + '</i>حوّل على ' + p.n + '</div><div class="os-num"><div><small>الرقم اللي هتحوّل عليه</small><bdi class="num" dir="ltr">' + p.num + '</bdi></div><button type="button" data-os="copy">نسخ الرقم</button></div>' +
         '<ol class="os-steps"><li>حوّل مبلغ <b><bdi dir="ltr">' + f(t.due) + '</bdi> جنيه</b> على الرقم ده.</li><li>دوس "ابعت الطلب على واتساب" تحت، وابعتلنا سكرين شوت التحويل.</li></ol>';
     }
-    $('#os-dyn', os).innerHTML = '<div class="os-sec"><i>2</i>طريقة الدفع</div><div class="os-pay">' + tiles + '</div>' +
-      '<div class="os-gift' + (got ? ' open' : '') + '"><div class="gx" data-giftbox></div><div class="gt"><b>هديتك من سو براند</b><span>' + giftTxt + '</span><div class="pips">' + pips + '</div></div></div>' +
+    $('#os-dyn', os).innerHTML = '<div class="os-sec"><i>' + (st.bun ? 3 : 2) + '</i>طريقة الدفع</div><div class="os-pay">' + tiles + '</div>' +
+      '<div class="os-gift' + (got ? ' open' : '') + (st.bun ? ' gone' : '') + '"><div class="gx" data-giftbox></div><div class="gt"><b>هديتك من سو براند</b><span>' + giftTxt + '</span><div class="pips">' + pips + '</div></div></div>' +
       '<div class="os-sum">' + sum + '</div>' + xfer;
     fillGifts(os);
     var msg = t.count ? buildMsg() : '', enc = encodeURIComponent(msg), nums = C.wa || [];
@@ -299,12 +352,15 @@
   }
   function openOS(o) {
     o = o || {}; ensureOS();
+    if (o.bundle && BUN) { st.bun = { pick: null }; st.q = {}; BUN.fixed.forEach(function (c) { st.q[c] = 1; }); }
+    else if (st.bun) { st.bun = null; st.q = {}; }
     if (o.method) st.method = o.method;
     if (o.code && SETS[o.code]) st.q[o.code] = Math.max(1, st.q[o.code] || 0);
     lastFocus = document.activeElement;
     render(); os.hidden = false; document.body.classList.add('lock');
     var b = $('#os-body', os); if (b) b.scrollTop = 0;
-    if (o.code) { var r = $('[data-row="' + o.code + '"]', os); if (r && b) setTimeout(function () { b.scrollTop = Math.max(0, r.offsetTop - 150); }, 30); }
+    var sc = o.code || (o.group && Object.keys(SETS).filter(function (c) { return SETS[c].g === o.group; })[0]);
+    if (sc) { var r = $('[data-row="' + sc + '"]', os); if (r && b) setTimeout(function () { b.scrollTop = Math.max(0, r.offsetTop - 150); }, 30); }
     var x = $('.os-x', os); if (x) x.focus();
   }
   function closeOS() { if (!os) return; os.hidden = true; document.body.classList.remove('lock'); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
@@ -316,6 +372,10 @@
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ method: NAME2M[b.dataset.name] || 'vodafone' }); return; }
     b = e.target.closest('[data-prepay],[data-order]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ code: b.dataset.code || (b.closest('[data-code]') || {}).dataset && b.closest('[data-code]').dataset.code, method: b.hasAttribute('data-order') ? 'cod' : undefined }); return; }
+    b = e.target.closest('[data-bundle]');
+    if (b) { e.preventDefault(); e.stopImmediatePropagation(); var cc = b.closest('[data-code]'); openOS({ code: cc && cc.dataset.code, group: b.dataset.g || 'B' }); return; }
+    b = e.target.closest('[data-frbun]');
+    if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ bundle: true }); return; }
     b = e.target.closest('[data-gift]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({}); }
   }, true);
@@ -324,13 +384,13 @@
      3) عدّادات الجمعة البيضاء (الصفحة الرئيسية + صفحة الجمعة)
      ------------------------------------------------------------------ */
   function parts(ms) { var s = Math.max(0, Math.floor(ms / 1000)); return { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 }; }
-  function miniTxt(ms) { var p = parts(ms); return (p.d ? p.d + ' يوم ' : '') + pad(p.h) + ':' + pad(p.m) + ':' + pad(p.s); }
+  function miniTxt(ms) { var p = parts(ms); return (p.d ? p.d + ' يوم ' : '') + '<bdi dir="ltr">' + pad(p.h) + ':' + pad(p.m) + ':' + pad(p.s) + '</bdi>'; }
   var DAYS_AR = '';
   try { DAYS_AR = new Date(FRI.ts).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', timeZone: 'UTC' }); } catch (e) { }
   function friTick() {
     var now = Date.now(), live = now >= FRI.open && now <= FRI.close, target = live ? FRI.close : FRI.open, ms = target - now;
-    var state = live ? (friCount ? 'live' : 'live-empty') : 'wait';
-    $$('[data-fri-cd]').forEach(function (el) { el.textContent = miniTxt(ms); });
+    var state = live ? ((friCount || BUN) ? 'live' : 'live-empty') : 'wait';
+    $$('[data-fri-cd]').forEach(function (el) { el.innerHTML = miniTxt(ms); });
     $$('[data-fri-line]').forEach(function (el) {
       el.textContent = state === 'live' ? 'الجمعة البيضاء شغالة دلوقتي' : state === 'live-empty' ? 'الجمعة البيضاء شغالة النهارده' : 'العروض بتنزل الجمعة ' + DAYS_AR;
     });
@@ -344,7 +404,7 @@
   function renderFriday() {
     var g = $('#frgrid'); if (!g) return;
     var codes = FRI.live ? Object.keys(FRI.offers).filter(function (c) { return SETS[c] && FRI.offers[c] < SETS[c].p; }) : [];
-    g.hidden = !codes.length;
+    g.hidden = !codes.length; var secL = $('#frlive'); if (secL && BUN && !codes.length) secL.hidden = true;
     g.innerHTML = codes.map(function (c) {
       var s = SETS[c], p = +FRI.offers[c], pct = Math.round((s.p - p) * 100 / s.p);
       return '<article class="fc"><a class="fi" href="' + c.toLowerCase() + '.html"><img src="' + s.i + '" alt="' + esc(s.t) + '" loading="lazy"><span class="fcode">' + c + '</span><span class="fpct">خصم ' + pct + '%</span></a>' +
@@ -400,7 +460,7 @@
     setInterval(function () { ims[k].classList.remove('on'); k = (k + 1) % ims.length; ims[k].classList.add('on'); }, ms);
   }
   function initRotators() {
-    var gmap = { 'royal.html': 'S', 'flat.html': 'F' }, n = 0;
+    var gmap = { 'royal.html': 'S', 'flat.html': 'F', 'sheets.html': 'B' }, n = 0;
     $$('a.ct').forEach(function (a) {
       var g = gmap[a.getAttribute('href')], first = $('.cimg', a); if (!g || !first) return;
       var list = groupImgs(g); var i0 = list.indexOf(first.getAttribute('src')); if (i0 > 0) { list = list.slice(i0).concat(list.slice(0, i0)); }
@@ -425,11 +485,97 @@
   window.addEventListener('load', initRotators);
 
   /* ------------------------------------------------------------------ */
+  fillBundles();
+  /* ------------------------------------------------------------------
+     باقة الجمعة البيضاء + فاعلية الجمعة (شريط + زرار عايم + شاشة ترحيب)
+     ------------------------------------------------------------------ */
+  var STAR = '<svg class="ico" aria-hidden="true"><use href="#i-star"/></svg>';
+  var KIND = { S: 'طقم فخامة', F: 'طقم فلات', B: 'ملاية سرير' };
+  function shortName(c) { return SETS[c].t.replace(/^ملاية سرير\s*/, '').replace(/\s*-\s*4 قطع$/, ''); }
+  function pickCodes() { return BUN ? Object.keys(SETS).filter(function (c) { return SETS[c].g === BUN.pick; }) : []; }
+  function pickSheet(c) {
+    if (!st.bun || !SETS[c]) return;
+    Object.keys(st.q).forEach(function (k) { if (SETS[k] && SETS[k].g === BUN.pick) delete st.q[k]; });
+    st.q[c] = 1; st.bun.pick = c; render();
+  }
+  function bunPanel() {
+    var pk = st.bun.pick;
+    var fixed = BUN.fixed.map(function (c) {
+      var s = SETS[c];
+      return '<div class="os-row on"><img src="' + s.i + '" alt="" width="56" height="70"><div class="os-rt"><b><span class="os-code">' + c + '</span><span class="os-off">في الباقة</span></b><span class="os-nm">' + esc(s.t) + '</span></div></div>';
+    }).join('');
+    var picks = pickCodes().map(function (c) {
+      return '<button type="button" class="bp-p' + (pk === c ? ' on' : '') + '" data-os="pick" data-code="' + c + '" aria-pressed="' + (pk === c) + '"><img src="' + SETS[c].i + '" alt="" loading="lazy"><b>' + c + '</b><span>' + esc(shortName(c)) + '</span></button>';
+    }).join('');
+    return '<div class="bp-hd"><div class="bp-k">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div><b>3 أطقم بـ <bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه <s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s></b><span>وفّر ' + f(BUN.was - BUN.price) + ' جنيه</span></div>' +
+      '<div class="os-sec"><i>1</i>أطقم الباقة</div><div class="os-list nolimit">' + fixed + '</div>' +
+      '<div class="os-sec"><i>2</i>اختار طقم ملاية ' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
+      '<button type="button" class="bp-x" data-os="exitbun">أو اسأل علي أطقم تانية بدل الباقة</button>';
+  }
+  function tileCD() {
+    function t(u, l) { return '<div class="t"><b data-fri-u="' + u + '">00</b><span>' + l + '</span></div>'; }
+    return '<div class="fb-cd" role="timer" aria-label="الوقت المتبقي على انتهاء العرض"><span class="fb-cl">' + '<svg class="ico" aria-hidden="true"><use href="#i-hourglass"/></svg>العرض بيخلص بعد</span><div class="frcd sm">' + t('d', 'يوم') + '<i>:</i>' + t('h', 'ساعة') + '<i>:</i>' + t('m', 'دقيقة') + '<i>:</i>' + t('s', 'ثانية') + '</div></div>';
+  }
+  function renderBundle() {
+    var els = $$('[data-frbundle]'); if (!els.length) return;
+    els.forEach(function (el) {
+      if (!BUN) { el.innerHTML = ''; return; }
+      var save = BUN.was - BUN.price, picks = pickCodes();
+      var fig = BUN.fixed.map(function (c) { var s = SETS[c]; return '<figure><img src="' + s.i + '" alt="' + esc(s.t) + '"><figcaption><b>' + c + '</b>' + (KIND[s.g] || '') + '</figcaption></figure>'; }).join('<i class="plus">+</i>');
+      var sheets = '<figure class="fb-sheets">' + picks.map(function (c, i) { return '<img class="' + (i === 0 ? 'on' : '') + '" src="' + SETS[c].i + '" alt="" loading="lazy">'; }).join('') + '<figcaption><b>ملاية</b>من اختيارك</figcaption></figure>';
+      el.innerHTML = '<section class="fbun"><div class="fb-tag">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div>' +
+        '<h2 class="fb-h">3 أطقم في أوردر واحد.. بـ <span><bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه</span> بس!</h2>' +
+        '<p class="fb-hook">طقم فخامة + طقم فلات + ملاية من اختيارك، وأوضتك كلها تتغيّر مرة واحدة. الجمعة البيضاء بتيجي مرة في الأسبوع، والسعر ده بيختفي مع آخر النهارده.</p>' +
+        '<div class="fb-pics">' + fig + '<i class="plus">+</i>' + sheets + '</div>' +
+        '<div class="fb-price"><strong><bdi dir="ltr">' + f(BUN.price) + '</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s><span class="fb-save">وفّر ' + f(save) + ' جنيه</span></div>' +
+        '<ul class="fb-list">' + BUN.fixed.map(function (c) { return '<li>' + esc(SETS[c].t) + ' <b>' + c + '</b></li>'; }).join('') + '<li>ملاية سرير 4 قطع من اختيارك (' + picks.length + ' تصميم)</li></ul>' +
+        tileCD() +
+        '<button class="btn btn-gold fb-go" type="button" data-frbun>' + '<svg class="ico"><use href="#i-gift"/></svg>اختار طقم ملاية واطلب الباقة</button>' +
+        '<small class="fb-note">ادفع مقدمًا وهتوفّر كمان خصم الدفع المقدم. والسعر بيرجع لأصله بعد آخر النهارده.</small></section>';
+    });
+    if (!window.__fbCyc) {
+      window.__fbCyc = setInterval(function () {
+        $$('.fb-sheets').forEach(function (w) { var im = $$('img', w); if (im.length < 2) return; var i = 0; im.forEach(function (x, k) { if (x.classList.contains('on')) i = k; x.classList.remove('on'); }); im[(i + 1) % im.length].classList.add('on'); });
+      }, 1700);
+    }
+  }
+  function friFx() {
+    if (!(FRI.live && (friCount || BUN))) return;
+    if (/friday\.html/.test(location.pathname)) return;
+    var txt = BUN ? 'باقة 3 أطقم بـ ' + f(BUN.price) + ' جنيه بدل ' + f(BUN.was) : 'عروض جديدة النهارده';
+    var r = document.createElement('a'); r.className = 'frribbon'; r.href = 'friday.html';
+    r.innerHTML = '<span class="fr-st">' + STAR + 'الجمعة البيضاء</span><span class="fr-tx">' + txt + '</span><span class="fr-cd">ينتهي بعد <bdi dir="ltr" data-fri-cd></bdi></span><span class="fr-go">شوف العرض ‹</span>';
+    document.body.insertBefore(r, document.body.firstChild);
+    var p = document.createElement('a'); p.className = 'frpill'; p.href = 'friday.html'; p.setAttribute('aria-label', 'الجمعة البيضاء');
+    p.innerHTML = STAR + '<span><b>الجمعة البيضاء</b><bdi dir="ltr" data-fri-cd></bdi></span>';
+    document.body.appendChild(p);
+    var key = 'soo_fs_' + FRI.date, seen = false;
+    try { seen = !!localStorage.getItem(key); } catch (e) { }
+    if (seen) return;
+    setTimeout(function () {
+      if (os && !os.hidden) return;
+      try { localStorage.setItem(key, '1'); } catch (e) { }
+      var cf = '', cols = ['#f7dca0', '#d9ae62', '#ffffff', '#e0452f', '#c8963f'];
+      for (var i = 0; i < 26; i++) cf += '<i style="left:' + Math.round(Math.random() * 100) + '%;background:' + cols[i % cols.length] + ';animation-delay:' + (Math.random() * 2.4).toFixed(2) + 's;animation-duration:' + (2.6 + Math.random() * 2).toFixed(2) + 's"></i>';
+      var d = document.createElement('div'); d.className = 'frs-bg'; d.id = 'frs';
+      d.innerHTML = '<div class="frs" role="dialog" aria-modal="true" aria-label="الجمعة البيضاء"><button class="frs-x" type="button" aria-label="إغلاق">×</button><div class="confetti" aria-hidden="true">' + cf + '</div>' +
+        '<div class="frs-art open" data-giftbox></div><div class="frs-k">' + STAR + 'الجمعة البيضاء وصلت</div><h3>عرض النهارده بس.. وبيختفي آخر اليوم</h3>' +
+        '<p>' + (BUN ? 'طقم فخامة + طقم فلات + ملاية من اختيارك بـ <b>' + f(BUN.price) + '</b> جنيه بدل ' + f(BUN.was) + '. وفّر <b>' + f(BUN.was - BUN.price) + '</b> جنيه.' : 'عروض جديدة نازلة دلوقتي، والأسعار بترجع لأصلها آخر اليوم.') + '</p>' +
+        '<div class="frs-cd">ينتهي بعد <bdi dir="ltr" data-fri-cd></bdi></div><a class="btn btn-gold" href="friday.html">شوف عرض الجمعة</a><button class="frs-skip" type="button">مش دلوقتي</button></div>';
+      document.body.appendChild(d); fillGifts(d); friTick();
+      function close() { d.remove(); }
+      d.addEventListener('click', function (e) { if (e.target === d || e.target.closest('.frs-x,.frs-skip')) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    }, 1100);
+  }
+
   window.SOO = { cfg: C, offers: OFF, friday: FRI, offerMsg: offerMsg, decorate: decorate, openOrder: openOS, fmt: f };
   ensureMarkup();
   fillGifts(document);
   renderFriday();
   initAmb();
+  renderBundle();
+  friFx();
   friTick(); setInterval(friTick, 1000);
   $$('[data-gm]').forEach(function (e) { e.textContent = C.giftMin || 4; });
   $$('[data-gg]').forEach(function (e) { e.textContent = C.giftGroup || 'S'; });

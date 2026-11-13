@@ -404,3 +404,111 @@ body.lock{overflow:hidden}
 .hc .hs-st span{display:flex;align-items:center;gap:8px;font-size:13px;padding:7px 10px;border-radius:10px;background:rgba(0,0,0,.22)}
 .hc .hs-st i{font-style:normal;flex:0 0 auto;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;background:var(--gold-bright);color:#3a0c1a}
 .seal{width:60%;height:60%}
+
+
+/* ===== v9: ملايات السرير + باقات التوفير ===== */
+.bnd{margin:16px 0 18px;border-radius:18px;background:#4a1224;color:#f6ead9;border:1.5px solid #d9ae62;padding:16px 14px 14px}
+.bnd h2{font-family:var(--display);font-size:21px;margin:0 0 2px;color:#f0cf8c;font-weight:600}
+.bnd p{margin:0 0 12px;font-size:13.5px;line-height:1.7;opacity:.92}
+.bnd-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bnd-t{font:inherit;color:inherit;display:block;width:100%;border:1px solid rgba(217,174,98,.55);border-radius:14px;padding:11px 6px 10px;text-align:center;background:rgba(255,255,255,.05)}
+button.bnd-t{cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+button.bnd-t:hover{background:rgba(217,174,98,.16);border-color:#d9ae62;transform:translateY(-2px)}
+.bnd-t b{display:block;font-size:13px;color:#f0cf8c;font-weight:600}
+.bnd-t strong{display:block;font-family:var(--display);font-size:22px;line-height:1.3;margin:2px 0;color:#fff;font-weight:600}
+.bnd-t small{display:block;font-size:11.5px;opacity:.88}
+.bnd-t.best{background:rgba(217,174,98,.18);border-color:#d9ae62}
+.bnd-sec{margin:6px 0 4px}
+.card.noend .cd{display:none!important}
+.os-nudge{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:rgba(217,174,98,.16);border:1px dashed #b9863a;font-size:13.5px;line-height:1.7}
+@media(max-width:380px){.bnd-t strong{font-size:19px}.bnd-t b{font-size:12px}}
+
+/* ===== باقة الجمعة البيضاء + فاعلية الجمعة ===== */
+.fbun{position:relative;margin:18px 0 8px;padding:22px 16px 18px;border-radius:24px;color:var(--on-wine);text-align:center;overflow:hidden;background:radial-gradient(120% 140% at 50% 0%,#7a1a3d 0%,#4a1224 55%,#240812 100%);border:1.5px solid var(--gold-bright);box-shadow:0 24px 44px -24px rgba(74,18,36,.95),inset 0 0 0 4px rgba(217,174,98,.1)}
+.fbun::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(247,220,160,.16) 50%,transparent 65%);transform:translateX(-120%);animation:fbShine 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes fbShine{to{transform:translateX(120%)}}
+.fb-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:rgba(247,220,160,.14);border:1px solid rgba(247,220,160,.45);color:var(--gold-bright);font-weight:700;font-size:12.5px}
+.fb-tag .ico{width:15px;height:15px}
+.fb-h{margin:12px 0 6px;font-family:var(--display);font-size:clamp(21px,5.6vw,30px);line-height:1.5;color:#fff}
+.fb-h span{color:var(--gold-bright)}
+.fb-hook{margin:0 auto 14px;max-width:560px;font-size:14px;line-height:1.9;color:rgba(246,234,217,.92)}
+.fb-pics{display:flex;align-items:center;justify-content:center;gap:6px;margin:0 0 14px}
+.fb-pics figure{margin:0;flex:1 1 0;max-width:150px;position:relative}
+.fb-pics img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:14px;border:1.5px solid rgba(247,220,160,.55);display:block;background:#2a1a1e}
+.fb-pics figcaption{margin-top:6px;font-size:11.5px;line-height:1.4;color:rgba(246,234,217,.9)}
+.fb-pics figcaption b{display:block;color:var(--gold-bright);font-family:var(--display);font-size:14px}
+.fb-pics .plus{font-style:normal;color:var(--gold-bright);font-size:22px;font-weight:700;flex:0 0 auto}
+.fb-sheets{position:relative}
+.fb-sheets img{position:absolute;inset:0 0 auto 0;opacity:0;transition:opacity .6s}
+.fb-sheets img:first-child{position:relative}
+.fb-sheets img.on{opacity:1}
+.fb-sheets img:not(.on){position:absolute;top:0}
+.fb-sheets img.on{position:relative}
+.fb-price{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap;margin:4px 0 10px}
+.fb-price strong{font-family:var(--display);font-size:40px;line-height:1.2;color:var(--gold-bright)}
+.fb-price strong small{font-size:16px;color:#fff}
+.fb-price s{font-size:18px;color:rgba(246,234,217,.7)}
+.fb-save{padding:4px 12px;border-radius:99px;background:linear-gradient(90deg,#f7dca0,#c8963f);color:#3a0c1a;font-weight:800;font-size:13px}
+.fb-list{list-style:none;margin:0 auto 12px;padding:0;display:inline-block;text-align:right;font-size:13.5px;line-height:2;color:rgba(246,234,217,.95)}
+.fb-list li::before{content:"✓";color:var(--gold-bright);font-weight:800;margin-inline-end:8px}
+.fb-list b{color:var(--gold-bright);font-family:var(--display);margin-inline-start:4px}
+.fb-cd{margin:4px 0 14px}
+.fb-cl{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--gold-bright);margin-bottom:6px;font-weight:700}
+.fb-cl .ico{width:15px;height:15px}
+.frcd.sm{display:flex;justify-content:center;align-items:center;gap:6px;direction:ltr}
+.frcd.sm .t{min-width:54px;padding:6px 4px;border-radius:12px;background:rgba(0,0,0,.28);border:1px solid rgba(247,220,160,.4)}
+.frcd.sm .t b{display:block;font-family:var(--display);font-size:22px;color:#fff;font-variant-numeric:tabular-nums}
+.frcd.sm .t span{font-size:10.5px;color:rgba(246,234,217,.8)}
+.frcd.sm i{color:var(--gold-bright);font-style:normal;font-weight:700}
+.fb-go{width:100%;max-width:420px;min-height:50px;font-size:16px;font-weight:800}
+.fb-go .ico{width:20px;height:20px}
+.fb-note{display:block;margin-top:10px;font-size:11.5px;color:rgba(246,234,217,.75)}
+/* شريط الجمعة */
+.frribbon{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:8px 12px;text-decoration:none;color:#3a0c1a;font-size:13px;font-weight:700;line-height:1.5;position:relative;z-index:60;background:linear-gradient(90deg,#c8963f,#f7dca0,#c8963f);background-size:200% 100%;animation:frBand 6s linear infinite}
+@keyframes frBand{to{background-position:-200% 0}}
+.frribbon .fr-st{display:inline-flex;align-items:center;gap:5px;font-family:var(--display);font-weight:800}
+.frribbon .ico{width:15px;height:15px}
+.frribbon .fr-cd{padding:1px 9px;border-radius:99px;background:rgba(58,12,26,.88);color:#f7dca0;font-variant-numeric:tabular-nums}
+.frribbon .fr-go{font-weight:800;text-decoration:underline}
+@media(max-width:560px){.frribbon .fr-go{display:none}.frribbon{font-size:12px;gap:6px}}
+/* زرار عايم */
+.frpill{position:fixed;inset-inline-start:12px;bottom:84px;z-index:70;display:flex;align-items:center;gap:8px;padding:9px 14px 9px 12px;border-radius:99px;text-decoration:none;color:#fff;background:linear-gradient(145deg,#7a1a3d,#4a1224);border:1.5px solid var(--gold-bright);box-shadow:0 14px 26px -12px rgba(0,0,0,.6);animation:frPulse 2.4s ease-in-out infinite}
+.frpill .ico{width:20px;height:20px;color:var(--gold-bright)}
+.frpill span{display:flex;flex-direction:column;font-size:11px;line-height:1.35;font-variant-numeric:tabular-nums}
+.frpill b{font-family:var(--display);color:var(--gold-bright);font-size:13px}
+@keyframes frPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+/* شاشة الترحيب */
+.frs-bg{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:rgba(20,5,12,.72);backdrop-filter:blur(4px);animation:frIn .3s ease}
+@keyframes frIn{from{opacity:0}}
+.frs{position:relative;width:100%;max-width:400px;padding:26px 20px 20px;border-radius:26px;text-align:center;color:var(--on-wine);overflow:hidden;background:radial-gradient(120% 140% at 50% 0%,#7a1a3d 0%,#4a1224 55%,#240812 100%);border:1.5px solid var(--gold-bright);box-shadow:0 30px 60px -20px #000;animation:frUp .5s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes frUp{from{transform:translateY(30px) scale(.94);opacity:0}}
+.frs-x{position:absolute;top:8px;inset-inline-end:10px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px;cursor:pointer;z-index:2}
+.frs-art{width:96px;margin:0 auto 6px}
+.frs-k{display:inline-flex;align-items:center;gap:6px;color:var(--gold-bright);font-weight:700;font-size:13px}
+.frs-k .ico{width:15px;height:15px}
+.frs h3{margin:8px 0;font-family:var(--display);font-size:21px;line-height:1.5;color:#fff}
+.frs p{margin:0 0 10px;font-size:14px;line-height:1.9;color:rgba(246,234,217,.92)}
+.frs p b{color:var(--gold-bright)}
+.frs-cd{margin:0 0 14px;font-size:13px;color:var(--gold-bright);font-weight:700;font-variant-numeric:tabular-nums}
+.frs .btn{width:100%;min-height:48px}
+.frs-skip{display:block;margin:10px auto 0;background:none;border:0;color:rgba(246,234,217,.7);font-size:13px;cursor:pointer;text-decoration:underline}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-12px;width:7px;height:12px;border-radius:2px;opacity:.9;animation:cf linear infinite}
+@keyframes cf{to{transform:translateY(520px) rotate(540deg);opacity:0}}
+/* سلة الباقة */
+#os-bunp .bp-hd{padding:12px;border-radius:16px;text-align:center;color:var(--on-wine);background:linear-gradient(145deg,#6a1d37,#3a0c1a);border:1.5px solid var(--gold-bright)}
+.bp-hd .bp-k{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--gold-bright);font-size:12.5px;font-weight:700}
+.bp-hd .bp-k .ico{width:14px;height:14px}
+.bp-hd b{display:block;font-family:var(--display);font-size:19px;margin:4px 0;color:#fff}
+.bp-hd s{color:rgba(246,234,217,.7);font-size:14px;margin-inline-start:6px}
+.bp-hd span{display:inline-block;padding:2px 10px;border-radius:99px;background:linear-gradient(90deg,#f7dca0,#c8963f);color:#3a0c1a;font-weight:800;font-size:12px}
+.bp-need{font-style:normal;font-size:11.5px;color:#e0452f;margin-inline-start:6px}
+.bp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bp-p{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:inherit;cursor:pointer;font:inherit}
+.bp-p img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:8px}
+.bp-p b{font-family:var(--display);font-size:13px;color:var(--wine)}
+:root[data-theme=dark] .bp-p b{color:var(--gold-bright)}
+.bp-p span{font-size:10.5px;line-height:1.3;opacity:.8}
+.bp-p.on{border-color:var(--gold);background:rgba(217,174,98,.16);box-shadow:0 0 0 2px var(--gold) inset}
+.bp-x{display:block;margin:10px auto 0;background:none;border:0;color:inherit;opacity:.7;font-size:12.5px;text-decoration:underline;cursor:pointer}
+.os-gift.gone{display:none}
