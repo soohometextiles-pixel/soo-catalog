@@ -510,7 +510,7 @@
     }).join('');
     return '<div class="bp-hd"><div class="bp-k">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div><b>3 أطقم بـ <bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه <s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s></b><span>وفّر ' + f(BUN.was - BUN.price) + ' جنيه</span></div>' +
       '<div class="os-sec"><i>1</i>أطقم الباقة</div><div class="os-list nolimit">' + fixed + '</div>' +
-      '<div class="os-sec"><i>2</i>اختار ملايك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
+      '<div class="os-sec"><i>2</i>اختار ملايتك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
       '<button type="button" class="bp-x" data-os="exitbun">أو اطلب أطقم تانية بدل الباقة</button>';
   }
   function tileCD() {
