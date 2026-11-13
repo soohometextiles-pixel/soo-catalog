@@ -511,7 +511,7 @@
     }).join('');
     return '<div class="bp-hd"><div class="bp-k">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div><b>3 أطقم بـ <bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه <s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s></b><span>وفّر ' + f(BUN.was - BUN.price) + ' جنيه</span></div>' +
       '<div class="os-sec"><i>1</i>أطقم الباقة</div><div class="os-list nolimit">' + fixed + '</div>' +
-      '<div class="os-sec"><i>2</i>اختار ملاءتك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
+      '<div class="os-sec"><i>2</i>اختار ملايتك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
       '<button type="button" class="bp-x" data-os="exitbun">أو اطلب أطقم تانية بدل الباقة</button>';
   }
   function tileCD() {
@@ -532,7 +532,7 @@
         '<div class="fb-price"><strong><bdi dir="ltr">' + f(BUN.price) + '</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s><span class="fb-save">وفّر ' + f(save) + ' جنيه</span></div>' +
         '<ul class="fb-list">' + BUN.fixed.map(function (c) { return '<li>' + esc(SETS[c].t) + ' <b>' + c + '</b></li>'; }).join('') + '<li>ملاية سرير 4 قطع من اختيارك (' + picks.length + ' تصميم)</li></ul>' +
         tileCD() +
-        '<button class="btn btn-gold fb-go" type="button" data-frbun>' + '<svg class="ico"><use href="#i-gift"/></svg>اختار ملاءتك واطلب الباقة</button>' +
+        '<button class="btn btn-gold fb-go" type="button" data-frbun>' + '<svg class="ico"><use href="#i-gift"/></svg>اختار طقم ملاية واطلب الباقة</button>' +
         '<small class="fb-note">ادفع مقدمًا وهتوفّر كمان خصم الدفع المقدم. والسعر بيرجع لأصله بعد آخر النهارده.</small></section>';
     });
     if (!window.__fbCyc) {
