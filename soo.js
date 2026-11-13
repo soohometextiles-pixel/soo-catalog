@@ -190,8 +190,9 @@
   function groupCounts() { var gc = {}; Object.keys(st.q).forEach(function (c) { if (st.q[c] > 0 && SETS[c]) gc[SETS[c].g] = (gc[SETS[c].g] || 0) + st.q[c]; }); return gc; }
   function discFor(m, total) {
     var k = kindOf(m); if (!k) return 0;
+    /* خصم واحد ثابت على الأوردر كله: أعلى قيمة بين مجموعات الأطقم الموجودة (مش بيتجمع) */
     var gc = groupCounts(), d = 0;
-    Object.keys(gc).forEach(function (g) { d += C.prepayPerSet ? rate(g, k) * gc[g] : rate(g, k); });
+    Object.keys(gc).forEach(function (g) { d = Math.max(d, rate(g, k)); });
     return Math.min(d, total);
   }
   function tileDisc(m) {
@@ -509,8 +510,8 @@
     }).join('');
     return '<div class="bp-hd"><div class="bp-k">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div><b>3 أطقم بـ <bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه <s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s></b><span>وفّر ' + f(BUN.was - BUN.price) + ' جنيه</span></div>' +
       '<div class="os-sec"><i>1</i>أطقم الباقة</div><div class="os-list nolimit">' + fixed + '</div>' +
-      '<div class="os-sec"><i>2</i>اختار طقم ملاية ' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
-      '<button type="button" class="bp-x" data-os="exitbun">أو اسأل علي أطقم تانية بدل الباقة</button>';
+      '<div class="os-sec"><i>2</i>اختار ملاءتك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
+      '<button type="button" class="bp-x" data-os="exitbun">أو اطلب أطقم تانية بدل الباقة</button>';
   }
   function tileCD() {
     function t(u, l) { return '<div class="t"><b data-fri-u="' + u + '">00</b><span>' + l + '</span></div>'; }
@@ -530,7 +531,7 @@
         '<div class="fb-price"><strong><bdi dir="ltr">' + f(BUN.price) + '</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s><span class="fb-save">وفّر ' + f(save) + ' جنيه</span></div>' +
         '<ul class="fb-list">' + BUN.fixed.map(function (c) { return '<li>' + esc(SETS[c].t) + ' <b>' + c + '</b></li>'; }).join('') + '<li>ملاية سرير 4 قطع من اختيارك (' + picks.length + ' تصميم)</li></ul>' +
         tileCD() +
-        '<button class="btn btn-gold fb-go" type="button" data-frbun>' + '<svg class="ico"><use href="#i-gift"/></svg>اختار طقم ملاية واطلب الباقة</button>' +
+        '<button class="btn btn-gold fb-go" type="button" data-frbun>' + '<svg class="ico"><use href="#i-gift"/></svg>اختار ملاءتك واطلب الباقة</button>' +
         '<small class="fb-note">ادفع مقدمًا وهتوفّر كمان خصم الدفع المقدم. والسعر بيرجع لأصله بعد آخر النهارده.</small></section>';
     });
     if (!window.__fbCyc) {
