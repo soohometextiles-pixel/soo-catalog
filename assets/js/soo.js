@@ -571,11 +571,67 @@
     }, 1100);
   }
 
+
+  /* ---------- آراء العملاء (شريط متحرك + شبكة + عارض صور) ---------- */
+  var RV = C.reviews || [];
+  function rvCard(r, i) { return '<button type="button" class="rv-c" data-rv="' + (i % RV.length) + '" aria-label="افتح الرأي"><img src="' + r.img + '" alt="رأي عميلة في منتجات سو براند" loading="lazy"><span class="rv-s">' + esc(r.src || '') + '</span></button>'; }
+  function renderReviews() {
+    var els = $$('[data-reviews]'); if (!els.length || !RV.length) return;
+    els.forEach(function (el) {
+      var all = RV.map(rvCard).join('');
+      if (el.dataset.reviews === 'grid') { el.innerHTML = '<div class="rv-grid">' + all + '</div>'; return; }
+      el.innerHTML = '<div class="rv-hd"><span class="rv-k">✦ كلام عملائنا</span><h2>ناس جرّبت وحبّت</h2><p>رسايل حقيقية من عملائنا بعد ما استلموا أطقمهم. الأسماء والأرقام مخفية حفاظًا على خصوصيتهم.</p></div>' +
+        '<div class="rv-mq"><div class="rv-tr">' + all + '<span class="rv-dup" aria-hidden="true">' + RV.map(function (r, i) { return rvCard(r, i).replace('<button', '<button tabindex="-1"'); }).join('') + '</span></div></div>' +
+        '<div class="rv-more"><a class="btn-gold" href="' + R + 'reviews/">شوف كل الآراء</a></div>';
+    });
+    var lb = null, cur = 0;
+    function show(i) { cur = (i + RV.length) % RV.length; $('#rvimg', lb).src = RV[cur].img; $('#rvct', lb).textContent = (cur + 1) + ' / ' + RV.length; }
+    function open(i) {
+      if (!lb) {
+        lb = document.createElement('div'); lb.className = 'rvlb'; lb.hidden = true; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'رأي عميل');
+        lb.innerHTML = '<img id="rvimg" alt=""><button class="rb x" type="button" data-a="x" aria-label="إغلاق">×</button><button class="rb nx" type="button" data-a="n" aria-label="التالي">‹</button><button class="rb pv" type="button" data-a="p" aria-label="السابق">›</button><div class="rvct" id="rvct"></div>';
+        document.body.appendChild(lb);
+        lb.addEventListener('click', function (e) { var a = e.target.closest('[data-a]'); if (a) { if (a.dataset.a === 'x') lb.hidden = true; else show(cur + (a.dataset.a === 'n' ? 1 : -1)); } else if (e.target === lb) lb.hidden = true; });
+        document.addEventListener('keydown', function (e) { if (lb.hidden) return; if (e.key === 'Escape') lb.hidden = true; else if (e.key === 'ArrowLeft') show(cur + 1); else if (e.key === 'ArrowRight') show(cur - 1); });
+      }
+      show(i); lb.hidden = false;
+    }
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-rv]'); if (b) open(+b.dataset.rv); });
+  }
+  /* أرقام الواتساب في الفوتر من الـ config + رابط آراء العملاء */
+  function fillFooter() {
+    var wa = C.wa || [];
+    $$('.f4-wa a').forEach(function (a, i) {
+      var n = wa[i]; if (!n) return;
+      a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/20' + n.replace(/^0/, ''));
+      var s = $('small', a); if (s) s.textContent = n.replace(/^(\d{4})(\d{3})(\d{4})$/, '$1 $2 $3');
+    });
+    var ul = $('.f4-links');
+    if (ul && !$('a[href$="reviews/"]', ul)) { var li = document.createElement('li'); li.innerHTML = '<a href="' + R + 'reviews/">آراء العملاء</a>'; var pr = ul.lastElementChild; ul.insertBefore(li, pr && /privacy/.test(pr.innerHTML) ? pr : null); }
+  }
+
+  /* شريط الحقوق السفلي: طرق الدفع + جمل إنجليزي + اسم شركة التسويق */
+  function fillCopyBar() {
+    var cp = $('footer > .copy'); if (!cp) return;
+    var P = C.pay || {};
+    var logos = ['vodafone', 'wepay', 'instapay'].filter(function (k) { return P[k]; }).map(function (k) {
+      return '<span class="cb-lg" title="' + esc(P[k].n) + '"><img src="' + P[k].img + '" alt="' + esc(P[k].n) + '" loading="lazy"></span>';
+    }).join('');
+    cp.innerHTML = '<div class="wrap cbar">' +
+      '<div class="cb-mie"><span><img src="'+R+'assets/img/brand/made-in-egypt.png" alt="بكل فخر صنع في مصر" loading="lazy"></span></div>'+
+    '<div class="cb-pay"><span class="cb-k">SECURE PAYMENT</span><div class="cb-row">' + logos + '<span class="cb-cod">الدفع عند الاستلام <small>CASH ON DELIVERY</small></span></div></div>' +
+      '<div class="cb-line" aria-hidden="true"><i></i><span>✦</span><i></i></div>' +
+      '<ul class="cb-en"><li>MADE IN EGYPT</li><li>INSPECT BEFORE YOU PAY</li><li>DELIVERED TO YOUR DOOR · 3–5 DAYS</li><li>ELEGANCE THAT COMPLETES YOUR HOME</li></ul>' +
+      '<div class="cb-bot"><span>جميع الحقوق محفوظة | سو براند</span><a href="' + R + 'privacy/">سياسة الخصوصية</a><span class="cb-mk">Marketing by <b>A.M.GROUP</b></span><span><bdi dir="ltr">© 2026 SOO BRAND</bdi></span></div></div>';
+  }
   window.SOO = { cfg: C, offers: OFF, friday: FRI, offerMsg: offerMsg, decorate: decorate, openOrder: openOS, fmt: f };
   ensureMarkup();
   fillGifts(document);
   renderFriday();
   initAmb();
+  renderReviews();
+  fillFooter();
+  fillCopyBar();
   renderBundle();
   friFx();
   friTick(); setInterval(friTick, 1000);

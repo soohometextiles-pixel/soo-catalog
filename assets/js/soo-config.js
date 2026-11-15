@@ -80,6 +80,22 @@ window.SOO_CFG = {
   giftMin: 4,
   giftGroup: 'S',
 
+  /* ---------- آراء العملاء ----------
+     كل رأي = سطر: صورة الرسالة (بعد قص الاسم والرقم) + المصدر. ضيف صورة جديدة في assets/img/reviews/
+     وضيف سطرها هنا، وتظهر لوحدها في شريط الصفحة الرئيسية وفي صفحة reviews/.
+     بنعرض أول اسم بس أو من غير اسم، ومن غير أرقام تليفونات. */
+  reviews: [
+    { img: 'assets/img/reviews/r01.jpg', src: 'واتساب' },
+    { img: 'assets/img/reviews/r02.jpg', src: 'واتساب' },
+    { img: 'assets/img/reviews/r03.jpg', src: 'فيسبوك' },
+    { img: 'assets/img/reviews/r04.jpg', src: 'واتساب' },
+    { img: 'assets/img/reviews/r05.jpg', src: 'واتساب' },
+    { img: 'assets/img/reviews/r06.jpg', src: 'ماسنجر' },
+    { img: 'assets/img/reviews/r07.jpg', src: 'واتساب' },
+    { img: 'assets/img/reviews/r08.jpg', src: 'واتساب' },
+    { img: 'assets/img/reviews/r09.jpg', src: 'واتساب' }
+  ],
+
   /* ---------- الأطقم (السعر الأصلي) ---------- */
   sets: {
     S01: {"t": "مفرش حفر ليزر وجهين - نص بطانية", "m": "4 ألوان متاحة", "i": "assets/img/products/p16.jpg", "p": 1990, "g": "S"},
