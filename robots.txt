@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://soohometextiles-pixel.github.io/soo-catalog/sitemap.xml
