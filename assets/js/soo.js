@@ -303,7 +303,8 @@
       else if (a === 'method') { st.method = b.dataset.m; render(); }
       else if (a === 'copy') copyNum(b);
       else if (a === 'pick') pickSheet(c);
-      else if (a === 'exitbun') { st.bun = null; st.q = {}; render(); }
+      else if (a === 'exitbun') { st.bun = null; loadCart(); render(); }
+      else if (a === 'clear') { st.q = {}; render(); }
     });
     return os;
   }
@@ -355,7 +356,7 @@
   function openOS(o) {
     o = o || {}; ensureOS();
     if (o.bundle && BUN) { st.bun = { pick: null }; st.q = {}; BUN.fixed.forEach(function (c) { st.q[c] = 1; }); }
-    else if (st.bun) { st.bun = null; st.q = {}; }
+    else if (st.bun) { st.bun = null; loadCart(); }
     if (o.method) st.method = o.method;
     if (o.code && SETS[o.code]) st.q[o.code] = Math.max(1, st.q[o.code] || 0);
     lastFocus = document.activeElement;
@@ -368,9 +369,97 @@
   function closeOS() { if (!os) return; os.hidden = true; document.body.classList.remove('lock'); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && os && !os.hidden) closeOS(); });
 
+  /* ------------------------------------------------------------------
+     السلة: حفظ على جهاز العميل + أيقونة عائمة + زرار "أضف للسلة"
+     ------------------------------------------------------------------ */
+  var CART_KEY = 'soo_cart_v1', CART_TTL = 3 * 864e5, cartFab = null, toastEl = null, toastT = 0, lastN = 0;
+  function loadCart() {
+    var q = {}, m = null;
+    try {
+      var j = JSON.parse(localStorage.getItem(CART_KEY) || 'null');
+      if (j && j.t && Date.now() - j.t < CART_TTL && j.q) {
+        Object.keys(j.q).forEach(function (c) { var n = Math.floor(+j.q[c]); if (SETS[c] && n > 0) q[c] = Math.min(9, n); });
+        if (j.m === 'cod' || (j.m && PAY[j.m])) m = j.m;
+      }
+    } catch (e) { }
+    st.q = q; if (m) st.method = m;
+  }
+  function saveCart() {
+    if (st.bun) return;
+    try {
+      var any = Object.keys(st.q).some(function (c) { return st.q[c] > 0; });
+      if (any) localStorage.setItem(CART_KEY, JSON.stringify({ q: st.q, m: st.method, t: Date.now() })); else localStorage.removeItem(CART_KEY);
+    } catch (e) { }
+  }
+  var BAG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 12.2a1 1 0 0 1-1 .8H7.6a1 1 0 0 1-1-.8L5.5 8z"/><path d="M9 8V6.6a3 3 0 0 1 6 0V8"/></svg>';
+  var PLUS = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+  function updateFab() {
+    var t = calc(), n = t.count;
+    if (!cartFab) {
+      cartFab = document.createElement('button'); cartFab.type = 'button'; cartFab.className = 'cartfab'; cartFab.setAttribute('aria-label', 'افتح السلة'); cartFab.hidden = true;
+      cartFab.addEventListener('click', function () { openOS({}); });
+      document.body.appendChild(cartFab);
+    }
+    cartFab.hidden = !(n > 0) || !!st.bun || !!(os && !os.hidden);
+    cartFab.innerHTML = '<span class="cf-i">' + BAG + '<b>' + n + '</b></span><span class="cf-t"><small>سلتك</small><strong><bdi dir="ltr">' + f(t.total - t.bundle) + '</bdi> جنيه</strong></span>';
+    if (n > lastN) { cartFab.classList.remove('bump'); void cartFab.offsetWidth; cartFab.classList.add('bump'); }
+    lastN = n;
+  }
+  function hideToast() { if (toastEl) toastEl.classList.remove('on'); clearTimeout(toastT); }
+  function showToast(code) {
+    if (!toastEl) {
+      toastEl = document.createElement('div'); toastEl.className = 'carttoast'; toastEl.setAttribute('role', 'status'); toastEl.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastEl);
+    }
+    var t = calc();
+    toastEl.innerHTML = '<span class="ct-ok">✓</span><span class="ct-tx"><b>' + code + '</b> اتضاف للسلة<small>' + t.count + (t.count === 1 ? ' طقم' : ' أطقم') + ' · ' + f(t.total - t.bundle) + ' جنيه</small></span><button type="button" data-opencart>شوف السلة</button>';
+    toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(hideToast, 3200);
+  }
+  function addToCart(code, btn) {
+    if (!SETS[code]) return;
+    if (st.bun) { st.bun = null; loadCart(); }
+    st.q[code] = Math.min(9, (st.q[code] || 0) + 1);
+    saveCart(); updateFab(); showToast(code);
+    if (btn) {
+      var lab = btn.querySelector('span'); if (lab && !btn.dataset.t) btn.dataset.t = lab.textContent;
+      btn.classList.add('ok'); if (lab) lab.textContent = 'اتضاف ✓ (' + st.q[code] + ')';
+      clearTimeout(btn._t); btn._t = setTimeout(function () { btn.classList.remove('ok'); if (lab) lab.textContent = btn.dataset.t; }, 1600);
+    }
+  }
+  function injectCart() {
+    $$('.card[data-code]').forEach(function (el) {
+      var code = el.dataset.code, wa = $('.btn-wa[data-wa="card"]', el);
+      if (!SETS[code] || !wa || $('[data-addcart]', el)) return;
+      var add = document.createElement('button'); add.type = 'button'; add.className = 'btn btn-gold btn-cart'; add.dataset.addcart = code;
+      add.innerHTML = PLUS + '<span>أضف للسلة</span>';
+      var w = document.createElement('div'); w.className = 'cta2';
+      if (el.classList.contains('pc')) { wa.setAttribute('aria-label', 'اطلب هذا الطقم مباشرة عبر واتساب'); wa.title = 'اطلب هذا الطقم مباشرة عبر واتساب'; }
+      wa.parentNode.insertBefore(w, wa); w.appendChild(add); w.appendChild(wa);
+    });
+  }
+  var _render = render, _closeOS = closeOS, _openOS = openOS;
+  render = function () {
+    _render.apply(this, arguments);
+    var s1 = os && $('#os-s1', os);
+    if (s1) {
+      var c = $('.os-clr', s1);
+      if (!c) { c = document.createElement('button'); c.type = 'button'; c.className = 'os-clr'; c.dataset.os = 'clear'; c.textContent = 'تفريغ السلة'; s1.appendChild(c); }
+      c.hidden = !calc().count || !!st.bun;
+    }
+    saveCart(); updateFab();
+  };
+  closeOS = function () { if (st.bun) { st.bun = null; loadCart(); } _closeOS.apply(this, arguments); updateFab(); };
+  openOS = function () { _openOS.apply(this, arguments); updateFab(); };
+
   var NAME2M = { 'فودافون كاش': 'vodafone', 'وي باي': 'wepay', 'إنستا باي': 'instapay' };
   document.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-pay]');
+    var b = e.target.closest('[data-addcart]');
+    if (b) { e.preventDefault(); e.stopImmediatePropagation(); addToCart(b.dataset.addcart, b); return; }
+    b = e.target.closest('[data-opencart]');
+    if (b) { e.preventDefault(); e.stopImmediatePropagation(); hideToast(); openOS({}); return; }
+    b = e.target.closest('#os-foot a.btn-wa[href]');
+    if (b) { setTimeout(function () { st.q = {}; render(); }, 900); return; }
+    b = e.target.closest('[data-pay]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ method: NAME2M[b.dataset.name] || 'vodafone' }); return; }
     b = e.target.closest('[data-prepay],[data-order]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ code: b.dataset.code || (b.closest('[data-code]') || {}).dataset && b.closest('[data-code]').dataset.code, method: b.hasAttribute('data-order') ? 'cod' : undefined }); return; }
@@ -626,6 +715,7 @@
   }
   window.SOO = { cfg: C, offers: OFF, friday: FRI, offerMsg: offerMsg, decorate: decorate, openOrder: openOS, fmt: f };
   ensureMarkup();
+  loadCart(); injectCart(); updateFab();
   fillGifts(document);
   renderFriday();
   initAmb();
