@@ -7,6 +7,94 @@
   'use strict';
   var C = window.SOO_CFG || {}, R = window.SOO_ROOT || '';
   var FOLD = { S: 'royal', F: 'flat', B: 'sheets' };
+  /* ------------------------------------------------------------------
+     تتبع كل خطوة (Meta Pixel): أحداث مخصصة بأسماء عربي.
+     الأسماء في soo-config.js تحت trackNames. الأحداث القياسية (إضافة للسلة / ليد...) فوق.
+     ------------------------------------------------------------------ */
+  var TRK_DEF = {visit_home:'زيارة_الرئيسية',visit_royal:'زيارة_قسم_الفخامة',visit_flat:'زيارة_قسم_الفلات',visit_sheets:'زيارة_قسم_الملايات',visit_offers:'زيارة_صفحة_العروض',visit_friday:'زيارة_صفحة_الجمعة',visit_ambassador:'زيارة_صفحة_السفراء',visit_reviews:'زيارة_آراء_العملاء',visit_privacy:'زيارة_سياسة_الخصوصية',visit_product:'زيارة_صفحة_طقم',scroll_25:'تمرير_25_بالمية',scroll_50:'تمرير_50_بالمية',scroll_75:'تمرير_75_بالمية',scroll_100:'تمرير_للآخر',stay_30:'قعد_30_ثانية',stay_60:'قعد_60_ثانية',stay_120:'قعد_120_ثانية',cart_add:'أضاف_للسلة',cart_open:'فتح_السلة',cart_close:'قفل_السلة',cart_clear:'فرغ_السلة',qty_inc:'زود_الكمية',qty_dec:'قلل_الكمية',pay_method:'اختار_طريقة_الدفع',pay_copy:'نسخ_رقم_الدفع',bundle_pick:'اختار_طقم_للباقة',order_send:'بعت_الطلب_واتساب',order_direct:'طلب_طقم_مباشر_واتساب',wa_general:'ضغط_واتساب',pay_open:'فتح_الدفع_المقدم',order_open:'ضغط_اطلب',gift_click:'ضغط_الهدية',bundle_click:'ضغط_باقة_التوفير',fri_bundle:'ضغط_باقة_الجمعة',share:'شارك_الطقم',gallery_next:'الصورة_التالية',gallery_prev:'الصورة_السابقة',color_pick:'اختار_لون',review_open:'فتح_صورة_رأي',faq_open:'فتح_سؤال',social_click:'ضغط_سوشيال',link_click:'ضغط_رابط',back_top:'ضغط_ارجع_لفوق'};
+  var TRK = {};
+  Object.keys(TRK_DEF).forEach(function (k) { TRK[k] = (C.trackNames && C.trackNames[k]) || TRK_DEF[k]; });
+  var PGN = { home: 'الرئيسية', royal: 'قسم_الفخامة', flat: 'قسم_الفلات', sheets: 'قسم_الملايات', offers: 'العروض', friday: 'الجمعة_البيضاء', ambassador: 'سوق_واكسب', reviews: 'آراء_العملاء', privacy: 'سياسة_الخصوصية' };
+  var GRP = { S: 'الفخامة', F: 'الفلات', B: 'الملايات' };
+  function ev(id, data) {
+    try { if (typeof window.fbq === 'function' && TRK[id]) window.fbq('trackCustom', TRK[id], data || {}); } catch (e) { }
+  }
+  function pageOf(href) {
+    try {
+      var u = new URL(href, location.href); if (u.origin !== location.origin) return null;
+      var seg = u.pathname.split('/').filter(Boolean), last = seg[seg.length - 1] || '', m = last.match(/^([sfb]\d\d)\.html$/i);
+      if (m) return { id: 'product', code: m[1].toUpperCase(), name: m[1].toUpperCase() };
+      for (var i = seg.length - 1; i >= 0; i--) if (PGN[seg[i]]) return { id: seg[i], name: PGN[seg[i]] };
+      return { id: 'home', name: PGN.home };
+    } catch (e) { return null; }
+  }
+  var PG = null;
+  function pg() { return PG || (PG = pageOf(location.href) || { id: 'home', name: 'الرئيسية' }); }
+  function setInfo(code) { var s = SETS[code]; return s ? { 'الكود': code, 'الاسم': s.t, 'السعر': unit(code), 'القسم': GRP[s.g] || s.g } : { 'الكود': code }; }
+  function placeOf(el) {
+    if (el.closest('.ft4,footer')) return 'الفوتر';
+    if (el.closest('[data-fri-banner]')) return 'شريط_الجمعة';
+    if (el.closest('#os,.os')) return 'شيت_الطلب';
+    if (el.closest('.bar,header')) return 'الهيدر';
+    if (el.closest('.rq')) return 'طقم_مقترح';
+    if (el.closest('.card')) return 'كارت_طقم';
+    if (el.closest('.hero,.hs,.hc')) return 'الهيرو';
+    return 'الصفحة';
+  }
+  function trkClick(e) {
+    var t = e.target; if (!t || !t.closest) return;
+    var b, code;
+    if ((b = t.closest('#os-foot a.btn-wa[href]'))) { var d = cartData(); ev('order_send', { 'القيمة': Math.max(0, calc().due), 'العدد': d.num_items, 'الأكواد': d.content_ids.join(',') }); return; }
+    if ((b = t.closest('[data-wa]')) && !b.closest('#os-foot')) {
+      if (b.dataset.wa === 'card') { var cd = b.closest('[data-code]'); code = cd && cd.dataset.code; ev('order_direct', setInfo(code || '')); }
+      else ev('wa_general', { 'المكان': placeOf(b) });
+      return;
+    }
+    if ((b = t.closest('[data-os]'))) {
+      var a = b.dataset.os;
+      if (a === 'inc') ev('qty_inc', setInfo((b.closest('[data-code]') || {dataset: {}}).dataset.code || b.dataset.code || ''));
+      else if (a === 'dec') ev('qty_dec', setInfo((b.closest('[data-code]') || {dataset: {}}).dataset.code || b.dataset.code || ''));
+      else if (a === 'method') ev('pay_method', { 'الطريقة': b.dataset.m === 'cod' ? 'دفع_عند_الاستلام' : ((PAY[b.dataset.m] && PAY[b.dataset.m].n) || b.dataset.m) });
+      else if (a === 'copy') ev('pay_copy', { 'الطريقة': (PAY[st.method] && PAY[st.method].n) || st.method });
+      else if (a === 'pick') ev('bundle_pick', setInfo(b.dataset.code || ''));
+      else if (a === 'close') ev('cart_close', { 'العدد': calc().count });
+      else if (a === 'clear') ev('cart_clear', { 'العدد': calc().count });
+      return;
+    }
+    if (t.closest('.cartfab')) { ev('cart_open', { 'المكان': 'أيقونة_السلة', 'العدد': calc().count, 'القيمة': Math.max(0, calc().total - calc().bundle) }); return; }
+    if (t.closest('[data-opencart]')) { ev('cart_open', { 'المكان': 'إشعار_الإضافة' }); return; }
+    if ((b = t.closest('[data-pay]'))) { ev('pay_open', { 'المكان': placeOf(b) }); return; }
+    if ((b = t.closest('[data-prepay],[data-order]'))) { var c2 = b.closest('[data-code]'); ev(b.hasAttribute('data-prepay') ? 'pay_open' : 'order_open', c2 && c2.dataset.code ? setInfo(c2.dataset.code) : { 'المكان': placeOf(b) }); return; }
+    if (t.closest('[data-gift]')) { ev('gift_click', { 'المكان': placeOf(t) }); return; }
+    if ((b = t.closest('[data-bundle]'))) { ev('bundle_click', { 'العدد': b.dataset.bundle, 'المكان': placeOf(b) }); return; }
+    if (t.closest('[data-frbun]')) { ev('fri_bundle', { 'المكان': placeOf(t) }); return; }
+    if ((b = t.closest('[data-share]'))) { var cs = b.closest('[data-code]'); ev('share', cs && cs.dataset.code ? setInfo(cs.dataset.code) : { 'الصفحة': pg().name }); return; }
+    if ((b = t.closest('.nav.nx,.nav.pv'))) { var cc = b.closest('[data-code]'); ev(b.classList.contains('nx') ? 'gallery_next' : 'gallery_prev', cc && cc.dataset.code ? { 'الكود': cc.dataset.code } : { 'الصفحة': pg().name }); return; }
+    if ((b = t.closest('.sw'))) { var cl = b.closest('[data-code]'); ev('color_pick', { 'اللون': b.dataset.name || b.title || '', 'الكود': (cl && cl.dataset.code) || '' }); return; }
+    if ((b = t.closest('[data-rv]'))) { ev('review_open', { 'رقم': b.dataset.rv }); return; }
+    if ((b = t.closest('summary'))) { ev('faq_open', { 'السؤال': (b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80), 'الصفحة': pg().name }); return; }
+    if (t.closest('.f4-top')) { ev('back_top', {}); return; }
+    if ((b = t.closest('a[href]'))) {
+      var h = b.getAttribute('href') || '';
+      if (/tiktok\.com|instagram\.com|facebook\.com/i.test(h)) { ev('social_click', { 'المنصة': /tiktok/i.test(h) ? 'تيك_توك' : /instagram/i.test(h) ? 'إنستجرام' : 'فيسبوك', 'المكان': placeOf(b) }); return; }
+      if (/^(tel:|mailto:|https?:\/\/wa\.me)/i.test(h) || h.charAt(0) === '#') return;
+      var dst = pageOf(b.href);
+      if (dst) ev('link_click', { 'الوجهة': dst.name, 'المكان': placeOf(b), 'الصفحة': pg().name });
+    }
+  }
+  document.addEventListener('click', trkClick, true);
+  function trackInit() {
+    var p = pg();
+    if (p.id === 'product') ev('visit_product', setInfo(p.code)); else ev('visit_' + p.id, {});
+    var done = {};
+    function depth() {
+      var h = document.documentElement, tot = Math.max(h.scrollHeight, document.body.scrollHeight), pct = (window.scrollY + window.innerHeight) / tot * 100;
+      [25, 50, 75, 100].forEach(function (x) { if (!done[x] && pct >= (x === 100 ? 97 : x)) { done[x] = 1; ev('scroll_' + x, { 'الصفحة': p.name }); } });
+    }
+    var tmr = 0; window.addEventListener('scroll', function () { clearTimeout(tmr); tmr = setTimeout(depth, 150); }, { passive: true });
+    [30, 60, 120].forEach(function (s) { setTimeout(function () { if (document.visibilityState === 'visible') ev('stay_' + s, { 'الصفحة': p.name }); }, s * 1000); });
+  }
+
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
   function f(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
@@ -428,6 +516,7 @@
     if (st.bun) { st.bun = null; loadCart(); }
     st.q[code] = Math.min(9, (st.q[code] || 0) + 1);
     saveCart(); updateFab(); showToast(code);
+    ev('cart_add', setInfo(code));
     track('AddToCart', { content_ids: [code], content_type: 'product', contents: [{ id: code, quantity: 1, item_price: unit(code) }], value: unit(code), currency: 'EGP' });
     if (btn) {
       var lab = btn.querySelector('span'); if (lab && !btn.dataset.t) btn.dataset.t = lab.textContent;
@@ -732,6 +821,7 @@
   window.SOO = { cfg: C, offers: OFF, friday: FRI, offerMsg: offerMsg, decorate: decorate, openOrder: openOS, fmt: f };
   ensureMarkup();
   loadCart(); injectCart(); updateFab();
+  trackInit();
   (function () { var el = $('.card.solo[data-code]'); var k = el && el.dataset.code; if (k && SETS[k]) track('ViewContent', { content_ids: [k], content_type: 'product', content_name: SETS[k].t, value: unit(k), currency: 'EGP' }); })();
   fillGifts(document);
   renderFriday();
