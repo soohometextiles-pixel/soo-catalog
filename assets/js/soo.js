@@ -372,6 +372,14 @@
   /* ------------------------------------------------------------------
      السلة: حفظ على جهاز العميل + أيقونة عائمة + زرار "أضف للسلة"
      ------------------------------------------------------------------ */
+  function track(ev, data) {
+    try { if (typeof window.fbq === 'function') window.fbq('track', ev, data || {}); } catch (e) { }
+  }
+  function cartData() {
+    var ids = [], contents = [], t = calc();
+    Object.keys(st.q).forEach(function (c) { if (st.q[c] > 0 && SETS[c]) { ids.push(c); contents.push({ id: c, quantity: st.q[c], item_price: unit(c) }); } });
+    return { content_ids: ids, contents: contents, content_type: 'product', num_items: t.count, value: Math.max(0, t.total - t.bundle), currency: 'EGP' };
+  }
   var CART_KEY = 'soo_cart_v1', CART_TTL = 3 * 864e5, cartFab = null, toastEl = null, toastT = 0, lastN = 0;
   function loadCart() {
     var q = {}, m = null;
@@ -420,6 +428,7 @@
     if (st.bun) { st.bun = null; loadCart(); }
     st.q[code] = Math.min(9, (st.q[code] || 0) + 1);
     saveCart(); updateFab(); showToast(code);
+    track('AddToCart', { content_ids: [code], content_type: 'product', contents: [{ id: code, quantity: 1, item_price: unit(code) }], value: unit(code), currency: 'EGP' });
     if (btn) {
       var lab = btn.querySelector('span'); if (lab && !btn.dataset.t) btn.dataset.t = lab.textContent;
       btn.classList.add('ok'); if (lab) lab.textContent = 'اتضاف ✓ (' + st.q[code] + ')';
@@ -449,11 +458,18 @@
     saveCart(); updateFab();
   };
   closeOS = function () { if (st.bun) { st.bun = null; loadCart(); } _closeOS.apply(this, arguments); updateFab(); };
-  openOS = function () { _openOS.apply(this, arguments); updateFab(); };
+  openOS = function () { _openOS.apply(this, arguments); updateFab(); if (!st.bun && calc().count > 0) track('InitiateCheckout', cartData()); };
 
   var NAME2M = { 'فودافون كاش': 'vodafone', 'وي باي': 'wepay', 'إنستا باي': 'instapay' };
   document.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-addcart]');
+    var b = e.target.closest('#os-foot a.btn-wa[href]');
+    if (b) { var d = cartData(); d.value = Math.max(0, calc().due); track('Lead', d); }
+    b = e.target.closest('[data-wa]');
+    if (b && !b.closest('#os-foot')) {
+      if (b.dataset.wa === 'card') { var cc2 = b.closest('[data-code]'), k = cc2 && cc2.dataset.code; if (k && SETS[k]) track('Lead', { content_ids: [k], content_type: 'product', value: unit(k), currency: 'EGP' }); }
+      else track('Contact');
+    }
+    b = e.target.closest('[data-addcart]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); addToCart(b.dataset.addcart, b); return; }
     b = e.target.closest('[data-opencart]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); hideToast(); openOS({}); return; }
@@ -716,6 +732,7 @@
   window.SOO = { cfg: C, offers: OFF, friday: FRI, offerMsg: offerMsg, decorate: decorate, openOrder: openOS, fmt: f };
   ensureMarkup();
   loadCart(); injectCart(); updateFab();
+  (function () { var el = $('.card.solo[data-code]'); var k = el && el.dataset.code; if (k && SETS[k]) track('ViewContent', { content_ids: [k], content_type: 'product', content_name: SETS[k].t, value: unit(k), currency: 'EGP' }); })();
   fillGifts(document);
   renderFriday();
   initAmb();
