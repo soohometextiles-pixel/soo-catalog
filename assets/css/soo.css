@@ -688,3 +688,37 @@ button.bnd-t:hover{background:rgba(217,174,98,.16);border-color:#d9ae62;transfor
 .ab-li li{padding:6px 14px;border-radius:99px;border:1px solid rgba(201,160,90,.7);background:#fffdf8;font-size:13px;color:#4a1224}
 
 .cb-mie{display:flex;justify-content:center;margin:2px 0 14px}.cb-mie span{background:#fff;border-radius:14px;padding:8px 14px;box-shadow:0 6px 18px -8px rgba(0,0,0,.6)}.cb-mie img{height:110px;width:auto;display:block}@media(max-width:560px){.cb-mie img{height:96px}}
+
+/* ---------- السلة: زرار أضف للسلة + أيقونة السلة العائمة + إشعار الإضافة ---------- */
+.cta2{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.cta2 .btn{width:100%;margin:0;padding:12px 14px;font-size:15px;min-height:48px}
+.cta2 .btn-cart{position:relative;overflow:hidden}
+.cta2 .btn-cart.ok{background:linear-gradient(145deg,#dff3e2,#9fd3a8);color:#14421f}
+.card.pc .cta2{flex-direction:row;gap:8px}
+.card.pc .cta2 .btn{flex:1 1 0;min-width:0;font-size:14px;padding:11px 8px;gap:6px;white-space:nowrap}
+.card.pc .cta2 .btn svg.ico{width:18px;height:18px}
+.cartfab{position:fixed;z-index:36;bottom:calc(16px + env(safe-area-inset-bottom,0px));inset-inline-end:max(14px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:10px;padding:7px 16px 7px 8px;border-radius:999px;border:1px solid rgba(217,174,98,.75);background:linear-gradient(160deg,#5a1830,#3a0e1d);color:#f6ead4;cursor:pointer;font:inherit;box-shadow:0 12px 28px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .18s,box-shadow .18s}
+.cartfab[hidden]{display:none}
+.cartfab:hover,.cartfab:focus-visible{transform:translateY(-2px);box-shadow:0 16px 30px -8px rgba(0,0,0,.65)}
+.cartfab .cf-i{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f7dca0,#c8963f);color:#3a0c1a}
+.cartfab .cf-i b{position:absolute;top:-5px;inset-inline-start:-5px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#fff;color:#4a1226;font-size:12px;line-height:20px;text-align:center;font-weight:800;border:1.5px solid #c8963f}
+.cartfab .cf-t{display:flex;flex-direction:column;line-height:1.25;text-align:start}
+.cartfab .cf-t small{font-size:11.5px;opacity:.8}
+.cartfab .cf-t strong{font-size:14.5px;font-weight:700;color:#f7dca0}
+.cartfab.bump{animation:cfbump .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes cfbump{0%{transform:scale(.9)}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+.carttoast{position:fixed;z-index:37;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;pointer-events:none;width:min(92vw,400px);display:flex;align-items:center;gap:11px;padding:11px 12px 11px 14px;border-radius:16px;background:#fffcf7;color:#2b1a1e;border:1px solid #e0c78f;box-shadow:0 18px 40px -12px rgba(40,10,20,.55);transition:opacity .22s,transform .22s}
+.carttoast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.carttoast .ct-ok{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#1f8a43;color:#fff;font-weight:800;font-size:15px}
+.carttoast .ct-tx{flex:1;display:flex;flex-direction:column;line-height:1.35;font-size:14.5px;min-width:0}
+.carttoast .ct-tx small{font-size:12.5px;color:#6c5a5d}
+.carttoast button{flex:0 0 auto;border:0;cursor:pointer;font:inherit;font-size:13.5px;font-weight:700;padding:9px 13px;border-radius:10px;background:linear-gradient(145deg,#5a1830,#3a0e1d);color:#f7dca0}
+.os-clr{margin-inline-start:auto;border:0;background:transparent;color:#9a3b4a;font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px 2px}
+.os-clr[hidden]{display:none}
+#os-s1{display:flex;align-items:center}
+@media(min-width:900px){.cartfab{inset-inline-end:max(24px,env(safe-area-inset-right,0px))}.carttoast{left:auto;inset-inline-end:24px;transform:translate(0,16px);bottom:calc(92px + env(safe-area-inset-bottom,0px))}.carttoast.on{transform:translate(0,0)}}
+@media(prefers-reduced-motion:reduce){.cartfab.bump{animation:none}.carttoast{transition:none}}
+.cta2{width:100%;align-self:stretch}
+.card.pc .cta2 .btn-cart{flex:1 1 auto}
+.card.pc .cta2 .btn-wa{flex:0 0 50px;width:50px;padding:0;font-size:0;gap:0}
+.card.pc .cta2 .btn-wa svg{width:24px;height:24px}
