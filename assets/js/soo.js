@@ -11,10 +11,10 @@
      تتبع كل خطوة (Meta Pixel): أحداث مخصصة بأسماء عربي.
      الأسماء في soo-config.js تحت trackNames. الأحداث القياسية (إضافة للسلة / ليد...) فوق.
      ------------------------------------------------------------------ */
-  var TRK_DEF = {visit_home:'زيارة_الرئيسية',visit_royal:'زيارة_قسم_الفخامة',visit_flat:'زيارة_قسم_الفلات',visit_sheets:'زيارة_قسم_الملايات',visit_offers:'زيارة_صفحة_العروض',visit_friday:'زيارة_صفحة_الجمعة',visit_ambassador:'زيارة_صفحة_السفراء',visit_reviews:'زيارة_آراء_العملاء',visit_privacy:'زيارة_سياسة_الخصوصية',visit_product:'زيارة_صفحة_طقم',scroll_25:'تمرير_25_بالمية',scroll_50:'تمرير_50_بالمية',scroll_75:'تمرير_75_بالمية',scroll_100:'تمرير_للآخر',stay_30:'قعد_30_ثانية',stay_60:'قعد_60_ثانية',stay_120:'قعد_120_ثانية',cart_add:'أضاف_للسلة',cart_open:'فتح_السلة',cart_close:'قفل_السلة',cart_clear:'فرغ_السلة',qty_inc:'زود_الكمية',qty_dec:'قلل_الكمية',pay_method:'اختار_طريقة_الدفع',pay_copy:'نسخ_رقم_الدفع',bundle_pick:'اختار_طقم_للباقة',order_send:'بعت_الطلب_واتساب',order_direct:'طلب_طقم_مباشر_واتساب',wa_general:'ضغط_واتساب',pay_open:'فتح_الدفع_المقدم',order_open:'ضغط_اطلب',gift_click:'ضغط_الهدية',bundle_click:'ضغط_باقة_التوفير',fri_bundle:'ضغط_باقة_الجمعة',share:'شارك_الطقم',gallery_next:'الصورة_التالية',gallery_prev:'الصورة_السابقة',color_pick:'اختار_لون',review_open:'فتح_صورة_رأي',faq_open:'فتح_سؤال',social_click:'ضغط_سوشيال',link_click:'ضغط_رابط',back_top:'ضغط_ارجع_لفوق'};
+  var TRK_DEF = {visit_home:'زيارة_الرئيسية',visit_royal:'زيارة_قسم_الفخامة',visit_flat:'زيارة_قسم_الفلات',visit_sheets:'زيارة_قسم_الملايات',visit_offers:'زيارة_صفحة_العروض',visit_friday:'زيارة_صفحة_الجمعة',visit_ambassador:'زيارة_صفحة_السفراء',visit_reviews:'زيارة_آراء_العملاء',visit_privacy:'زيارة_سياسة_الخصوصية',visit_contest:'زيارة_صفحة_المسابقة',visit_product:'زيارة_صفحة_طقم',scroll_25:'تمرير_25_بالمية',scroll_50:'تمرير_50_بالمية',scroll_75:'تمرير_75_بالمية',scroll_100:'تمرير_للآخر',stay_30:'قعد_30_ثانية',stay_60:'قعد_60_ثانية',stay_120:'قعد_120_ثانية',cart_add:'أضاف_للسلة',cart_open:'فتح_السلة',cart_close:'قفل_السلة',cart_clear:'فرغ_السلة',qty_inc:'زود_الكمية',qty_dec:'قلل_الكمية',pay_method:'اختار_طريقة_الدفع',pay_copy:'نسخ_رقم_الدفع',bundle_pick:'اختار_طقم_للباقة',order_send:'بعت_الطلب_واتساب',order_direct:'طلب_طقم_مباشر_واتساب',wa_general:'ضغط_واتساب',pay_open:'فتح_الدفع_المقدم',order_open:'ضغط_اطلب',gift_click:'ضغط_الهدية',bundle_click:'ضغط_باقة_التوفير',fri_bundle:'ضغط_باقة_الجمعة',share:'شارك_الطقم',gallery_next:'الصورة_التالية',gallery_prev:'الصورة_السابقة',color_pick:'اختار_لون',review_open:'فتح_صورة_رأي',faq_open:'فتح_سؤال',social_click:'ضغط_سوشيال',link_click:'ضغط_رابط',back_top:'ضغط_ارجع_لفوق'};
   var TRK = {};
   Object.keys(TRK_DEF).forEach(function (k) { TRK[k] = (C.trackNames && C.trackNames[k]) || TRK_DEF[k]; });
-  var PGN = { home: 'الرئيسية', royal: 'قسم_الفخامة', flat: 'قسم_الفلات', sheets: 'قسم_الملايات', offers: 'العروض', friday: 'الجمعة_البيضاء', ambassador: 'سوق_واكسب', reviews: 'آراء_العملاء', privacy: 'سياسة_الخصوصية' };
+  var PGN = { home: 'الرئيسية', royal: 'قسم_الفخامة', flat: 'قسم_الفلات', sheets: 'قسم_الملايات', offers: 'العروض', friday: 'الجمعة_البيضاء', ambassador: 'سوق_واكسب', reviews: 'آراء_العملاء', privacy: 'سياسة_الخصوصية', contest: 'المسابقة' };
   var GRP = { S: 'الفخامة', F: 'الفلات', B: 'الملايات' };
   function ev(id, data) {
     try { if (typeof window.fbq === 'function' && TRK[id]) window.fbq('trackCustom', TRK[id], data || {}); } catch (e) { }
@@ -34,6 +34,7 @@
   function placeOf(el) {
     if (el.closest('.ft4,footer')) return 'الفوتر';
     if (el.closest('[data-fri-banner]')) return 'شريط_الجمعة';
+    if (el.closest('.cts')) return 'شريط_المسابقة';
     if (el.closest('#os,.os')) return 'شيت_الطلب';
     if (el.closest('.bar,header')) return 'الهيدر';
     if (el.closest('.rq')) return 'طقم_مقترح';
@@ -549,6 +550,51 @@
   closeOS = function () { if (st.bun) { st.bun = null; loadCart(); } _closeOS.apply(this, arguments); updateFab(); };
   openOS = function () { _openOS.apply(this, arguments); updateFab(); if (!st.bun && calc().count > 0) track('InitiateCheckout', cartData()); };
 
+  /* ------------------------------------------------------------------
+     المسابقة: شريط في الرئيسية + صفحة /contest/ (من غير start = "قريبًا")
+     ------------------------------------------------------------------ */
+  function contestState() {
+    var K = C.contest || {}, now = Date.now(), s = K.start ? Date.parse(K.start) : NaN;
+    var e = K.end ? Date.parse(K.end) : (isNaN(s) ? NaN : s + (K.days || 7) * 864e5);
+    if (isNaN(s)) return { st: 'soon', K: K };
+    if (now < s) return { st: 'soon', s: s, e: e, K: K };
+    if (!isNaN(e) && now >= e) return { st: 'ended', s: s, e: e, K: K };
+    return { st: 'live', s: s, e: e, K: K };
+  }
+  function arDate(ms) { try { return new Date(ms).toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Africa/Cairo' }); } catch (x) { return ''; } }
+  function leftTxt(ms) {
+    var m = Math.max(0, Math.floor(ms / 60000)), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60;
+    return d > 0 ? d + ' يوم و' + h + ' ساعة' : h > 0 ? h + ' ساعة و' + mm + ' دقيقة' : mm + ' دقيقة';
+  }
+  function renderContest() {
+    var S = contestState(), K = S.K, sp = K.sponsor || 'A.M.GROUB';
+    var sub = S.st === 'live' ? 'شغالة دلوقتي · باقي ' + (S.e ? leftTxt(S.e - Date.now()) : '') : (S.s ? 'تبدأ ' + arDate(S.s) : 'قريبًا');
+    var host = $('main'), bn = $('.cts');
+    if (!document.querySelector('[data-ct-status]') && host && pg().id === 'home') {
+      if (S.st === 'ended') { if (bn) bn.remove(); }
+      else {
+        if (!bn) {
+          bn = document.createElement('a'); bn.className = 'cts'; bn.href = R + 'contest/';
+          var fr = $('[data-fri-banner]', host); host.insertBefore(bn, fr ? fr.nextSibling : host.firstChild);
+        }
+        bn.innerHTML = '<span class="cts-i" aria-hidden="true">🏆</span><span class="cts-b"><b>مسابقة سو براند الكبرى</b><small>10 فائزين · 10 جوائز · ' + sub + '</small></span><span class="cts-go">التفاصيل ←</span>';
+      }
+    }
+    var st = $('[data-ct-status]'); if (!st) return;
+    $$('[data-ct-sponsor]').forEach(function (x) { x.textContent = sp; });
+    var chip = $('[data-ct-chip]');
+    if (S.st === 'ended') { if (chip) chip.textContent = 'انتهت'; st.innerHTML = '<b>المسابقة انتهت</b><small>شكرًا لكل اللي شارك ❤️ ترقّبوا الجاية!</small>'; }
+    else if (S.st === 'live') { if (chip) chip.textContent = 'شغالة الآن'; st.innerHTML = '<b>المسابقة شغالة دلوقتي!</b><small>باقي ' + (S.e ? leftTxt(S.e - Date.now()) : '') + '</small>'; }
+    else { if (chip) chip.textContent = 'قريبًا'; st.innerHTML = '<b>' + (S.s ? 'تبدأ ' + arDate(S.s) : 'قريبًا.. استنونا') + '</b><small>هنعلن كل التفاصيل هنا وعلى صفحاتنا</small>'; }
+    function list(sel, arr, empty) {
+      var el = $(sel); if (!el) return;
+      el.innerHTML = (arr && arr.length) ? '<ol>' + arr.map(function (x) { return '<li>' + String(x).replace(/</g, '&lt;') + '</li>'; }).join('') + '</ol>' : '<p class="ctp-empty">' + empty + '</p>';
+    }
+    list('[data-ct-prizes]', K.prizes, 'الجوايز هتتعلن مع بداية المسابقة 🎁');
+    list('[data-ct-rules]', K.rules, 'شروط المشاركة هتتعلن مع بداية المسابقة.');
+    var w = $('[data-ct-winners]'); if (w) { w.hidden = !K.winners; w.innerHTML = K.winners ? '<h2>🏆 إعلان الفائزين</h2><p>' + String(K.winners).replace(/</g, '&lt;') + '</p>' : ''; }
+  }
+
   var NAME2M = { 'فودافون كاش': 'vodafone', 'وي باي': 'wepay', 'إنستا باي': 'instapay' };
   document.addEventListener('click', function (e) {
     var b = e.target.closest('#os-foot a.btn-wa[href]');
@@ -822,6 +868,7 @@
   ensureMarkup();
   loadCart(); injectCart(); updateFab();
   trackInit();
+  renderContest(); setInterval(renderContest, 60000);
   (function () { var el = $('.card.solo[data-code]'); var k = el && el.dataset.code; if (k && SETS[k]) track('ViewContent', { content_ids: [k], content_type: 'product', content_name: SETS[k].t, value: unit(k), currency: 'EGP' }); })();
   fillGifts(document);
   renderFriday();
