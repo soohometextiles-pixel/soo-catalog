@@ -68,7 +68,7 @@
     if ((b = t.closest('[data-prepay],[data-order]'))) { var c2 = b.closest('[data-code]'); ev(b.hasAttribute('data-prepay') ? 'pay_open' : 'order_open', c2 && c2.dataset.code ? setInfo(c2.dataset.code) : { 'المكان': placeOf(b) }); return; }
     if (t.closest('[data-gift]')) { ev('gift_click', { 'المكان': placeOf(t) }); return; }
     if ((b = t.closest('[data-bundle]'))) { ev('bundle_click', { 'العدد': b.dataset.bundle, 'المكان': placeOf(b) }); return; }
-    if (t.closest('[data-frbun]')) { ev('fri_bundle', { 'المكان': placeOf(t) }); return; }
+    if (t.closest('[data-frbun]')) { ev('fri_bundle', { 'المكان': placeOf(t), 'العرض': (t.closest('[data-frbun]').dataset.frbun || 0) * 1 + 1 }); return; }
     if ((b = t.closest('[data-share]'))) { var cs = b.closest('[data-code]'); ev('share', cs && cs.dataset.code ? setInfo(cs.dataset.code) : { 'الصفحة': pg().name }); return; }
     if ((b = t.closest('.nav.nx,.nav.pv'))) { var cc = b.closest('[data-code]'); ev(b.classList.contains('nx') ? 'gallery_next' : 'gallery_prev', cc && cc.dataset.code ? { 'الكود': cc.dataset.code } : { 'الصفحة': pg().name }); return; }
     if ((b = t.closest('.sw'))) { var cl = b.closest('[data-code]'); ev('color_pick', { 'اللون': b.dataset.name || b.title || '', 'الكود': (cl && cl.dataset.code) || '' }); return; }
@@ -133,7 +133,7 @@
       date: date, live: to === 0, daysTo: to,
       open: Date.parse(date + 'T00:00:00' + off), close: Date.parse(date + 'T23:59:59' + off),
       closeISO: date + 'T23:59:59' + off,
-      offers: (C.friday && C.friday[date]) || {}, bundle: (C.fridayBundles && C.fridayBundles[date]) || null, ts: u.getTime()
+      offers: (C.friday && C.friday[date]) || {}, bundles: [].concat((C.fridayBundles && C.fridayBundles[date]) || []).filter(function (b) { return b && b.fixed && b.fixed.length && b.price > 0; }), ts: u.getTime()
     };
   }
 
@@ -159,7 +159,7 @@
     nextBoundary = Math.min(nextBoundary, FRI.open);
   }
   window.SOO_OFFERS = OFF;
-  var BUN = (FRI.live && FRI.bundle) ? FRI.bundle : null;
+  var BUNS = FRI.live ? FRI.bundles : [], BUN = BUNS[0] || null;
   /* لما يتفتح عرض مجدول / الجمعة تبدأ أو تخلص: الصفحة بتتحدّث لوحدها */
   if (nextBoundary < Infinity && nextBoundary - NOW < 2147e6 && nextBoundary - NOW > 300) {
     setTimeout(function () { location.reload(); }, nextBoundary - NOW + 400);
@@ -344,7 +344,7 @@
     });
   }
   function buildMsg() {
-    var t = calc(), L = ['السلام عليكم، عايز أطلب من سو براند 🌸', '', (st.bun ? 'باقة الجمعة البيضاء (3 أطقم):' : 'الأطقم:')];
+    var t = calc(), L = ['السلام عليكم، عايز أطلب من سو براند 🌸', '', (st.bun ? 'عرض الجمعة البيضاء (' + bunWhat(BUN) + ') بسعر ' + f(BUN.price) + ' جنيه:' : 'الأطقم:')];
     Object.keys(SETS).forEach(function (c) {
       var n = st.q[c]; if (!(n > 0)) return;
       if (st.bun) { L.push('- ' + c + ' — ' + SETS[c].t); return; }
@@ -444,7 +444,7 @@
   }
   function openOS(o) {
     o = o || {}; ensureOS();
-    if (o.bundle && BUN) { st.bun = { pick: null }; st.q = {}; BUN.fixed.forEach(function (c) { st.q[c] = 1; }); }
+    if (o.bundle != null && BUNS.length) { BUN = BUNS[+o.bundle] || BUNS[0]; st.bun = { pick: null }; st.q = {}; BUN.fixed.forEach(function (c) { st.q[c] = 1; }); }
     else if (st.bun) { st.bun = null; loadCart(); }
     if (o.method) st.method = o.method;
     if (o.code && SETS[o.code]) st.q[o.code] = Math.max(1, st.q[o.code] || 0);
@@ -617,7 +617,7 @@
     b = e.target.closest('[data-bundle]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); var cc = b.closest('[data-code]'); openOS({ code: cc && cc.dataset.code, group: b.dataset.g || 'B' }); return; }
     b = e.target.closest('[data-frbun]');
-    if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ bundle: true }); return; }
+    if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({ bundle: +b.dataset.frbun || 0 }); return; }
     b = e.target.closest('[data-gift]');
     if (b) { e.preventDefault(); e.stopImmediatePropagation(); openOS({}); }
   }, true);
@@ -734,7 +734,8 @@
   var STAR = '<svg class="ico" aria-hidden="true"><use href="#i-star"/></svg>';
   var KIND = { S: 'طقم فخامة', F: 'طقم فلات', B: 'ملاية سرير' };
   function shortName(c) { return SETS[c].t.replace(/^ملاية سرير\s*/, '').replace(/\s*-\s*4 قطع$/, ''); }
-  function pickCodes() { return BUN ? Object.keys(SETS).filter(function (c) { return SETS[c].g === BUN.pick; }) : []; }
+  function pickCodes(B) { B = B || BUN; return B ? Object.keys(SETS).filter(function (c) { return SETS[c].g === B.pick; }) : []; }
+  function bunWhat(B) { return B.fixed.map(function (c) { return (KIND[SETS[c].g] || 'طقم') + ' ' + c; }).join(' + ') + ' + ملاية من اختيارك'; }
   function pickSheet(c) {
     if (!st.bun || !SETS[c]) return;
     Object.keys(st.q).forEach(function (k) { if (SETS[k] && SETS[k].g === BUN.pick) delete st.q[k]; });
@@ -749,31 +750,34 @@
     var picks = pickCodes().map(function (c) {
       return '<button type="button" class="bp-p' + (pk === c ? ' on' : '') + '" data-os="pick" data-code="' + c + '" aria-pressed="' + (pk === c) + '"><img src="' + SETS[c].i + '" alt="" loading="lazy"><b>' + c + '</b><span>' + esc(shortName(c)) + '</span></button>';
     }).join('');
-    return '<div class="bp-hd"><div class="bp-k">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div><b>3 أطقم بـ <bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه <s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s></b><span>وفّر ' + f(BUN.was - BUN.price) + ' جنيه</span></div>' +
-      '<div class="os-sec"><i>1</i>أطقم الباقة</div><div class="os-list nolimit">' + fixed + '</div>' +
-      '<div class="os-sec"><i>2</i>اختار ملاءتك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
+    return '<div class="bp-hd"><div class="bp-k">' + STAR + 'عرض الجمعة البيضاء · النهارده بس</div><b>' + 'طقم + ملاية بـ <bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه <s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s></b><span>وفّر ' + f(BUN.was - BUN.price) + ' جنيه</span></div>' +
+      '<div class="os-sec"><i>1</i>طقم العرض</div><div class="os-list nolimit">' + fixed + '</div>' +
+      '<div class="os-sec"><i>2</i>اختار ملايتك' + (pk ? '' : ' <em class="bp-need">لازم تختار واحدة</em>') + '</div><div class="bp-grid">' + picks + '</div>' +
       '<button type="button" class="bp-x" data-os="exitbun">أو اطلب أطقم تانية بدل الباقة</button>';
   }
   function tileCD() {
     function t(u, l) { return '<div class="t"><b data-fri-u="' + u + '">00</b><span>' + l + '</span></div>'; }
     return '<div class="fb-cd" role="timer" aria-label="الوقت المتبقي على انتهاء العرض"><span class="fb-cl">' + '<svg class="ico" aria-hidden="true"><use href="#i-hourglass"/></svg>العرض بيخلص بعد</span><div class="frcd sm">' + t('d', 'يوم') + '<i>:</i>' + t('h', 'ساعة') + '<i>:</i>' + t('m', 'دقيقة') + '<i>:</i>' + t('s', 'ثانية') + '</div></div>';
   }
+  function bunCard(B, idx) {
+    var save = B.was - B.price, picks = pickCodes(B), pct = Math.round(save * 100 / B.was), n = B.fixed.length + 1;
+    var fig = B.fixed.map(function (c) { var s = SETS[c]; return '<figure><img src="' + s.i + '" alt="' + esc(s.t) + '"><figcaption><b>' + c + '</b>' + (KIND[s.g] || '') + '</figcaption></figure>'; }).join('<i class="plus">+</i>');
+    var sheets = '<figure class="fb-sheets">' + picks.map(function (c, i) { return '<img class="' + (i === 0 ? 'on' : '') + '" src="' + SETS[c].i + '" alt="" loading="lazy">'; }).join('') + '<figcaption><b>ملاية</b>من اختيارك</figcaption></figure>';
+    return '<section class="fbun" data-bun="' + idx + '"><div class="fb-tag">' + STAR + 'عرض الجمعة البيضاء · النهارده بس</div>' +
+      '<h2 class="fb-h">' + esc(B.title || (bunWhat(B))) + '<br>بـ <span><bdi dir="ltr">' + f(B.price) + '</bdi> جنيه</span> بس!</h2>' +
+      '<p class="fb-hook">' + esc(B.hook || 'خدي الطقم وكمّلي بملاية سرير من اختيارك في أوردر واحد، بسعر الجمعة البيضاء بس. السعر ده بيختفي مع آخر النهارده.') + '</p>' +
+      '<div class="fb-pics">' + fig + '<i class="plus">+</i>' + sheets + '</div>' +
+      '<div class="fb-price"><strong><bdi dir="ltr">' + f(B.price) + '</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">' + f(B.was) + '</bdi></s><span class="fb-save">وفّر ' + f(save) + ' جنيه · ' + pct + '%</span></div>' +
+      '<ul class="fb-list">' + B.fixed.map(function (c) { return '<li>' + esc(SETS[c].t) + ' <b>' + c + '</b></li>'; }).join('') + '<li>ملاية سرير 4 قطع من اختيارك (' + picks.length + ' تصميم)</li></ul>' +
+      tileCD() +
+      '<button class="btn btn-gold fb-go" type="button" data-frbun="' + idx + '"><svg class="ico"><use href="#i-gift"/></svg>اختار ملايتك واطلب العرض</button>' +
+      '<small class="fb-note">ادفع مقدمًا وهتوفّر كمان خصم الدفع المقدم. والسعر بيرجع لأصله بعد آخر النهارده.</small></section>';
+  }
   function renderBundle() {
     var els = $$('[data-frbundle]'); if (!els.length) return;
     els.forEach(function (el) {
-      if (!BUN) { el.innerHTML = ''; return; }
-      var save = BUN.was - BUN.price, picks = pickCodes();
-      var fig = BUN.fixed.map(function (c) { var s = SETS[c]; return '<figure><img src="' + s.i + '" alt="' + esc(s.t) + '"><figcaption><b>' + c + '</b>' + (KIND[s.g] || '') + '</figcaption></figure>'; }).join('<i class="plus">+</i>');
-      var sheets = '<figure class="fb-sheets">' + picks.map(function (c, i) { return '<img class="' + (i === 0 ? 'on' : '') + '" src="' + SETS[c].i + '" alt="" loading="lazy">'; }).join('') + '<figcaption><b>ملاية</b>من اختيارك</figcaption></figure>';
-      el.innerHTML = '<section class="fbun"><div class="fb-tag">' + STAR + 'باقة الجمعة البيضاء · النهارده بس</div>' +
-        '<h2 class="fb-h">3 أطقم في أوردر واحد.. بـ <span><bdi dir="ltr">' + f(BUN.price) + '</bdi> جنيه</span> بس!</h2>' +
-        '<p class="fb-hook">طقم فخامة + طقم فلات + ملاية من اختيارك، وأوضتك كلها تتغيّر مرة واحدة. الجمعة البيضاء بتيجي مرة في الأسبوع، والسعر ده بيختفي مع آخر النهارده.</p>' +
-        '<div class="fb-pics">' + fig + '<i class="plus">+</i>' + sheets + '</div>' +
-        '<div class="fb-price"><strong><bdi dir="ltr">' + f(BUN.price) + '</bdi> <small>جنيه</small></strong><s><bdi dir="ltr">' + f(BUN.was) + '</bdi></s><span class="fb-save">وفّر ' + f(save) + ' جنيه</span></div>' +
-        '<ul class="fb-list">' + BUN.fixed.map(function (c) { return '<li>' + esc(SETS[c].t) + ' <b>' + c + '</b></li>'; }).join('') + '<li>ملاية سرير 4 قطع من اختيارك (' + picks.length + ' تصميم)</li></ul>' +
-        tileCD() +
-        '<button class="btn btn-gold fb-go" type="button" data-frbun>' + '<svg class="ico"><use href="#i-gift"/></svg>اختار ملاءتك واطلب الباقة</button>' +
-        '<small class="fb-note">ادفع مقدمًا وهتوفّر كمان خصم الدفع المقدم. والسعر بيرجع لأصله بعد آخر النهارده.</small></section>';
+      if (!BUNS.length) { el.innerHTML = ''; return; }
+      el.innerHTML = BUNS.map(bunCard).join('');
     });
     if (!window.__fbCyc) {
       window.__fbCyc = setInterval(function () {
@@ -784,7 +788,7 @@
   function friFx() {
     if (!(FRI.live && (friCount || BUN))) return;
     if (/\/friday\//.test(location.pathname)) return;
-    var txt = BUN ? 'باقة 3 أطقم بـ ' + f(BUN.price) + ' جنيه بدل ' + f(BUN.was) : 'عروض جديدة النهارده';
+    var txt = BUNS.length > 1 ? BUNS.length + ' عروض أطقم + ملاية من ' + f(Math.min.apply(null, BUNS.map(function (b) { return b.price; }))) + ' جنيه' : (BUN ? bunWhat(BUN) + ' بـ ' + f(BUN.price) + ' جنيه بدل ' + f(BUN.was) : 'عروض جديدة النهارده');
     var r = document.createElement('a'); r.className = 'frribbon'; r.href = R + 'friday/';
     r.innerHTML = '<span class="fr-st">' + STAR + 'الجمعة البيضاء</span><span class="fr-tx">' + txt + '</span><span class="fr-cd">ينتهي بعد <bdi dir="ltr" data-fri-cd></bdi></span><span class="fr-go">شوف العرض ‹</span>';
     document.body.insertBefore(r, document.body.firstChild);
@@ -802,7 +806,7 @@
       var d = document.createElement('div'); d.className = 'frs-bg'; d.id = 'frs';
       d.innerHTML = '<div class="frs" role="dialog" aria-modal="true" aria-label="الجمعة البيضاء"><button class="frs-x" type="button" aria-label="إغلاق">×</button><div class="confetti" aria-hidden="true">' + cf + '</div>' +
         '<div class="frs-art open" data-giftbox></div><div class="frs-k">' + STAR + 'الجمعة البيضاء وصلت</div><h3>عرض النهارده بس.. وبيختفي آخر اليوم</h3>' +
-        '<p>' + (BUN ? 'طقم فخامة + طقم فلات + ملاية من اختيارك بـ <b>' + f(BUN.price) + '</b> جنيه بدل ' + f(BUN.was) + '. وفّر <b>' + f(BUN.was - BUN.price) + '</b> جنيه.' : 'عروض جديدة نازلة دلوقتي، والأسعار بترجع لأصلها آخر اليوم.') + '</p>' +
+        '<p>' + (BUNS.length ? BUNS.map(function (B) { return '<b>' + B.fixed.join(' + ') + '</b> + ملاية بـ <b>' + f(B.price) + '</b> بدل ' + f(B.was); }).join('<br>') : 'عروض جديدة نازلة دلوقتي، والأسعار بترجع لأصلها آخر اليوم.') + '</p>' +
         '<div class="frs-cd">ينتهي بعد <bdi dir="ltr" data-fri-cd></bdi></div><a class="btn btn-gold" href="'+R+'friday/">شوف عرض الجمعة</a><button class="frs-skip" type="button">مش دلوقتي</button></div>';
       document.body.appendChild(d); fillGifts(d); friTick();
       function close() { d.remove(); }
